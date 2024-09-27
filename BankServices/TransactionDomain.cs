@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BankServices
 {
-    internal class TransactionDomain
+    internal class TransactionDomain : ITransactionDomain
     {
 
         private readonly IAccountRepository _accountRepo;
@@ -33,7 +33,7 @@ namespace BankServices
             if (accountNumber is not null && !_accountRepo.BankAccountExists(accountNumber))
             {
                 Console.WriteLine("Account do not exists");
-                return new List<Transaction> { };
+                throw new ArgumentException("Account do not exists", nameof(accountNumber));
             }
             if (range is null)
             {

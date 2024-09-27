@@ -14,6 +14,7 @@ namespace DI
 
             
             builder.RegisterType<AccountDomain>().As<IAccountDomain>();
+            builder.RegisterType<TransactionDomain>().As<ITransactionDomain>();
             builder.RegisterType<XMLAccountRepository>().As<IAccountRepository>();
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
 

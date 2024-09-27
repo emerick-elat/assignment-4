@@ -1,43 +1,42 @@
-﻿using BankClient.Views;
-using Audit.Views;
-using Autofac;
+﻿using Autofac;
+using BankClient.Views;
 using BankServices;
-using BankServices.Models;
 using DI;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Audit
+namespace BankClient
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+
             var container = AutofacConfig.Configure();
 
             using (var scope = container.BeginLifetimeScope())
             {
                 IAccountDomain _bank = scope.Resolve<IAccountDomain>()
                     ?? throw new ArgumentNullException(nameof(_bank));
-                ITransactionDomain _transaction = scope.Resolve<ITransactionDomain>();
-
                 string? choice;
 
                 while (true)
                 {
                     Console.WriteLine("WELCOME TO THE BANK MANAGING APP");
-                    Console.WriteLine("1. List All Accounts");
-                    Console.WriteLine("2. Transactions Journal");
+                    Console.WriteLine("1. Create an Account");
+                    Console.WriteLine("2. List All Accounts");
+                    Console.WriteLine("3. Load an Account");
 
                     choice = Console.ReadLine();
 
                     switch (choice)
                     {
                         case "1":
-                            AccountsList.Show(_bank.GetAccounts());
+                            _bank?.CreateAccount(CreateAccountForm.Show());
                             break;
                         case "2":
-                            (string? account, DateRange? range) = TransactionLookupForm.Show();
-                            Transactions.View(_transaction.GetTransactionsHistory(account, range));
+                            AccountsList.Show(_bank.GetAccounts());
+                            break;
+                        case "3":
+                            AccountDetails.Show(_bank?.GetAccount(SearchAccountForm.Show()));
                             break;
                         default:
                             Console.WriteLine("Wrong choice");
