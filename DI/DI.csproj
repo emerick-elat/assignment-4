@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\assignment-4\assignment-4.csproj" />
+	<PackageReference Include="Autofac" Version="8.1.0" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\BankServices\BankServices.csproj" />
-    <ProjectReference Include="..\DI\DI.csproj" />
-	  <PackageReference Include="Autofac" Version="8.1.0" />
+    <ProjectReference Include="..\DataLogic\DataLogic.csproj" />
   </ItemGroup>
 
 </Project>

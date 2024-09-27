@@ -13,14 +13,9 @@ namespace BankServices
     public class Bank : IBank
     {
         private readonly IDataAccess _database;
-        public Bank()
+        public Bank(IDataAccess database)
         {
-            ServiceProvider serviceProvider = new ServiceCollection()
-                .AddSingleton<IDataAccess, DataAccess>()
-                .BuildServiceProvider();
-
-            _database = serviceProvider.GetRequiredService<IDataAccess>()
-                ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _database = database;
         }
 
         public string GenerateAccountNumber(Customer customer)

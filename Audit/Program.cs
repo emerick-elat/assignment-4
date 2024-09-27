@@ -1,7 +1,9 @@
 ﻿using assignment_4.Views;
 using Audit.Views;
+using Autofac;
 using BankServices;
 using BankServices.Models;
+using DI;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Audit
@@ -10,14 +12,13 @@ namespace Audit
     {
         static void Main(string[] args)
         {
-            ServiceProvider provider = new ServiceCollection()
-                .AddSingleton<IBank, Bank>()
-                .BuildServiceProvider();
-            IBank _bank = provider.GetService<IBank>()
-                ?? throw new ArgumentNullException(nameof(_bank));
-            if (_bank is null) return;
-            else
+            var container = AutofacConfig.Configure();
+
+            using (var scope = container.BeginLifetimeScope())
             {
+                IBank _bank = scope.Resolve<IBank>()
+                    ?? throw new ArgumentNullException(nameof(_bank));
+
                 string? choice;
 
                 while (true)

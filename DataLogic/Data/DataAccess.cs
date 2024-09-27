@@ -10,7 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataLogic.Data
 {
-    public class DataAccess : IDataAccess
+    internal class DataAccess : IDataAccess
     {
         private readonly string Database = @"D://bankData.xml";
 
