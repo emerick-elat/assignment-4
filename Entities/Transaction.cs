@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Models
+namespace Entities
 {
     public class Transaction
     {
@@ -16,7 +16,7 @@ namespace DataLogic.Models
         public string? DestinationAccountId { get; set; }
         public string Currency { get; set; }
 
-        public Transaction(int transactionId, decimal amount, string currency,  TransactionType type)
+        public Transaction(int transactionId, decimal amount, string currency, TransactionType type)
         {
             TransactionId = transactionId;
             Amount = amount;
@@ -27,7 +27,7 @@ namespace DataLogic.Models
             Currency = currency;
         }
 
-        public Transaction(int transactionId, decimal amount, string currency,  TransactionType type, string sourceAccountId, string destinationAccountId)
+        public Transaction(int transactionId, decimal amount, string currency, TransactionType type, string sourceAccountId, string destinationAccountId)
         {
             TransactionId = transactionId;
             Amount = amount;

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace DataLogic.Models
+namespace Entities
 {
     public class Account
     {
@@ -44,7 +43,8 @@ namespace DataLogic.Models
             return totalDeposits - totalWithdrawals;
         }
 
-        public string GetAccountNumber() {
+        public string GetAccountNumber()
+        {
             if (AccountNumber is null)
             {
                 return string.Empty;

@@ -1,0 +1,15 @@
+﻿using Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataLogic.Data
+{
+    public interface ITransactionRepository
+    {
+        bool AddTransaction(decimal amount, TransactionType type, string SourceAccountId, string? DestinationaAccountId = null);
+        List<Transaction> GetTransactionsHistory(string? accountNumber = null, DateTime? start = null, DateTime? end = null);
+    }
+}

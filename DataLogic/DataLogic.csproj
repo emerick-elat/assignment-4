@@ -10,4 +10,7 @@
 			<_Parameter1>DI</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Entities\Entities.csproj" />
+	</ItemGroup>
 </Project>

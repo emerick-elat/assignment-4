@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Audit", "Audit\Audit.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DI", "DI\DI.csproj", "{394E3312-B2E4-4E29-9BCE-06E9946EDA39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{B92AE9A2-AFC2-4FC0-A888-E114FADFBBBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{394E3312-B2E4-4E29-9BCE-06E9946EDA39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{394E3312-B2E4-4E29-9BCE-06E9946EDA39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{394E3312-B2E4-4E29-9BCE-06E9946EDA39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B92AE9A2-AFC2-4FC0-A888-E114FADFBBBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B92AE9A2-AFC2-4FC0-A888-E114FADFBBBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B92AE9A2-AFC2-4FC0-A888-E114FADFBBBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B92AE9A2-AFC2-4FC0-A888-E114FADFBBBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

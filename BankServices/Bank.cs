@@ -1,6 +1,6 @@
 ﻿using BankServices.Models;
 using DataLogic.Data;
-using DataLogic.Models;
+using Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -10,12 +10,14 @@ using System.Threading.Tasks;
 
 namespace BankServices
 {
-    public class Bank : IBank
+    internal class Bank : IBank
     {
-        private readonly IDataAccess _database;
-        public Bank(IDataAccess database)
+        private readonly IAccountRepository _database;
+        private readonly ITransactionRepository _transactionRepository;
+        public Bank(IAccountRepository database, ITransactionRepository transactionRepository)
         {
             _database = database;
+            _transactionRepository = transactionRepository;
         }
 
         public string GenerateAccountNumber(Customer customer)
@@ -46,16 +48,16 @@ namespace BankServices
         public void DeleteAccount(string accountNumber)
             => _database.DeleteAccount(accountNumber);
         public bool DepositMoney(string accountNumber, decimal anmount)
-            => _database.AddTransaction(anmount, TransactionType.Deposit, accountNumber);
+            => _transactionRepository.AddTransaction(anmount, TransactionType.Deposit, accountNumber);
         public bool WithdrawMoney(string accountNumber, decimal anmount)
-            => _database.AddTransaction(anmount, TransactionType.Withdrawal, accountNumber);
+            => _transactionRepository.AddTransaction(anmount, TransactionType.Withdrawal, accountNumber);
         public bool TransferMoney(string SourceAccountId, string DestinationaAccountId, decimal amount)
             => SourceAccountId.Equals(DestinationaAccountId.Replace(" ", ""))
             ? false
-            :_database.AddTransaction(amount, TransactionType.Withdrawal, SourceAccountId, DestinationaAccountId);
+            : _transactionRepository.AddTransaction(amount, TransactionType.Withdrawal, SourceAccountId, DestinationaAccountId);
         public List<Transaction> GetTransactionsHistory(string? accountNumber = null, DateRange? range = null)
             => range is null
-            ? _database.GetTransactionsHistory(accountNumber)
-            : _database.GetTransactionsHistory(accountNumber, range.Start, range.End);
+            ? _transactionRepository.GetTransactionsHistory(accountNumber)
+            : _transactionRepository.GetTransactionsHistory(accountNumber, range.Start, range.End);
     }
 }
