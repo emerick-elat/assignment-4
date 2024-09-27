@@ -5,7 +5,7 @@ namespace DataLogic.Data
 {
     internal class XMLAccountRepository : IAccountRepository
     {
-        private readonly string Database = @"D://bankData.xml";
+        private readonly string Database = _DB.Path;
 
         public Account? CreateBankAccount(Customer customer)
         {

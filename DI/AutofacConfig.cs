@@ -13,7 +13,7 @@ namespace DI
             var builder = new ContainerBuilder();
 
             
-            builder.RegisterType<Bank>().As<IBank>();
+            builder.RegisterType<AccountDomain>().As<IAccountDomain>();
             builder.RegisterType<XMLAccountRepository>().As<IAccountRepository>();
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
 

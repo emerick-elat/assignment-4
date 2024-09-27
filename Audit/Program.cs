@@ -16,8 +16,9 @@ namespace Audit
 
             using (var scope = container.BeginLifetimeScope())
             {
-                IBank _bank = scope.Resolve<IBank>()
+                IAccountDomain _bank = scope.Resolve<IAccountDomain>()
                     ?? throw new ArgumentNullException(nameof(_bank));
+                ITransactionDomain _transaction = scope.Resolve<ITransactionDomain>();
 
                 string? choice;
 
@@ -36,7 +37,7 @@ namespace Audit
                             break;
                         case "2":
                             (string? account, DateRange? range) = TransactionLookupForm.Show();
-                            Transactions.View(_bank.GetTransactionsHistory(account, range));
+                            Transactions.View(_transaction.GetTransactionsHistory(account, range));
                             break;
                         default:
                             Console.WriteLine("Wrong choice");

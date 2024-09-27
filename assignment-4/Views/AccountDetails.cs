@@ -18,9 +18,9 @@ namespace assignment_4.Views
             var container = AutofacConfig.Configure();
             using (var scope = container.BeginLifetimeScope())
             {
-                IBank _bank = scope.Resolve<IBank>()
+                IAccountDomain _bank = scope.Resolve<IAccountDomain>()
                    ?? throw new ArgumentNullException(nameof(_bank));
-
+                ITransactionDomain _transaction = scope.Resolve<ITransactionDomain>();
 
                 string? choice, accountTo;
                 decimal amount = 0m;
@@ -48,12 +48,12 @@ namespace assignment_4.Views
                             case "1":
                                 Console.WriteLine("Enter the Amount to Deposit");
                                 decimal.TryParse(Console.ReadLine(), out amount);
-                                _bank.DepositMoney(account.AccountNumber, amount);
+                                _transaction.DepositMoney(account.AccountNumber, amount);
                                 break;
                             case "2":
                                 Console.WriteLine("Enter the Amount to Withdraw");
                                 decimal.TryParse(Console.ReadLine(), out amount);
-                                _bank.WithdrawMoney(account.AccountNumber, amount);
+                                _transaction.WithdrawMoney(account.AccountNumber, amount);
                                 break;
                             case "3":
                                 Console.WriteLine("Account Number to Transfer to");
@@ -62,7 +62,7 @@ namespace assignment_4.Views
                                 {
                                     Console.WriteLine("Enter the Amount to Transfer");
                                     decimal.TryParse(Console.ReadLine(), out amount);
-                                    _bank.TransferMoney(account.AccountNumber, accountTo, amount);
+                                    _transaction.TransferMoney(account.AccountNumber, accountTo, amount);
                                 }
                                 else
                                 {

@@ -10,7 +10,7 @@ namespace DataLogic.Data
 {
     internal class TransactionRepository : ITransactionRepository
     {
-        private readonly string Database = @"D://bankData.xml";
+        private readonly string Database = _DB.Path;
         public bool AddTransaction(decimal amount, TransactionType type, string SourceAccountId, string? DestinationAccountId = null)
         {
             

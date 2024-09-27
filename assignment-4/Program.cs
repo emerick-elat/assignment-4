@@ -15,7 +15,7 @@ namespace assignment_4
 
             using (var scope = container.BeginLifetimeScope())
             {
-                IBank _bank = scope.Resolve<IBank>()
+                IAccountDomain _bank = scope.Resolve<IAccountDomain>()
                     ?? throw new ArgumentNullException(nameof(_bank));
                 string? choice;
 
