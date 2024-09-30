@@ -6,10 +6,12 @@ namespace DataLogic.Data
     internal class XMLAccountRepository : IAccountRepository
     {
         private readonly string Database;
+        private readonly string SystemAccountNumber;
 
         public XMLAccountRepository()
         {
             Database = _DB.Path;
+            SystemAccountNumber = _DB.SystemAccountNumber;
         }
 
         public Account? CreateBankAccount(Customer customer)
@@ -23,6 +25,11 @@ namespace DataLogic.Data
             else
             {
                 doc = new XDocument(new XElement("Bank"));
+
+                if (doc.Root is not null && SystemAccountNumber.Length == 16)
+                {
+                    doc.Root.Add(Helpers.CreateSystemAccount(_DB.InitialBalance, _DB.SystemAccountNumber));
+                }
             }
             Account? account = customer.Accounts.FirstOrDefault();
             if (account is not null)
@@ -41,7 +48,7 @@ namespace DataLogic.Data
                     )
                 );
 
-                doc.Root.Add(customerElement);
+                doc.Root?.Add(customerElement);
                 doc.Save(Database);
             }
             return account;
@@ -119,6 +126,20 @@ namespace DataLogic.Data
             }
             return null;
             
+        }
+
+        public bool CreateInitialBankAccount(decimal amount)
+        {
+            XDocument doc = File.Exists(Database)
+                ? XDocument.Load(Database)
+                : new XDocument(new XElement("Bank"));
+           
+            if (doc.Root is not null && SystemAccountNumber.Length == 16)
+            {
+                doc.Root.Add(Helpers.CreateSystemAccount(_DB.InitialBalance, _DB.SystemAccountNumber));
+            }
+            doc.Save(Database);
+            return true;
         }
     }
 }

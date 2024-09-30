@@ -23,9 +23,9 @@ namespace BankServices
         }
 
         public bool DepositMoney(string accountNumber, decimal anmount)
-            => CreateTransaction(anmount, TransactionType.Deposit, accountNumber);
+            => CreateTransaction(anmount, TransactionType.Deposit, _DB.SystemAccountNumber, accountNumber);
         public bool WithdrawMoney(string accountNumber, decimal anmount)
-            => CreateTransaction(anmount, TransactionType.Withdrawal, accountNumber);
+            => CreateTransaction(anmount, TransactionType.Withdrawal, accountNumber, _DB.SystemAccountNumber);
         public bool TransferMoney(string SourceAccountId, string DestinationaAccountId, decimal amount)
             => CreateTransaction(amount, TransactionType.Withdrawal, SourceAccountId, DestinationaAccountId);
         public ICollection<Transaction> GetTransactionsHistory(string? accountNumber = null, DateRange? range = null)

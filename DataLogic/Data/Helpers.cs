@@ -12,9 +12,9 @@ namespace DataLogic.Data
     {
         public static AccountVM XElementToAccount(XElement xaccount)
         {
-            var account = new AccountVM((string)xaccount.Element("AccountNumber"));
-            account.FirstName = xaccount.Parent.Parent.Element("FirstName").Value;
-            account.LastName = xaccount.Parent.Parent.Element("LastName").Value;
+            AccountVM? account = new AccountVM((string)xaccount?.Element("AccountNumber"));
+            account.FirstName = xaccount.Parent?.Parent?.Element("FirstName")?.Value;
+            account.LastName = xaccount.Parent?.Parent?.Element("LastName")?.Value??"";
             return account;
         }
 
@@ -38,7 +38,31 @@ namespace DataLogic.Data
             : new Transaction(transId, transAmount, currency, transType, SourceAccountId, DestinationAccountId);
             transaction.TransactionDate = tDate;
             return transaction;
+        }
 
+        public static XElement CreateSystemAccount(decimal amount, string SystemAccountNumber)
+        {
+            return new XElement("Customer",
+                   new XAttribute("Id", 0001),
+                   new XElement("CustomerId", 1),
+                   new XElement("FirstName", "System Account"),
+                   new XElement("LastName", ""),
+                   new XElement("Accounts",
+                      new XElement("Account",
+                      new XAttribute("AccountId", SystemAccountNumber),
+                      new XElement("AccountNumber", SystemAccountNumber),
+                      new XElement("Transactions", new XElement("Transaction",
+                        new XAttribute("TransactionId", 1),
+                        new XElement("TransactionId", 1),
+                        new XElement("Currency", "EUR"),
+                        new XElement("Amount", amount),
+                        new XElement("Type", TransactionType.Deposit),
+                        new XElement("TransactionDate", DateTime.Now.ToString()),
+                        new XElement("SourceAccountId", SystemAccountNumber),
+                        new XElement("DestinationAccountId", SystemAccountNumber)
+                      ))))
+                      
+                   );
         }
     }
 }
