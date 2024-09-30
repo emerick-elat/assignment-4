@@ -48,7 +48,7 @@ namespace BankServices
             return _repo.CreateBankAccount(customer);
         }
 
-        public List<AccountVM> GetAccounts()
+        public ICollection<AccountVM> GetAccounts()
         {
             return _repo.GetAllAccounts();
         }

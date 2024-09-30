@@ -10,6 +10,6 @@ namespace DataLogic.Data
     public interface ITransactionRepository
     {
         bool AddTransaction(decimal amount, TransactionType type, string SourceAccountId, string? DestinationaAccountId = null);
-        List<Transaction> GetTransactionsHistory(string? accountNumber = null, DateTime? start = null, DateTime? end = null);
+        ICollection<Transaction> GetTransactionsHistory(string? accountNumber = null, DateTime? start = null, DateTime? end = null);
     }
 }

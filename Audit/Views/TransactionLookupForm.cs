@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Audit.Views
 {
-    public static class TransactionLookupForm
+    internal static class TransactionLookupForm
     {
         public static (string?, DateRange?) Show()
         {

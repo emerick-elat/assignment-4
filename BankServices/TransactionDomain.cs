@@ -28,7 +28,7 @@ namespace BankServices
             => CreateTransaction(anmount, TransactionType.Withdrawal, accountNumber);
         public bool TransferMoney(string SourceAccountId, string DestinationaAccountId, decimal amount)
             => CreateTransaction(amount, TransactionType.Withdrawal, SourceAccountId, DestinationaAccountId);
-        public List<Transaction> GetTransactionsHistory(string? accountNumber = null, DateRange? range = null)
+        public ICollection<Transaction> GetTransactionsHistory(string? accountNumber = null, DateRange? range = null)
         {
             if (accountNumber is not null && !_accountRepo.BankAccountExists(accountNumber))
             {

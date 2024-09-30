@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Audit.Views
 {
-    public static class Transactions
+    internal static class Transactions
     {
-        public static void View(List<Transaction> transactions)
+        public static void View(ICollection<Transaction> transactions)
         {
             Console.Clear();
             int i = 1;

@@ -15,6 +15,6 @@ namespace BankServices
         void DeleteAccount(string accountNumber);
         AccountVM? GetAccount(string accountNumber);
         bool BankAccountExists(string accountNumber);
-        List<AccountVM> GetAccounts();
+        ICollection<AccountVM> GetAccounts();
     }
 }

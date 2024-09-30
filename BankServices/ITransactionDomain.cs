@@ -13,6 +13,6 @@ namespace BankServices
         bool DepositMoney(string accountNumber, decimal anmount);
         bool WithdrawMoney(string accountNumber, decimal anmount);
         bool TransferMoney(string SourceAccountId, string DestinationaAccountId, decimal amount);
-        List<Transaction> GetTransactionsHistory(string? accountNumber = null, DateRange? range = null);
+        ICollection<Transaction> GetTransactionsHistory(string? accountNumber = null, DateRange? range = null);
     }
 }

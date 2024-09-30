@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BankClient\BankClient.csproj" />
     <ProjectReference Include="..\BankServices\BankServices.csproj" />
     <ProjectReference Include="..\DI\DI.csproj" />
 	  <PackageReference Include="Autofac" Version="8.1.0" />

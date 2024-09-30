@@ -4,7 +4,7 @@ namespace DataLogic.Data
 {
     public interface IAccountRepository
     {
-        List<AccountVM> GetAllAccounts();
+        ICollection<AccountVM> GetAllAccounts();
         Account? CreateBankAccount(Customer customer);
         AccountVM? GetBankAccount(string accountId);
         bool BankAccountExists(string accountId);

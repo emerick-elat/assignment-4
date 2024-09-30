@@ -1,5 +1,4 @@
-﻿using BankClient.Views;
-using Audit.Views;
+﻿using Audit.Views;
 using Autofac;
 using BankServices;
 using BankServices.Models;

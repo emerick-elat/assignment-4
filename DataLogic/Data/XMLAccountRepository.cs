@@ -5,7 +5,12 @@ namespace DataLogic.Data
 {
     internal class XMLAccountRepository : IAccountRepository
     {
-        private readonly string Database = _DB.Path;
+        private readonly string Database;
+
+        public XMLAccountRepository()
+        {
+            Database = _DB.Path;
+        }
 
         public Account? CreateBankAccount(Customer customer)
         {
@@ -64,7 +69,7 @@ namespace DataLogic.Data
             }
         }
 
-        public List<AccountVM> GetAllAccounts()
+        public ICollection<AccountVM> GetAllAccounts()
         {
             if (File.Exists(Database))
             {
@@ -115,6 +120,5 @@ namespace DataLogic.Data
             return null;
             
         }
-
     }
 }

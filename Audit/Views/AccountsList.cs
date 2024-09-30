@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankClient.Views
+namespace Audit.Views
 {
-    public static class AccountsList
+    internal static class AccountsList
     {
         public static void Show(ICollection<AccountVM> accounts)
         {

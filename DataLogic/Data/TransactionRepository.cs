@@ -10,7 +10,12 @@ namespace DataLogic.Data
 {
     internal class TransactionRepository : ITransactionRepository
     {
-        private readonly string Database = _DB.Path;
+        private readonly string Database;
+
+        public TransactionRepository()
+        {
+            Database = _DB.Path;
+        }
         public bool AddTransaction(decimal amount, TransactionType type, string SourceAccountId, string? DestinationAccountId = null)
         {
             
@@ -61,7 +66,7 @@ namespace DataLogic.Data
             return false;
         }
 
-        public List<Transaction> GetTransactionsHistory(string? accountNumber = null, DateTime? start = null, DateTime? end = null)
+        public ICollection<Transaction> GetTransactionsHistory(string? accountNumber = null, DateTime? start = null, DateTime? end = null)
         {
             List<Transaction> transactions = new List<Transaction>();
             if (File.Exists(Database))
