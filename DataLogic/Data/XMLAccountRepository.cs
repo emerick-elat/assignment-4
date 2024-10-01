@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.Extensions.Configuration;
 using System.Xml.Linq;
 
 namespace DataLogic.Data
@@ -8,10 +9,12 @@ namespace DataLogic.Data
         private readonly string Database;
         private readonly string SystemAccountNumber;
 
-        public XMLAccountRepository()
+        public XMLAccountRepository(IConfiguration configuration)
         {
-            Database = _DB.Path;
-            SystemAccountNumber = _DB.SystemAccountNumber;
+            Database = configuration["DBSettings:Path"]
+                ?? throw new ArgumentNullException(nameof(configuration));
+            SystemAccountNumber = configuration["DBSettings:SystemAccountNumber"]
+                ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public Account? CreateBankAccount(Customer customer)

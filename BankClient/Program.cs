@@ -2,6 +2,7 @@
 using BankClient.Views;
 using BankServices;
 using DI;
+using Microsoft.Extensions.Configuration;
 
 namespace BankClient
 {
@@ -9,8 +10,12 @@ namespace BankClient
     {
         static void Main(string[] args)
         {
+            var configration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("config.json", true, true)
+                .Build();
 
-            var container = AutofacConfig.Configure();
+            var container = AutofacConfig.Configure2(configration);
 
             using (var scope = container.BeginLifetimeScope())
             {
