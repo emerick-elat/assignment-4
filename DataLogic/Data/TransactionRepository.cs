@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,10 @@ namespace DataLogic.Data
     {
         private readonly string Database;
 
-        public TransactionRepository()
+        public TransactionRepository(IConfiguration configuration)
         {
-            Database = _DB.Path;
+            Database = configuration["DBSettings:Path"]
+                ?? throw new ArgumentNullException(nameof(configuration));
         }
         public bool AddTransaction(decimal amount, TransactionType type, string SourceAccountId, string? DestinationAccountId = null)
         {

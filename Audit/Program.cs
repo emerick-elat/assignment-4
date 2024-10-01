@@ -3,6 +3,7 @@ using Autofac;
 using BankServices;
 using BankServices.Models;
 using DI;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Audit
@@ -11,7 +12,12 @@ namespace Audit
     {
         static void Main(string[] args)
         {
-            var container = AutofacConfig.Configure();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("config.json", true, true)
+                .Build();
+
+            var container = AutofacConfig.Configure(configuration);
 
             using (var scope = container.BeginLifetimeScope())
             {

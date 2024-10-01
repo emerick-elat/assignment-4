@@ -11,6 +11,8 @@
     <ProjectReference Include="..\BankServices\BankServices.csproj" />
     <ProjectReference Include="..\DI\DI.csproj" />
 	  <PackageReference Include="Autofac" Version="8.1.0" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

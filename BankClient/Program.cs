@@ -15,7 +15,7 @@ namespace BankClient
                 .AddJsonFile("config.json", true, true)
                 .Build();
 
-            var container = AutofacConfig.Configure2(configration);
+            var container = AutofacConfig.Configure(configration);
 
             using (var scope = container.BeginLifetimeScope())
             {

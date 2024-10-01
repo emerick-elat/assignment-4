@@ -1,6 +1,7 @@
 ﻿using BankServices.Models;
 using DataLogic.Data;
 using Entities;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,18 +15,24 @@ namespace BankServices
 
         private readonly IAccountRepository _accountRepo;
         private readonly ITransactionRepository _transactionRepository;
-        public TransactionDomain(IAccountRepository accountRepo, ITransactionRepository transactionRepository)
+        private readonly string SystemAccountNumber;
+        public TransactionDomain(
+            IConfiguration configuration,
+            IAccountRepository accountRepo, 
+            ITransactionRepository transactionRepository)
         {
             _accountRepo = accountRepo
                 ?? throw new ArgumentNullException(nameof(accountRepo));
             _transactionRepository = transactionRepository
                 ?? throw new ArgumentNullException(nameof(transactionRepository));
+            SystemAccountNumber = configuration["DBSettings:SystemAccountNumber"]
+                ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public bool DepositMoney(string accountNumber, decimal anmount)
-            => CreateTransaction(anmount, TransactionType.Deposit, _DB.SystemAccountNumber, accountNumber);
+            => CreateTransaction(anmount, TransactionType.Deposit, SystemAccountNumber, accountNumber);
         public bool WithdrawMoney(string accountNumber, decimal anmount)
-            => CreateTransaction(anmount, TransactionType.Withdrawal, accountNumber, _DB.SystemAccountNumber);
+            => CreateTransaction(anmount, TransactionType.Withdrawal, accountNumber, SystemAccountNumber);
         public bool TransferMoney(string SourceAccountId, string DestinationaAccountId, decimal amount)
             => CreateTransaction(amount, TransactionType.Withdrawal, SourceAccountId, DestinationaAccountId);
         public ICollection<Transaction> GetTransactionsHistory(string? accountNumber = null, DateRange? range = null)

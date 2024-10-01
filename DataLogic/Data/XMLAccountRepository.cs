@@ -8,6 +8,7 @@ namespace DataLogic.Data
     {
         private readonly string Database;
         private readonly string SystemAccountNumber;
+        private readonly decimal InitialBalance;
 
         public XMLAccountRepository(IConfiguration configuration)
         {
@@ -15,6 +16,7 @@ namespace DataLogic.Data
                 ?? throw new ArgumentNullException(nameof(configuration));
             SystemAccountNumber = configuration["DBSettings:SystemAccountNumber"]
                 ?? throw new ArgumentNullException(nameof(configuration));
+            decimal.TryParse(configuration["DBSettings:InitialBalance"], out InitialBalance);
         }
 
         public Account? CreateBankAccount(Customer customer)
@@ -31,7 +33,7 @@ namespace DataLogic.Data
 
                 if (doc.Root is not null && SystemAccountNumber.Length == 16)
                 {
-                    doc.Root.Add(Helpers.CreateSystemAccount(_DB.InitialBalance, _DB.SystemAccountNumber));
+                    doc.Root.Add(Helpers.CreateSystemAccount(InitialBalance, SystemAccountNumber));
                 }
             }
             Account? account = customer.Accounts.FirstOrDefault();
@@ -139,7 +141,7 @@ namespace DataLogic.Data
            
             if (doc.Root is not null && SystemAccountNumber.Length == 16)
             {
-                doc.Root.Add(Helpers.CreateSystemAccount(_DB.InitialBalance, _DB.SystemAccountNumber));
+                doc.Root.Add(Helpers.CreateSystemAccount(InitialBalance, SystemAccountNumber));
             }
             doc.Save(Database);
             return true;

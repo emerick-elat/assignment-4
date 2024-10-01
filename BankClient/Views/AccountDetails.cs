@@ -2,6 +2,7 @@
 using BankServices;
 using DI;
 using Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,12 @@ namespace BankClient.Views
     {
         public static void Show(AccountVM? account)
         {
-            var container = AutofacConfig.Configure();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("config.json", true, true)
+                .Build();
+
+            var container = AutofacConfig.Configure(configuration);
             using (var scope = container.BeginLifetimeScope())
             {
                 IAccountDomain _bank = scope.Resolve<IAccountDomain>()
