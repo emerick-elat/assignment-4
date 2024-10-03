@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Data
+namespace DataLogic.Repository
 {
     public interface ITransactionRepository
     {

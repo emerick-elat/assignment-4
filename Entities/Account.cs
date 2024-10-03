@@ -11,8 +11,18 @@ namespace Entities
         public string AccountNumber { get; set; }
         public List<Transaction>? Transactions { get; set; }
 
+        public int CustomerId { get; set; }
+        public Customer? Customer { get; set; }
+
         public Account(string accountNumber)
         {
+            AccountNumber = accountNumber;
+            Transactions = new List<Transaction>();
+        }
+        
+        public Account(string accountNumber, int customerId)
+        {
+            CustomerId = customerId;
             AccountNumber = accountNumber;
             Transactions = new List<Transaction>();
         }

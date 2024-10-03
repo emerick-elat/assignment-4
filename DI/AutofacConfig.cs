@@ -1,9 +1,10 @@
 ﻿using Autofac.Core;
 using Autofac;
 using BankServices;
-using DataLogic.Data;
+using DataLogic.Repository;
 using Microsoft.Extensions.Configuration;
 using Entities;
+using DataLogic.Context;
 
 namespace DI
 {
@@ -18,6 +19,7 @@ namespace DI
 
             builder.Register(context => config).As<IConfig>();
             
+            builder.RegisterType<BankContext>().As<IBankContext>();
             builder.RegisterType<AccountDomain>().As<IAccountDomain>();
             builder.RegisterType<TransactionDomain>().As<ITransactionDomain>();
             builder.RegisterType<XMLAccountRepository>().As<IAccountRepository>();

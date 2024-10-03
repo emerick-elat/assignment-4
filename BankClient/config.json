@@ -2,6 +2,7 @@
   "DBSettings": {
     "Path": "D://_bankData.xml",
     "SystemAccountNumber": "1111111111111111",
-    "InitialBalance": 10000
+    "InitialBalance": 10000,
+    "ConnectionString": "Data Source=D://_bankData.db"
   }
 }
