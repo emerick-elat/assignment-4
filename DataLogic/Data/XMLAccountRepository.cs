@@ -1,5 +1,4 @@
 ﻿using Entities;
-using Microsoft.Extensions.Configuration;
 using System.Xml.Linq;
 
 namespace DataLogic.Data

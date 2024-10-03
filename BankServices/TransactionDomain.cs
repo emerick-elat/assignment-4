@@ -1,7 +1,6 @@
 ﻿using BankServices.Models;
 using DataLogic.Data;
 using Entities;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
