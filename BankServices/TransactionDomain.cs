@@ -17,7 +17,7 @@ namespace BankServices
         private readonly ITransactionRepository _transactionRepository;
         private readonly string SystemAccountNumber;
         public TransactionDomain(
-            IConfiguration configuration,
+            IConfig config,
             IAccountRepository accountRepo, 
             ITransactionRepository transactionRepository)
         {
@@ -25,8 +25,8 @@ namespace BankServices
                 ?? throw new ArgumentNullException(nameof(accountRepo));
             _transactionRepository = transactionRepository
                 ?? throw new ArgumentNullException(nameof(transactionRepository));
-            SystemAccountNumber = configuration["DBSettings:SystemAccountNumber"]
-                ?? throw new ArgumentNullException(nameof(configuration));
+            SystemAccountNumber = config.SystemAccountNumber
+                ?? throw new ArgumentNullException(nameof(config));
         }
 
         public bool DepositMoney(string accountNumber, decimal anmount)

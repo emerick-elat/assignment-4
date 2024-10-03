@@ -10,13 +10,13 @@ namespace DataLogic.Data
         private readonly string SystemAccountNumber;
         private readonly decimal InitialBalance;
 
-        public XMLAccountRepository(IConfiguration configuration)
+        public XMLAccountRepository(IConfig configuration)
         {
-            Database = configuration["DBSettings:Path"]
+            Database = configuration.Path
                 ?? throw new ArgumentNullException(nameof(configuration));
-            SystemAccountNumber = configuration["DBSettings:SystemAccountNumber"]
+            SystemAccountNumber = configuration.SystemAccountNumber
                 ?? throw new ArgumentNullException(nameof(configuration));
-            decimal.TryParse(configuration["DBSettings:InitialBalance"], out InitialBalance);
+            InitialBalance = configuration.InitialBalance;
         }
 
         public Account? CreateBankAccount(Customer customer)

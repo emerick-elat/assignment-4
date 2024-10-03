@@ -13,10 +13,9 @@ namespace DataLogic.Data
     {
         private readonly string Database;
 
-        public TransactionRepository(IConfiguration configuration)
+        public TransactionRepository(IConfig config)
         {
-            Database = configuration["DBSettings:Path"]
-                ?? throw new ArgumentNullException(nameof(configuration));
+            Database = config.Path;
         }
         public bool AddTransaction(decimal amount, TransactionType type, string SourceAccountId, string? DestinationAccountId = null)
         {
@@ -26,7 +25,7 @@ namespace DataLogic.Data
                 XDocument doc = XDocument.Load(Database);
 
                 int transactionId = doc.Descendants().Count() + 1;
-                XElement accountElement = doc.Descendants("Account").FirstOrDefault(a => (string)a.Attribute("AccountId") == SourceAccountId);
+                XElement? accountElement = doc.Descendants("Account").FirstOrDefault(a => (string?)a.Attribute("AccountId") == SourceAccountId);
 
                 if (accountElement is not null)
                 {
@@ -44,7 +43,7 @@ namespace DataLogic.Data
                     if (DestinationAccountId is not null)
                     {
                         DestinationAccountId = DestinationAccountId.Replace(" ", "");
-                        XElement accountElementTo = doc.Descendants("Account").FirstOrDefault(a => (string)a.Attribute("AccountId") == DestinationAccountId);
+                        XElement? accountElementTo = doc.Descendants("Account").FirstOrDefault(a => (string?)a.Attribute("AccountId") == DestinationAccountId);
                         XElement transactionElementTo = new XElement("Transaction",
                             new XAttribute("TransactionId", transactionId),
                             new XElement("TransactionId", transactionId),
@@ -74,12 +73,12 @@ namespace DataLogic.Data
             if (File.Exists(Database))
             {
                 XDocument doc = XDocument.Load(Database);
-                XElement xelement;
+                XElement? xelement;
                 IEnumerable<XElement> xtransactions;
                 if (accountNumber is not null)
                 {
                     accountNumber = accountNumber.Replace(" ", "");
-                    xelement = doc.Descendants("Account").FirstOrDefault(a => (string)a.Attribute("AccountId") == accountNumber);
+                    xelement = doc.Descendants("Account").FirstOrDefault(a => (string?)a.Attribute("AccountId") == accountNumber);
                     xtransactions = xelement.Descendants("Transactions");
                 }
                 else

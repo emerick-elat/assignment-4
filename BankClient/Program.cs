@@ -2,6 +2,7 @@
 using BankClient.Views;
 using BankServices;
 using DI;
+using Entities;
 using Microsoft.Extensions.Configuration;
 
 namespace BankClient
@@ -14,6 +15,8 @@ namespace BankClient
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("config.json", true, true)
                 .Build();
+
+            
 
             var container = AutofacConfig.Configure(configration);
 
