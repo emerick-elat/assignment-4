@@ -5,7 +5,7 @@
         public int CustomerId { get; set; }
         public string FirstName { get; set; }
         public string? LastName { get; set; }
-        public List<Account> Accounts { get; set; }
+        public List<Account>? Accounts { get; set; }
 
         public Customer(string firstName, string lastName, string? accountNumber = null)
         {
@@ -14,6 +14,13 @@
             Accounts = accountNumber is not null
                 ? new List<Account>() { new Account(accountNumber) }
                 : new List<Account>();
+        }
+
+        public Customer(int customerId, string firstName, string lastName)
+        {
+            lastName = lastName ?? string.Empty;
+            FirstName = firstName;
+            CustomerId = customerId;
         }
     }
 }

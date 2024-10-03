@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,11 +12,42 @@ namespace Entities
         public string AccountNumber { get; set; }
         public List<Transaction>? Transactions { get; set; }
 
+        public int CustomerId { get; set; }
+        public Customer? Customer { get; set; }
+
         public Account(string accountNumber)
         {
             AccountNumber = accountNumber;
             Transactions = new List<Transaction>();
         }
+        
+        public Account(string accountNumber, int customerId)
+        {
+            CustomerId = customerId;
+            AccountNumber = accountNumber;
+            Transactions = new List<Transaction>();
+        }
+
+        
+    }
+
+    public class AccountVM
+    {
+        public AccountVM()
+        {
+        }
+
+        public AccountVM(string accountId)
+        {
+            AccountNumber = accountId;
+        }
+
+        public string? AccountNumber { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+
+        public List<Transaction>? Transactions { get; set; }
+        public string? FullName { get => $"{FirstName} {LastName}"; }
 
         public decimal GetBalance()
         {
@@ -71,13 +103,5 @@ namespace Entities
             }
             return number;
         }
-    }
-
-    public class AccountVM(string accountNumber) : Account(accountNumber)
-    {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-
-        public string? FullName { get => $"{FirstName} {LastName}"; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Entities;
 using System.Xml.Linq;
 
-namespace DataLogic.Data
+namespace DataLogic.Repository
 {
     internal class XMLAccountRepository : IAccountRepository
     {

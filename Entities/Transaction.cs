@@ -13,7 +13,9 @@ namespace Entities
         public decimal Amount { get; set; }
         public TransactionType Type { get; set; }
         public string? SourceAccountId { get; set; }
+        public Account? SourceAccount { get; set; }
         public string? DestinationAccountId { get; set; }
+        public Account? DestinationAccount { get; set; }
         public string Currency { get; set; }
 
         public Transaction(int transactionId, decimal amount, string currency, TransactionType type)

@@ -1,6 +1,6 @@
 ﻿using Entities;
 
-namespace DataLogic.Data
+namespace DataLogic.Repository
 {
     public interface IAccountRepository
     {

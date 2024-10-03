@@ -1,5 +1,5 @@
 ﻿using BankServices.Models;
-using DataLogic.Data;
+using DataLogic.Repository;
 using Entities;
 using System;
 using System.Collections.Generic;
