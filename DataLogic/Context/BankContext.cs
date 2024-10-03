@@ -2,6 +2,7 @@
 using DataLogic.Seeding;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,22 +11,15 @@ using System.Threading.Tasks;
 
 namespace DataLogic.Context
 {
-    public class BankContext : DbContext, IBankContext
-    {
-        private readonly IConfig _config;
-
-        public BankContext(IConfig config)
-        {
-            _config = config;
-        }
-
+    public class BankContext : DbContext
+    {   
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_config.ConnectionString);
+            optionsBuilder.UseSqlite("Data Source=D://_bankData.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,8 +31,8 @@ namespace DataLogic.Context
             new TransactionConfiguration().Configure(modelBuilder.Entity<Transaction>());
 
             SeedCustomers.Seed(modelBuilder);
-            SeedAccount.Seed(modelBuilder, _config);
-            SeedTransaction.Seed(modelBuilder, _config);
+            SeedAccount.Seed(modelBuilder);
+            SeedTransaction.Seed(modelBuilder);
         }
     }
 }

@@ -5,6 +5,7 @@ using DataLogic.Repository;
 using Microsoft.Extensions.Configuration;
 using Entities;
 using DataLogic.Context;
+using DataLogic.Repository.DB;
 
 namespace DI
 {
@@ -18,12 +19,17 @@ namespace DI
             var builder = new ContainerBuilder();
 
             builder.Register(context => config).As<IConfig>();
+            builder.Register(context => configuration).As<IConfiguration>();
             
-            builder.RegisterType<BankContext>().As<IBankContext>();
+            //builder.RegisterType<BankContext>().As<IBankContext>();
             builder.RegisterType<AccountDomain>().As<IAccountDomain>();
             builder.RegisterType<TransactionDomain>().As<ITransactionDomain>();
-            builder.RegisterType<XMLAccountRepository>().As<IAccountRepository>();
-            builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
+
+
+            builder.RegisterType<DBAccountRepository>().As<IAccountRepository>();
+            builder.RegisterType<DBTransactionRepository>().As<ITransactionRepository>();
+            //builder.RegisterType<XMLAccountRepository>().As<IAccountRepository>();
+            //builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
 
             return builder.Build();
         }

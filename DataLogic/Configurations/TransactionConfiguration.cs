@@ -26,9 +26,9 @@ namespace DataLogic.Configurations
                 .WithMany(t => t.Transactions)
                 .HasForeignKey(t => t.SourceAccountId);
 
-            builder.HasOne(t => t.DestinationAccount)
+/*            builder.HasOne(t => t.DestinationAccount)
                 .WithMany(t => t.Transactions)
-                .HasForeignKey(t => t.DestinationAccountId);
+                .HasForeignKey(t => t.DestinationAccountId);*/
 
         }
     }

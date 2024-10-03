@@ -10,11 +10,11 @@ namespace DataLogic.Seeding
 {
     internal static class SeedAccount
     {
-        internal static void Seed(ModelBuilder builder, IConfig config)
+        internal static void Seed(ModelBuilder builder)
         {
             builder.Entity<Account>()
                 .HasData(new List<Account>() { 
-                    new Account (config.SystemAccountNumber, 1) 
+                    new Account ("1111111111111111", 1) 
                 });
         }
     }
