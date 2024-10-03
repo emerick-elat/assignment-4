@@ -72,7 +72,7 @@ namespace DataLogic.Repository.DB
                 a.AccountNumber = account.AccountNumber;
                 a.FirstName = account.Customer?.FirstName;
                 a.LastName = account.Customer?.LastName;
-
+                a.Transactions = account.Transactions;
                 return a;
             }
             return null;

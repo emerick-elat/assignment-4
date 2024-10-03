@@ -58,7 +58,7 @@ namespace BankServices
             {
                 throw new ArgumentNullException(nameof(accountNumber));
             }
-
+            accountNumber = accountNumber.Replace(" ", "");
             return _repo.GetBankAccount(accountNumber);
         }
 

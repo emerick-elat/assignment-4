@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLogic.Migrations
 {
     [DbContext(typeof(BankContext))]
-    [Migration("20241003130035_Initial")]
-    partial class Initial
+    [Migration("20241003145629_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,7 +80,9 @@ namespace DataLogic.Migrations
 
                     b.Property<string>("Currency")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("EUR");
 
                     b.Property<string>("DestinationAccountId")
                         .IsRequired()
@@ -93,7 +95,7 @@ namespace DataLogic.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2024, 10, 3, 16, 0, 35, 119, DateTimeKind.Local).AddTicks(3055));
+                        .HasDefaultValue(new DateTime(2024, 10, 3, 17, 56, 29, 403, DateTimeKind.Local).AddTicks(5661));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");

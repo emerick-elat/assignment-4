@@ -18,7 +18,7 @@ namespace DataLogic.Configurations
             builder.Property(t => t.Amount).IsRequired();
             builder.Property(t => t.TransactionDate).IsRequired().HasDefaultValue(DateTime.Now);
             builder.Property(t => t.Type).IsRequired();
-            builder.Property(t => t.Currency).IsRequired();
+            builder.Property(t => t.Currency).IsRequired().HasDefaultValue("EUR");
             builder.Property(t => t.SourceAccountId).IsRequired();
             builder.Property(t => t.DestinationAccountId).IsRequired();
 

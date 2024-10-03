@@ -1,8 +1,10 @@
 ﻿using Autofac;
 using BankClient.Views;
 using BankServices;
+using DataLogic.Context;
 using DI;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace BankClient
@@ -16,7 +18,10 @@ namespace BankClient
                 .AddJsonFile("config.json", true, true)
                 .Build();
 
-            
+            using (var context = new BankContext())
+            {
+                context.Database.Migrate();
+            }
 
             var container = AutofacConfig.Configure(configration);
 

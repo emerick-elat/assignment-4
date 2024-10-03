@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataLogic.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,12 +49,12 @@ namespace DataLogic.Migrations
                 {
                     TransactionId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    TransactionDate = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValue: new DateTime(2024, 10, 3, 16, 0, 35, 119, DateTimeKind.Local).AddTicks(3055)),
+                    TransactionDate = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValue: new DateTime(2024, 10, 3, 17, 56, 29, 403, DateTimeKind.Local).AddTicks(5661)),
                     Amount = table.Column<decimal>(type: "TEXT", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     SourceAccountId = table.Column<string>(type: "TEXT", nullable: false),
                     DestinationAccountId = table.Column<string>(type: "TEXT", nullable: false),
-                    Currency = table.Column<string>(type: "TEXT", nullable: false)
+                    Currency = table.Column<string>(type: "TEXT", nullable: false, defaultValue: "EUR")
                 },
                 constraints: table =>
                 {

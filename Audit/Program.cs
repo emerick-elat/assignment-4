@@ -2,7 +2,9 @@
 using Autofac;
 using BankServices;
 using BankServices.Models;
+using DataLogic.Context;
 using DI;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,7 +18,10 @@ namespace Audit
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("config.json", true, true)
                 .Build();
-
+            using (var context = new BankContext())
+            {
+                context.Database.Migrate();
+            }
             var container = AutofacConfig.Configure(configuration);
 
             using (var scope = container.BeginLifetimeScope())
