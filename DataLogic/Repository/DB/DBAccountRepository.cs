@@ -62,7 +62,8 @@ namespace DataLogic.Repository.DB
         {
             var account = _context.Accounts
                 .Include(a => a.Customer)
-                .Include(a => a.Transactions)
+                .Include(a => a.TransactionsTo)
+                .Include (a => a.TransactionsFrom)
                 .Where(a => a.AccountNumber == accountId)
                 .FirstOrDefault();
             var a = new AccountVM(accountId);
@@ -72,7 +73,8 @@ namespace DataLogic.Repository.DB
                 a.AccountNumber = account.AccountNumber;
                 a.FirstName = account.Customer?.FirstName;
                 a.LastName = account.Customer?.LastName;
-                a.Transactions = account.Transactions;
+                a.TransactionsTo = account.TransactionsTo;
+                a.TransactionsFrom = account.TransactionsFrom;
                 return a;
             }
             return null;

@@ -119,10 +119,14 @@ namespace DataLogic.Repository
                 var xTrans = accountElement.Descendants("Transactions");
                 if (!xTrans.Descendants().Any())
                 {
-                    account.Transactions = [];
+                    account.TransactionsTo = [];
+                    account.TransactionsFrom = [];
                 }
                 else {
-                    account.Transactions = xTrans.Descendants("Transaction").Select(Helpers.XElementToTransaction).ToList();
+                    var allTransactions = xTrans.Descendants("Transaction").Select(Helpers.XElementToTransaction).ToList();
+
+                    account.TransactionsFrom = allTransactions.Where(t => t.SourceAccountId == accountId).ToList();
+                    account.TransactionsTo = allTransactions.Where(t => t.DestinationAccountId == accountId).ToList();
                 }
                 account.FirstName = accountElement.Parent.Parent.Element("FirstName").Value;
                 account.LastName = accountElement.Parent.Parent.Element("LastName").Value;

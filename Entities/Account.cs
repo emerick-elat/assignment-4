@@ -10,7 +10,8 @@ namespace Entities
     public class Account
     {
         public string AccountNumber { get; set; }
-        public List<Transaction>? Transactions { get; set; }
+        public List<Transaction>? TransactionsTo { get; set; }
+        public List<Transaction>? TransactionsFrom { get; set; }
 
         public int CustomerId { get; set; }
         public Customer? Customer { get; set; }
@@ -18,17 +19,15 @@ namespace Entities
         public Account(string accountNumber)
         {
             AccountNumber = accountNumber;
-            Transactions = new List<Transaction>();
+            TransactionsTo = new List<Transaction>();
         }
         
         public Account(string accountNumber, int customerId)
         {
             CustomerId = customerId;
             AccountNumber = accountNumber;
-            Transactions = new List<Transaction>();
+            TransactionsTo = new List<Transaction>();
         }
-
-        
     }
 
     public class AccountVM
@@ -46,31 +45,17 @@ namespace Entities
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
 
-        public List<Transaction>? Transactions { get; set; }
+        public List<Transaction>? TransactionsTo { get; set; }
+        public List<Transaction>? TransactionsFrom { get; set; }
         public string? FullName { get => $"{FirstName} {LastName}"; }
 
         public decimal GetBalance()
         {
-            if (Transactions == null)
-            {
-                return 0;
-            }
+            if (TransactionsTo == null) TransactionsTo = new List<Transaction>();
+            if (TransactionsFrom == null) TransactionsFrom = new List<Transaction>();
 
-            decimal totalDeposits = 0;
-            decimal totalWithdrawals = 0;
-
-            foreach (Transaction transaction in Transactions)
-            {
-                if (transaction.Type == TransactionType.Deposit)
-                {
-                    totalDeposits += transaction.Amount;
-                }
-
-                if (transaction.Type == TransactionType.Withdrawal)
-                {
-                    totalWithdrawals += transaction.Amount;
-                }
-            }
+            decimal totalDeposits = TransactionsTo.Sum(t => t.Amount);
+            decimal totalWithdrawals = TransactionsFrom.Sum(t => t.Amount);
 
             return totalDeposits - totalWithdrawals;
         }
@@ -101,6 +86,7 @@ namespace Entities
             {
                 number = number.Insert(i, " ");
             }
+
             return number;
         }
     }

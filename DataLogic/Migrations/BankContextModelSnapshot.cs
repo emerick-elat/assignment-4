@@ -92,7 +92,7 @@ namespace DataLogic.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2024, 10, 3, 17, 56, 29, 403, DateTimeKind.Local).AddTicks(5661));
+                        .HasDefaultValue(new DateTime(2024, 10, 4, 12, 21, 10, 34, DateTimeKind.Local).AddTicks(7674));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -132,15 +132,15 @@ namespace DataLogic.Migrations
             modelBuilder.Entity("Entities.Transaction", b =>
                 {
                     b.HasOne("Entities.Account", "DestinationAccount")
-                        .WithMany()
+                        .WithMany("TransactionsTo")
                         .HasForeignKey("DestinationAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Entities.Account", "SourceAccount")
-                        .WithMany("Transactions")
+                        .WithMany("TransactionsFrom")
                         .HasForeignKey("SourceAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DestinationAccount");
@@ -150,7 +150,9 @@ namespace DataLogic.Migrations
 
             modelBuilder.Entity("Entities.Account", b =>
                 {
-                    b.Navigation("Transactions");
+                    b.Navigation("TransactionsFrom");
+
+                    b.Navigation("TransactionsTo");
                 });
 
             modelBuilder.Entity("Entities.Customer", b =>

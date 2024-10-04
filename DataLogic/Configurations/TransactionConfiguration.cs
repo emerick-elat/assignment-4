@@ -23,12 +23,14 @@ namespace DataLogic.Configurations
             builder.Property(t => t.DestinationAccountId).IsRequired();
 
             builder.HasOne(t => t.SourceAccount)
-                .WithMany(t => t.Transactions)
-                .HasForeignKey(t => t.SourceAccountId);
+                .WithMany(t => t.TransactionsFrom)
+                .HasForeignKey(t => t.SourceAccountId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-/*            builder.HasOne(t => t.DestinationAccount)
-                .WithMany(t => t.Transactions)
-                .HasForeignKey(t => t.DestinationAccountId);*/
+            builder.HasOne(t => t.DestinationAccount)
+                .WithMany(t => t.TransactionsTo)
+                .HasForeignKey(t => t.DestinationAccountId)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

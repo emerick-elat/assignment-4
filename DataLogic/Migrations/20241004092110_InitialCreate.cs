@@ -49,7 +49,7 @@ namespace DataLogic.Migrations
                 {
                     TransactionId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    TransactionDate = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValue: new DateTime(2024, 10, 3, 17, 56, 29, 403, DateTimeKind.Local).AddTicks(5661)),
+                    TransactionDate = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValue: new DateTime(2024, 10, 4, 12, 21, 10, 34, DateTimeKind.Local).AddTicks(7674)),
                     Amount = table.Column<decimal>(type: "TEXT", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     SourceAccountId = table.Column<string>(type: "TEXT", nullable: false),
@@ -64,13 +64,13 @@ namespace DataLogic.Migrations
                         column: x => x.DestinationAccountId,
                         principalTable: "Accounts",
                         principalColumn: "AccountNumber",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Transactions_Accounts_SourceAccountId",
                         column: x => x.SourceAccountId,
                         principalTable: "Accounts",
                         principalColumn: "AccountNumber",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
