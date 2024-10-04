@@ -18,7 +18,7 @@
 
         public Customer(int customerId, string firstName, string lastName)
         {
-            lastName = lastName ?? string.Empty;
+            LastName = lastName ?? string.Empty;
             FirstName = firstName;
             CustomerId = customerId;
         }

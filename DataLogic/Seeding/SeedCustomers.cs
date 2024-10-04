@@ -13,7 +13,7 @@ namespace DataLogic.Seeding
         internal static void Seed(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>().HasData(new List<Customer>() {
-                new Customer(1, "System", "")
+                new Customer(1, "System", "Account")
             });
         }
     }

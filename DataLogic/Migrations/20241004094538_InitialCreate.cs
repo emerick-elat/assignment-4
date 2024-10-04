@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DataLogic.Migrations
 {
     /// <inheritdoc />
@@ -49,7 +51,7 @@ namespace DataLogic.Migrations
                 {
                     TransactionId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    TransactionDate = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValue: new DateTime(2024, 10, 4, 12, 21, 10, 34, DateTimeKind.Local).AddTicks(7674)),
+                    TransactionDate = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValue: new DateTime(2024, 10, 4, 12, 45, 37, 955, DateTimeKind.Local).AddTicks(8107)),
                     Amount = table.Column<decimal>(type: "TEXT", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     SourceAccountId = table.Column<string>(type: "TEXT", nullable: false),
@@ -76,17 +78,21 @@ namespace DataLogic.Migrations
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "CustomerId", "FirstName", "LastName" },
-                values: new object[] { 1, "System", null });
+                values: new object[] { 1, "System", "Account" });
 
             migrationBuilder.InsertData(
                 table: "Accounts",
                 columns: new[] { "AccountNumber", "CustomerId" },
-                values: new object[] { "1111111111111111", 1 });
+                values: new object[,]
+                {
+                    { "1111111111111110", 1 },
+                    { "1111111111111111", 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Transactions",
                 columns: new[] { "TransactionId", "Amount", "Currency", "DestinationAccountId", "SourceAccountId", "Type" },
-                values: new object[] { 1, 10000m, "EUR", "1111111111111111", "1111111111111111", 0 });
+                values: new object[] { 1, 10000m, "EUR", "1111111111111111", "1111111111111110", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_CustomerId",

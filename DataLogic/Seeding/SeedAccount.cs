@@ -14,7 +14,8 @@ namespace DataLogic.Seeding
         {
             builder.Entity<Account>()
                 .HasData(new List<Account>() { 
-                    new Account ("1111111111111111", 1) 
+                    new Account("1111111111111111", 1),
+                    new Account("1111111111111110", 1)
                 });
         }
     }

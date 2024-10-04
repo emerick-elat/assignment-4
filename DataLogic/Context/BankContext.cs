@@ -19,7 +19,7 @@ namespace DataLogic.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=D://_bankData.db");
+            optionsBuilder.UseSqlite(@"Data Source=D://DB//_bankData.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

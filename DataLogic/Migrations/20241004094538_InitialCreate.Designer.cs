@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLogic.Migrations
 {
     [DbContext(typeof(BankContext))]
-    [Migration("20241004092110_InitialCreate")]
+    [Migration("20241004094538_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -40,6 +40,11 @@ namespace DataLogic.Migrations
                         {
                             AccountNumber = "1111111111111111",
                             CustomerId = 1
+                        },
+                        new
+                        {
+                            AccountNumber = "1111111111111110",
+                            CustomerId = 1
                         });
                 });
 
@@ -65,7 +70,8 @@ namespace DataLogic.Migrations
                         new
                         {
                             CustomerId = 1,
-                            FirstName = "System"
+                            FirstName = "System",
+                            LastName = "Account"
                         });
                 });
 
@@ -95,7 +101,7 @@ namespace DataLogic.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2024, 10, 4, 12, 21, 10, 34, DateTimeKind.Local).AddTicks(7674));
+                        .HasDefaultValue(new DateTime(2024, 10, 4, 12, 45, 37, 955, DateTimeKind.Local).AddTicks(8107));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -115,7 +121,7 @@ namespace DataLogic.Migrations
                             Amount = 10000m,
                             Currency = "EUR",
                             DestinationAccountId = "1111111111111111",
-                            SourceAccountId = "1111111111111111",
+                            SourceAccountId = "1111111111111110",
                             TransactionDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0
                         });
