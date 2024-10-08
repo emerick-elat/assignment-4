@@ -13,6 +13,13 @@ namespace Bank.UseCases.Customer.QueryGetCustomers
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
+
+        public GetCustomersQueryHandler(ICustomerRepository customerRepository, IMapper mapper)
+        {
+            _customerRepository = customerRepository;
+            _mapper = mapper;
+        }
+
         public async Task<ICollection<CustomerDto>> Handle(GetCustomersQuery request, CancellationToken cancellationToken)
         {
             var customers = await _customerRepository.GetAllAsync();
