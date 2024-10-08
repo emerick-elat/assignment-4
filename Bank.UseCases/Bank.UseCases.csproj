@@ -13,10 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Customer\CommandCreateCustomer\" />
     <Folder Include="Customer\CommandDeleteCustomer\" />
-    <Folder Include="Customer\QueryGetCustomers\" />
-    <Folder Include="Customer\QueryGetCustomer\" />
     <Folder Include="Customer\CommandUpdateCustomer\" />
     <Folder Include="Transaction\CommandCreateTransaction\" />
     <Folder Include="Transaction\QueryGetTransactions\" />

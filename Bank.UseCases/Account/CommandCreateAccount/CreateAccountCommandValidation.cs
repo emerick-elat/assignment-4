@@ -12,8 +12,7 @@ namespace Bank.UseCases.Account.CommandCreateAccount
         public CreateAccountCommandValidation()
         {
             RuleFor(a => a.CustomerId)
-                .NotEmpty().WithMessage("Customer's name cannot be empty")
-                .NotNull().WithMessage("PLease provide customer's ID");
+                .GreaterThanOrEqualTo(0).WithMessage("Customer ID should be a positive number");
         }
     }
 }

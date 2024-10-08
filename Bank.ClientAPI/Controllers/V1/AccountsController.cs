@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.ClientAPI.Controllers.V1
 {
-    [Route("api/accounts")]
+    [Route("api/customers/{customerId}/accounts")]
     [ApiController]
     public class AccountsController : ControllerBase
     {
@@ -20,9 +20,9 @@ namespace Bank.ClientAPI.Controllers.V1
 
         // GET: api/<AccountsController>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int customerId)
         {
-            var response = await _mediator.Send(new GetAccountsQuery());
+            var response = await _mediator.Send(new GetCustomerAccountsQuery() { CustomerId = customerId });
             return Ok(response);
         }
 
@@ -42,9 +42,9 @@ namespace Bank.ClientAPI.Controllers.V1
 
         // POST api/<AccountsController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateAccountCommand command)
+        public async Task<IActionResult> Post(int customerId, [FromBody] CreateAccountCommand command)
         {
-            var response = await _mediator.Send(command);
+            var response = await _mediator.Send(new CreateAccountCommand() { CustomerId = customerId});
             return Ok(response);
         }
     }

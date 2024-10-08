@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Bank.UseCases.Customer
 {
-    internal class CustomerDto
+    public class CustomerDto
     {
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
     }
 }

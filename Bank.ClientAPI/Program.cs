@@ -21,7 +21,7 @@ namespace Bank.ClientAPI
             builder.Services.AddControllers();
             builder.Services.AddDbContext<BankContext>();
             builder.Services.AddAutoMapper(typeof(AccountProfile));
-            builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetAccountsQueryHandler).Assembly));
+            builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCustomerAccountsQueryHandler).Assembly));
 
             builder.Services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
             builder.Services.AddScoped(typeof(IDataRepositoryBase<>), typeof(DataRepositoryBase<>));
