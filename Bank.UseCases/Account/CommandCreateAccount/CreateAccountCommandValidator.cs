@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bank.UseCases.Account.CommandCreateAccount
 {
-    internal class CreateAccountCommandValidation : AbstractValidator<CreateAccountCommand>
+    internal class CreateAccountCommandValidator : AbstractValidator<CreateAccountCommand>
     {
-        public CreateAccountCommandValidation()
+        public CreateAccountCommandValidator()
         {
             RuleFor(a => a.CustomerId)
                 .GreaterThanOrEqualTo(0).WithMessage("Customer ID should be a positive number");

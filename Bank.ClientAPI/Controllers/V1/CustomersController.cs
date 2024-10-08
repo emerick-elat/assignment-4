@@ -1,4 +1,6 @@
-﻿using Bank.UseCases.Customer.QueryGetCustomer;
+﻿using Bank.UseCases.Customer.CommandCreateCustomer;
+using Bank.UseCases.Customer.CommandDeleteCustomer;
+using Bank.UseCases.Customer.QueryGetCustomer;
 using Bank.UseCases.Customer.QueryGetCustomers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +23,7 @@ namespace Bank.ClientAPI.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var response = _mediator.Send(new GetCustomersQuery());
+            var response = await _mediator.Send(new GetCustomersQuery());
             return Ok(response);
         }
 
@@ -29,14 +31,16 @@ namespace Bank.ClientAPI.Controllers.V1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var response = _mediator.Send(new GetCustomerQuery() { CustomerId = id});
+            var response = await _mediator.Send(new GetCustomerQuery() { CustomerId = id});
             return Ok(response);
         }
 
         // POST api/<CustomersController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] CreateCustomerCommand command)
         {
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         // PUT api/<CustomersController>/5
@@ -47,8 +51,9 @@ namespace Bank.ClientAPI.Controllers.V1
 
         // DELETE api/<CustomersController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
+            await _mediator.Send(new DeleteCustomerCommand() {  CustomerId = id });
         }
     }
 }
