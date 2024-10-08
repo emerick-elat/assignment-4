@@ -28,9 +28,11 @@ namespace Bank.UseCases.Customer.CommandCreateCustomer
                 throw new ArgumentException(nameof(command));
             }
             var customer = _mapper.Map<Entities.Customer>(command);
-            var response = _customerRepository.CreateEntityAsync(customer);
-            return _mapper.Map<CustomerDto>(response);
-            
+            var response = await _customerRepository.CreateEntityAsync(customer);
+            var customerDto = _mapper.Map<CustomerDto>(response);
+            return customerDto;
+
+
         }
     }
 }
