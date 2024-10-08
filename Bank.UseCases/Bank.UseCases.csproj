@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Customer\CommandCreateCustomer\" />
+    <Folder Include="Customer\CommandDeleteCustomer\" />
+    <Folder Include="Customer\QueryGetCustomers\" />
+    <Folder Include="Customer\QueryGetCustomer\" />
+    <Folder Include="Customer\CommandUpdateCustomer\" />
+    <Folder Include="Transaction\CommandCreateTransaction\" />
+    <Folder Include="Transaction\QueryGetTransactions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BankServices\BankServices.csproj" />
+  </ItemGroup>
+
+</Project>
