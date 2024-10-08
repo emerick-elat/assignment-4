@@ -8,7 +8,7 @@ namespace Bank.UseCases.Customer
 {
     public class CustomerDto
     {
-        public int CustomerIdId { get; set; }
+        public int CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
