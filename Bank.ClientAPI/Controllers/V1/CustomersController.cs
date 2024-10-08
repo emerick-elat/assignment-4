@@ -1,5 +1,6 @@
 ﻿using Bank.UseCases.Customer.CommandCreateCustomer;
 using Bank.UseCases.Customer.CommandDeleteCustomer;
+using Bank.UseCases.Customer.CommandUpdateCustomer;
 using Bank.UseCases.Customer.QueryGetCustomer;
 using Bank.UseCases.Customer.QueryGetCustomers;
 using MediatR;
@@ -45,15 +46,22 @@ namespace Bank.ClientAPI.Controllers.V1
 
         // PUT api/<CustomersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateCustomerCommand command)
         {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+            await _mediator.Send(command);
+            return Ok();
         }
 
         // DELETE api/<CustomersController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _mediator.Send(new DeleteCustomerCommand() {  CustomerId = id });
+            return Ok();
         }
     }
 }
