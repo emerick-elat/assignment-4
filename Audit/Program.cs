@@ -18,10 +18,10 @@ namespace Audit
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("config.json", true, true)
                 .Build();
-            using (var context = new BankContext())
+            /*using (var context = new BankContext())
             {
                 context.Database.Migrate();
-            }
+            }*/
             var container = AutofacConfig.Configure(configuration);
 
             using (var scope = container.BeginLifetimeScope())

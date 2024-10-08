@@ -11,7 +11,7 @@ namespace DataLogic.Generic
 {
     public class DataRepository<T> : DataRepositoryBase<T>, IDataRepository<T> where T : class
     {
-        public DataRepository(BankContext bankContext, DbSet<T> dbSet) : base(bankContext, dbSet)
+        public DataRepository(BankContext bankContext) : base(bankContext)
         {
         }
 

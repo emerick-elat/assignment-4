@@ -14,10 +14,10 @@ namespace DataLogic.Generic
         private readonly BankContext bankContext;
         private readonly DbSet<T> dbSet;
 
-        public DataRepositoryBase(BankContext bankContext, DbSet<T> dbSet)
+        public DataRepositoryBase(BankContext bankContext)
         {
             this.bankContext = bankContext;
-            this.dbSet = dbSet;
+            this.dbSet = bankContext.Set<T>();
         }
 
         public async Task<ICollection<T>> GetEntitiesAsync()

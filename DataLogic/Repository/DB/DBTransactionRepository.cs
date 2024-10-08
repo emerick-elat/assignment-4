@@ -13,9 +13,9 @@ namespace DataLogic.Repository.DB
     {
         private readonly BankContext _context;
 
-        public DBTransactionRepository()
+        public DBTransactionRepository(BankContext context)
         {
-            _context = new BankContext();
+            _context = context;
         }
 
         public bool AddTransaction(decimal amount, TransactionType type, string SourceAccountId, string? DestinationaAccountId = null)

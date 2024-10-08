@@ -13,9 +13,9 @@ namespace DataLogic.Repository.DB
     {
         private readonly BankContext _context;
 
-        public DBAccountRepository()
+        public DBAccountRepository(BankContext context)
         {
-            _context = new BankContext();
+            _context = context;
         }
 
         public bool BankAccountExists(string accountId)

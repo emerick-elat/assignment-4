@@ -3,6 +3,7 @@ using Bank.ClientAPI.Profiles;
 using Bank.UseCases.Account.QueryGetAccounts;
 using DataLogic.BankAccountRepository;
 using DataLogic.BankAccountRepository.Contract;
+using DataLogic.Context;
 using DataLogic.Generic;
 using DataLogic.Generic.Contract;
 using DataLogic.Repository;
@@ -18,7 +19,7 @@ namespace Bank.ClientAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
-
+            builder.Services.AddDbContext<BankContext>();
             builder.Services.AddAutoMapper(typeof(AccountProfile));
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetAccountsQueryHandler).Assembly));
 

@@ -9,7 +9,7 @@ namespace DataLogic.BankAccountRepository
 {
     public class BankTransactionRepository : DataRepository<Transaction>, IBankTransactionRepository
     {
-        public BankTransactionRepository(BankContext bankContext, DbSet<Transaction> dbSet) : base(bankContext, dbSet)
+        public BankTransactionRepository(BankContext bankContext) : base(bankContext)
         {
         }
     }

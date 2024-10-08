@@ -13,7 +13,7 @@ namespace DataLogic.BankAccountRepository
 {
     public class BankAccountRepository : DataRepository<Account>, IBankAccountRepository
     {
-        public BankAccountRepository(BankContext bankContext, DbSet<Account> dbSet) : base(bankContext, dbSet)
+        public BankAccountRepository(BankContext bankContext) : base(bankContext)
         {
         }
     }

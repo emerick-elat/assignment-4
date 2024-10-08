@@ -16,10 +16,16 @@ namespace DataLogic.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        private readonly IConfiguration _configuration;
+        public BankContext(DbContextOptions options, IConfiguration configuration)
+            : base(options)
+        {
+            _configuration = configuration;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data Source=D://DB//_bankData.db");
+            optionsBuilder.UseSqlite(_configuration.GetConnectionString("DefaultConnectionString"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
