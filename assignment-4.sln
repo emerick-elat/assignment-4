@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.UseCases", "Bank.UseCa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.ClientAPI", "Bank.ClientAPI\Bank.ClientAPI.csproj", "{BBFAD437-78D1-46BE-8888-A1EF5DFDDE4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.AuditAPI", "Bank.AuditAPI\Bank.AuditAPI.csproj", "{71404D5C-80E2-4ED0-8819-6A21622B3C91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{BBFAD437-78D1-46BE-8888-A1EF5DFDDE4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBFAD437-78D1-46BE-8888-A1EF5DFDDE4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBFAD437-78D1-46BE-8888-A1EF5DFDDE4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71404D5C-80E2-4ED0-8819-6A21622B3C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71404D5C-80E2-4ED0-8819-6A21622B3C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71404D5C-80E2-4ED0-8819-6A21622B3C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71404D5C-80E2-4ED0-8819-6A21622B3C91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{4AD41C11-6B99-40DB-872A-CF571AD135E1} = {879007BF-8EBB-4D27-8170-16F177C04228}
 		{6AA6B9F7-DDF5-4107-BC74-7B44E136BEFC} = {DB519CF5-5226-44E8-AEE4-7D7E1BC2D9F9}
 		{BBFAD437-78D1-46BE-8888-A1EF5DFDDE4A} = {DB519CF5-5226-44E8-AEE4-7D7E1BC2D9F9}
+		{71404D5C-80E2-4ED0-8819-6A21622B3C91} = {DB519CF5-5226-44E8-AEE4-7D7E1BC2D9F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B0F0E944-2EA0-476E-AEBB-B6185E4AC6E2}
