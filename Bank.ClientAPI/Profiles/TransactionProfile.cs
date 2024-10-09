@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bank.UseCases.Transaction;
+using Bank.UseCases.Transaction.CommandCreateTransaction;
 using Entities;
 
 namespace Bank.ClientAPI.Profiles
@@ -12,7 +13,7 @@ namespace Bank.ClientAPI.Profiles
                 .ForMember(m => m.Type, src => src.MapFrom(t => t.Type == TransactionType.Deposit ? "Deposit" : "Withdrawal"))
                 .ForMember(m => m.TransactionDate, src => src.MapFrom(dest => dest.TransactionDate.ToLongDateString()));
 
-
+            CreateMap<CreateTransactionCommand, Transaction>();
         }
     }
 }

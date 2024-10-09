@@ -53,7 +53,7 @@ namespace DataLogic.BankAccountRepository
                 throw new ArgumentNullException(nameof(t));
             }
             t.SourceAccountId = t.SourceAccountId.Trim().Replace(" ", "") ?? string.Empty;
-            Account sourceAccount = await _accountRepo.GetEntityByIdAsync(t.SourceAccountId);
+            Account? sourceAccount = await _accountRepo.GetBankAccountFromID(t.SourceAccountId);
 
             if (sourceAccount is null)
             {
@@ -83,18 +83,7 @@ namespace DataLogic.BankAccountRepository
                     throw new ArgumentNullException(nameof(destinationAccount));
                 }
             }
-            Transaction t2 = new Transaction()
-            {    
-                Amount = t.Amount,
-                Currency = t.Currency,
-                TransactionDate = t.TransactionDate,
-                SourceAccountId = t.DestinationAccountId,
-                DestinationAccountId = t.SourceAccountId,
-                Type = t.Type == TransactionType.Deposit ? TransactionType.Withdrawal : TransactionType.Deposit,
-            };
-            await AddEntityAsync(t);
-            await AddEntityAsync(t2);
-            await SaveChangesAsync();
+            await CreateEntityAsync(t);
             return true;
         }
     }
