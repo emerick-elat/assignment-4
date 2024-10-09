@@ -48,7 +48,7 @@ namespace Bank.ClientAPI.Controllers.V1
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateCustomerCommand command)
         {
-            if (id != command.Id)
+            if (id != command.CustomerId)
             {
                 return BadRequest();
             }

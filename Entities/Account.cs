@@ -28,7 +28,9 @@ namespace Entities
             AccountNumber = accountNumber;
             TransactionsTo = new List<Transaction>();
         }
-
+        public Account()
+        {
+        }
         public decimal GetBalance()
         {
             if (TransactionsTo == null) TransactionsTo = new List<Transaction>();

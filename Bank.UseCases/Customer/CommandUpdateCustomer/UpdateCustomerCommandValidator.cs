@@ -14,7 +14,7 @@ namespace Bank.UseCases.Customer.CommandUpdateCustomer
             RuleFor(c => c.FirstName)
                 .NotNull().WithMessage("Customer Firstname cannot be null")
                 .NotEmpty().WithMessage("Customer Firstname is required")
-                .MaximumLength(3)
+                .MinimumLength(2)
                 .MaximumLength(100);
 
             RuleFor(c => c.LastName)

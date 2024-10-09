@@ -9,7 +9,7 @@ namespace Bank.ClientAPI.Profiles
     {
         public AccountProfile()
         {
-            CreateMap<CreateAccountCommand, Account>().ReverseMap();
+            CreateMap<CreateAccountCommand, Account>();
 
             CreateMap<Account, AccountDto>()
                 .ForMember(dest => dest.CustomerFullname, opt => opt.MapFrom(src => src.Customer != null 

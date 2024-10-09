@@ -8,8 +8,7 @@ namespace Bank.UseCases.Account
 {
     public class AccountDto
     {
-        public int Id { get; set; }
-        public int CustomerFullname { get; set; }
         public string AccountNumber { get; set; }
+        public string CustomerFullname { get; set; }
     }
 }

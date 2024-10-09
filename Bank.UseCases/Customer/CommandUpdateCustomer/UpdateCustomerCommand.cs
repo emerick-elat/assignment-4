@@ -9,7 +9,7 @@ namespace Bank.UseCases.Customer.CommandUpdateCustomer
 {
     public class UpdateCustomerCommand : IRequest
     {
-        public int Id { get; set; }
+        public int CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }
