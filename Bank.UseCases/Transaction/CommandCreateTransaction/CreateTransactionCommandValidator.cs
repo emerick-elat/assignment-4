@@ -23,6 +23,10 @@ namespace Bank.UseCases.Transaction.CommandCreateTransaction
                 .NotNull().WithMessage("Amount Account is required")
                 .NotEmpty().WithMessage("Amount Account is required")
                 .GreaterThan(0).WithMessage("Amount should be greater than 0");
+            
+            RuleFor(t => t.Type)
+                .NotNull().WithMessage("Amount Account is required")
+                .NotEmpty().WithMessage("Amount Account is required");
 
         }
     }

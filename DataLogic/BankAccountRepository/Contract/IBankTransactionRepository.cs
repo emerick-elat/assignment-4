@@ -8,6 +8,7 @@ namespace DataLogic.BankAccountRepository.Contract
         Task<bool> DepositMoney(Transaction t);
         Task<bool> WithdrawMoney(Transaction t);
         Task<bool> TransferMoney(Transaction t);
+        Task<bool> CreateTransaction(Transaction t);
         Task<ICollection<Transaction>> GetTransactionsHistory(string? accountNumber = null, DateTime? StartDate = null, DateTime? EndDate = null);
     }
 }

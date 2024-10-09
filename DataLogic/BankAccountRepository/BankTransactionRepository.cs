@@ -53,8 +53,7 @@ namespace DataLogic.BankAccountRepository
                 //return _transactionRepository.GetTransactionsHistory(accountNumber, Start, End);
             }
         }
-
-        private async Task<bool> CreateTransaction(Transaction t)
+        public async Task<bool> CreateTransaction(Transaction t)
         {   if (t is null)
             {
                 throw new ArgumentNullException(nameof(t));

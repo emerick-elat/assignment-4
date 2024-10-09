@@ -18,9 +18,16 @@ namespace Bank.UseCases.Transaction.CommandCreateTransaction
             _repo = repo;
         }
 
-        public Task<bool> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var validator = new CreateTransactionCommandValidator();
+            var result = validator.Validate(request);
+            if (result.IsValid)
+            {
+                var transaction = _mapper.Map<Entities.Transaction>(request);
+                return await _repo.CreateTransaction(transaction);
+            }
+            return false;
         }
     }
 }
