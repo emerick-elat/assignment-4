@@ -1,4 +1,5 @@
-﻿using Bank.UseCases.Transaction.CommandCreateTransaction;
+﻿using Bank.UseCases.Transaction;
+using Bank.UseCases.Transaction.CommandCreateTransaction;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +11,47 @@ namespace Bank.ClientAPI.Controllers.V1
     public class TransactionsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly string SystemAccountNumber;
 
-        public TransactionsController(IMediator mediator)
+        public TransactionsController(IMediator mediator,
+            IConfiguration configuration)
         {
-            _mediator = mediator;
+            _mediator = mediator
+                ?? throw new ArgumentNullException(nameof(mediator));
+            SystemAccountNumber = configuration["SystemAccountNumber"] 
+                ?? throw new ArgumentNullException(nameof(configuration));
         }
 
-        [HttpPost]
+        [HttpPost("transfert")]
         public async Task<IActionResult> Transfer([FromBody]CreateTransactionCommand command)
         {
             var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("deposit")]
+        public async Task<IActionResult> Deposit([FromBody]CashModelDto data)
+        {
+            var response = await _mediator.Send(new CreateTransactionCommand()
+            {
+                Amount = data.Amount,
+                Type = Entities.TransactionType.Deposit,
+                DestinationAccountId = data.AccountNumber,
+                SourceAccountId = SystemAccountNumber
+            });
+            return Ok(response);
+        }
+
+        [HttpPost("withdrawal")]
+        public async Task<IActionResult> Withdrawal([FromBody]CashModelDto data)
+        {
+            var response = await _mediator.Send(new CreateTransactionCommand()
+            {
+                Amount = data.Amount,
+                Type = Entities.TransactionType.Deposit,
+                SourceAccountId = data.AccountNumber,
+                DestinationAccountId = SystemAccountNumber
+            });
             return Ok(response);
         }
     }

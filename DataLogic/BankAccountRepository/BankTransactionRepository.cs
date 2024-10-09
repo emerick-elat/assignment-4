@@ -13,48 +13,43 @@ namespace DataLogic.BankAccountRepository
     public class BankTransactionRepository : DataRepository<Transaction>, IBankTransactionRepository
     {
         private readonly IBankAccountRepository _accountRepo;
-        private readonly ILogger _logger;
-        private readonly string SystemAccountNumber;
+        //private readonly ILogger _logger;
         public BankTransactionRepository(BankContext bankContext,
-            IBankAccountRepository accountRepository,
-            ILogger logger,
-            IConfiguration configuration) : base(bankContext)
+            IBankAccountRepository accountRepository) : base(bankContext)
         {
             _accountRepo = accountRepository 
                 ?? throw new ArgumentNullException(nameof(accountRepository));
-            _logger = logger 
-                ?? throw new ArgumentNullException(nameof(logger));
-            SystemAccountNumber = configuration["SystemAccountNumber"] 
-                ?? throw new ArgumentNullException(nameof(configuration));
+            //_logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
-        public async Task<bool> DepositMoney(Transaction t)
-            => await CreateTransaction(t);
-        public async Task<bool> WithdrawMoney(Transaction t)
-            => await CreateTransaction(t);
-        public async Task<bool> TransferMoney(Transaction t)
-            => await CreateTransaction(t);
         public async Task<ICollection<Transaction>> GetTransactionsHistory(string? accountNumber = null, DateTime? Start = null, DateTime? End = null)
         {
             bool accountExists = await _accountRepo.EntityExists(a => a.AccountNumber == accountNumber);
             if (accountNumber is not null && !accountExists)
             {
-                _logger.LogWarning("Account do not exists");
+                //_logger.LogWarning("Account do not exists");
                 throw new ArgumentException("Account do not exists", nameof(accountNumber));
             }
-            if (Start is null && End is null)
+
+            List<Transaction> transactions = new List<Transaction>();
+            if (accountNumber is not null)
             {
-                return [];
-                //return _transactionRepository.GetTransactionsHistory(accountNumber);
+                accountNumber = accountNumber.Replace(" ", "");
+                transactions = bankContext.Transactions.Where(t => t.SourceAccountId == accountNumber || t.DestinationAccountId == accountNumber).ToList();
             }
             else
             {
-                return [];
-                //return _transactionRepository.GetTransactionsHistory(accountNumber, Start, End);
+                transactions = bankContext.Transactions.ToList();
             }
+
+            if (Start is not null && End is not null)
+            {
+                transactions = transactions.Where(t => t.TransactionDate >= Start && t.TransactionDate <= End).ToList();
+            }
+            return transactions;
         }
         public async Task<bool> CreateTransaction(Transaction t)
-        {   if (t is null)
+        {   
+            if (t is null)
             {
                 throw new ArgumentNullException(nameof(t));
             }
@@ -63,13 +58,13 @@ namespace DataLogic.BankAccountRepository
 
             if (sourceAccount is null)
             {
-                _logger.LogWarning($"Transaction from account: {t.SourceAccountId} don't exists ");
+                //_logger.LogWarning($"Transaction from account: {t.SourceAccountId} don't exists ");
                 throw new ArgumentNullException(nameof(sourceAccount));
             }
 
             if (sourceAccount.GetBalance() < t.Amount)
             {
-                _logger.LogWarning($"Transaction from account: {t.SourceAccountId} failed, Insufficient funds ");
+                //_logger.LogWarning($"Transaction from account: {t.SourceAccountId} failed, Insufficient funds ");
                 return false;
             }
 
@@ -78,19 +73,30 @@ namespace DataLogic.BankAccountRepository
                 t.DestinationAccountId = t.DestinationAccountId.Trim().Replace(" ", "");
                 if (t.SourceAccountId.Equals(t.DestinationAccountId))
                 {
-                    _logger.LogWarning($"Transaction from then same account account: {t.SourceAccountId} ");
+                    //_logger.LogWarning($"Transaction from then same account account: {t.SourceAccountId} ");
                     throw new ArgumentException("Transaction on the same account", nameof(t.DestinationAccountId));
                 }
                 var destinationAccount = _accountRepo.GetEntityByIdAsync(t.DestinationAccountId);
 
                 if (destinationAccount is null)
                 {
-                    _logger.LogWarning($"Transaction To account: {t.DestinationAccountId} don't exists ");
+                    //_logger.LogWarning($"Transaction To account: {t.DestinationAccountId} don't exists ");
                     throw new ArgumentNullException(nameof(destinationAccount));
                 }
             }
-            var result = await CreateEntityAsync(t);
-            return result == null ? false : true;
+            Transaction t2 = new Transaction()
+            {    
+                Amount = t.Amount,
+                Currency = t.Currency,
+                TransactionDate = t.TransactionDate,
+                SourceAccountId = t.DestinationAccountId,
+                DestinationAccountId = t.SourceAccountId,
+                Type = t.Type == TransactionType.Deposit ? TransactionType.Withdrawal : TransactionType.Deposit,
+            };
+            await AddEntityAsync(t);
+            await AddEntityAsync(t2);
+            await SaveChangesAsync();
+            return true;
         }
     }
 }

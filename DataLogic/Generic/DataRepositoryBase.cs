@@ -12,7 +12,7 @@ namespace DataLogic.Generic
 {
     public class DataRepositoryBase<T> : IDataRepositoryBase<T> where T : class
     {
-        private readonly BankContext bankContext;
+        protected readonly BankContext bankContext;
         private readonly DbSet<T> dbSet;
 
         public DataRepositoryBase(BankContext bankContext)
