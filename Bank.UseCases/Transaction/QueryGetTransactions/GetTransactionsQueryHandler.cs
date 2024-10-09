@@ -20,7 +20,7 @@ namespace Bank.UseCases.Transaction.QueryGetTransactions
         }
         public async Task<ICollection<TransactionDto>> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
         {
-            var transactions = _transactionRepository.GetTransactionsHistory();
+            var transactions = await _transactionRepository.GetTransactionsHistory();
             return _mapper.Map<ICollection<TransactionDto>>(transactions);
         }
     }

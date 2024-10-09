@@ -18,7 +18,8 @@ namespace Bank.AuditAPI.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> GetTransactions([FromQuery] GetTransactionsQuery request)
         {
-            return Ok(await _mediator.Send(request));
+            var response = await _mediator.Send(request);
+            return Ok(response);
         }
     }
 }
