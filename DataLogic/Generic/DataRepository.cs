@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ namespace DataLogic.Generic
         public DataRepository(BankContext bankContext) : base(bankContext)
         {
         }
+        
+        public new async Task<bool> EntityExists(Expression<Func<T, bool>> predicate) => await EntityExists(predicate);
 
         public async Task<ICollection<T>> GetAllAsync()
         {

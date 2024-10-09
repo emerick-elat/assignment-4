@@ -28,6 +28,17 @@ namespace Entities
             AccountNumber = accountNumber;
             TransactionsTo = new List<Transaction>();
         }
+
+        public decimal GetBalance()
+        {
+            if (TransactionsTo == null) TransactionsTo = new List<Transaction>();
+            if (TransactionsFrom == null) TransactionsFrom = new List<Transaction>();
+
+            decimal totalDeposits = TransactionsTo.Sum(t => t.Amount);
+            decimal totalWithdrawals = TransactionsFrom.Sum(t => t.Amount);
+
+            return totalDeposits - totalWithdrawals;
+        }
     }
 
     public class AccountVM
