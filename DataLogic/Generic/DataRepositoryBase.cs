@@ -12,7 +12,7 @@ namespace DataLogic.Generic
 {
     public class DataRepositoryBase<T> : IDataRepositoryBase<T> where T : class
     {
-        protected readonly BankContext bankContext;
+        private readonly BankContext bankContext;
         private readonly DbSet<T> dbSet;
 
         public DataRepositoryBase(BankContext bankContext)
@@ -54,6 +54,11 @@ namespace DataLogic.Generic
         public async Task<bool> EntityExists(Expression<Func<T, bool>> predicate)
         {
             return await dbSet.AnyAsync(predicate);
+        }
+
+        public async Task<ICollection<T>> GetQueryAsync(Expression<Func<T, bool>> expression)
+        {
+            return await dbSet.Where(expression).ToListAsync();
         }
     }
 }

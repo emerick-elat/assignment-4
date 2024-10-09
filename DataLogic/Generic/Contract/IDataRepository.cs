@@ -10,6 +10,7 @@ namespace DataLogic.Generic.Contract
     public interface IDataRepository<T> where T : class
     {
         Task<ICollection<T>> GetAllAsync();
+        Task<ICollection<T>> GetQueryAsync(Expression<Func<T, bool>> expression);
         Task<T> GetEntityByIdAsync(object id);
         Task<bool> EntityExists(Expression<Func<T, bool>> predicate);
         Task<T> CreateEntityAsync(T entity);

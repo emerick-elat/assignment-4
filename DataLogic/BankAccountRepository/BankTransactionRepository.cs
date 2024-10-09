@@ -23,29 +23,28 @@ namespace DataLogic.BankAccountRepository
         }
         public async Task<ICollection<Transaction>> GetTransactionsHistory(string? accountNumber = null, DateTime? Start = null, DateTime? End = null)
         {
-            bool accountExists = await _accountRepo.EntityExists(a => a.AccountNumber == accountNumber);
-            if (accountNumber is not null && !accountExists)
+            if (accountNumber is not null && !await _accountRepo.EntityExists(a => a.AccountNumber == accountNumber))
             {
                 //_logger.LogWarning("Account do not exists");
                 throw new ArgumentException("Account do not exists", nameof(accountNumber));
             }
 
-            List<Transaction> transactions = new List<Transaction>();
+            ICollection<Transaction> transactions;
             if (accountNumber is not null)
             {
                 accountNumber = accountNumber.Replace(" ", "");
-                transactions = bankContext.Transactions.Where(t => t.SourceAccountId == accountNumber || t.DestinationAccountId == accountNumber).ToList();
+                transactions = await GetQueryAsync(t => t.SourceAccountId == accountNumber || t.DestinationAccountId == accountNumber);
             }
             else
             {
-                transactions = bankContext.Transactions.ToList();
+                transactions = await GetEntitiesAsync();
             }
 
             if (Start is not null && End is not null)
             {
                 transactions = transactions.Where(t => t.TransactionDate >= Start && t.TransactionDate <= End).ToList();
             }
-            return transactions;
+            return transactions.ToList();
         }
         public async Task<bool> CreateTransaction(Transaction t)
         {   
