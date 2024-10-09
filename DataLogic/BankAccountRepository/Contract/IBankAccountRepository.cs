@@ -10,5 +10,6 @@ namespace DataLogic.BankAccountRepository.Contract
 {
     public interface IBankAccountRepository : IDataRepository<Account>
     {
+        Task<Account?> GetBankAccountFromID(string accountNumber);
     }
 }

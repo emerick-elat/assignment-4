@@ -21,7 +21,7 @@ namespace Bank.UseCases.Account.QueryGetAccount
         }
         public async Task<AccountDto> Handle(GetAccountQuery request, CancellationToken cancellationToken)
         {
-            var account = await _repo.GetEntityByIdAsync(request.AccountNumber);
+            var account = await _repo.GetBankAccountFromID(request.AccountNumber);
             return _mapper.Map<AccountDto>(account);
         }
     }

@@ -33,8 +33,8 @@ namespace Entities
         }
         public decimal GetBalance()
         {
-            if (TransactionsTo == null) TransactionsTo = new List<Transaction>();
-            if (TransactionsFrom == null) TransactionsFrom = new List<Transaction>();
+            if (TransactionsTo is null) TransactionsTo = new List<Transaction>();
+            if (TransactionsFrom is null) TransactionsFrom = new List<Transaction>();
 
             decimal totalDeposits = TransactionsTo.Sum(t => t.Amount);
             decimal totalWithdrawals = TransactionsFrom.Sum(t => t.Amount);

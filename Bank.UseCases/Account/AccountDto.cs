@@ -10,5 +10,6 @@ namespace Bank.UseCases.Account
     {
         public string AccountNumber { get; set; }
         public string CustomerFullname { get; set; }
+        public string Balance { get; set; }
     }
 }

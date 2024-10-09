@@ -27,7 +27,7 @@ namespace Bank.ClientAPI.Controllers.V1
         }
 
         // GET api/<AccountsController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{accountNumber}")]
         public async Task<IActionResult> Get(string accountNumber)
         {
             var response = await _mediator.Send(new GetAccountQuery() { AccountNumber = accountNumber });
