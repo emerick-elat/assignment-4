@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Transaction\QueryGetTransactions\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BankServices\BankServices.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Bank.UseCases.Transaction.QueryGetTransactions;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +16,9 @@ namespace Bank.AuditAPI.Controllers.V1
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTransactions([FromBody] object model)
+        public async Task<IActionResult> GetTransactions([FromQuery] GetTransactionsQuery request)
         {
-            return Ok();
+            return Ok(await _mediator.Send(request));
         }
     }
 }
