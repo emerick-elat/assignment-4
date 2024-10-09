@@ -22,7 +22,9 @@ namespace Bank.UseCases.Customer.QueryGetCustomers
 
         public async Task<ICollection<CustomerDto>> Handle(GetCustomersQuery request, CancellationToken cancellationToken)
         {
-            var customers = await _customerRepository.GetAllAsync();
+            var customers = (request?.PageNumber != 0 && request?.PageSize != 0) 
+                ? await _customerRepository.GetPaginatedResults(request.PageSize, request.PageNumber)
+                : await _customerRepository.GetAllAsync();
             return _mapper.Map<ICollection<CustomerDto>>(customers);
         }
     }

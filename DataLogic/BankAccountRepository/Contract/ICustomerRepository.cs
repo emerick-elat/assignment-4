@@ -10,5 +10,6 @@ namespace DataLogic.BankAccountRepository.Contract
 {
     public interface ICustomerRepository : IDataRepository<Customer>
     {
+        Task<ICollection<Customer>> GetPaginatedResults(int PageSize, int PageNumber);
     }
 }

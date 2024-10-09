@@ -9,5 +9,7 @@ namespace Bank.UseCases.Customer.QueryGetCustomers
 {
     public class GetCustomersQuery : IRequest<ICollection<CustomerDto>>
     {
+        public int PageSize {  get; set; }
+        public int PageNumber { get; set; }
     }
 }

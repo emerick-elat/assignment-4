@@ -22,9 +22,9 @@ namespace Bank.ClientAPI.Controllers.V1
 
         // GET: api/<CustomersController>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] GetCustomersQuery query)
         {
-            var response = await _mediator.Send(new GetCustomersQuery());
+            var response = await _mediator.Send(query);
             return Ok(response);
         }
 
