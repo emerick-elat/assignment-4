@@ -1,4 +1,4 @@
-﻿using DataLogic.Context;
+﻿using Infrastructure.Context;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DataLogic.Repository.DB
+namespace Infrastructure.Repository.DB
 {
     internal class DBTransactionRepository : ITransactionRepository
     {

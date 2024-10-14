@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Seeding
+namespace Infrastructure.Seeding
 {
     internal static class SeedAccount
     {

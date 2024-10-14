@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Bank.UseCases.Customer.CommandCreateCustomer;
-using DataLogic.BankAccountRepository.Contract;
+using Infrastructure.BankAccountRepository.Contract;
 using MediatR;
 using System;
 using System.Collections.Generic;

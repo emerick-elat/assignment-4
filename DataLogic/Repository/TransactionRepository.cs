@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DataLogic.Repository
+namespace Infrastructure.Repository
 {
     internal class TransactionRepository : ITransactionRepository
     {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Configurations
+namespace Infrastructure.Configurations
 {
     internal class AccountConfiguration : IEntityTypeConfiguration<Account>
     {

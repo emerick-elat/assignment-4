@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using BankClient.Views;
 using BankServices;
-using DataLogic.Context;
+using Infrastructure.Context;
 using DI;
 using Entities;
 using Microsoft.EntityFrameworkCore;

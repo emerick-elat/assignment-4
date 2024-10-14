@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Generic.Contract
+namespace Infrastructure.Generic.Contract
 {
     public interface IDataRepository<T> where T : class
     {

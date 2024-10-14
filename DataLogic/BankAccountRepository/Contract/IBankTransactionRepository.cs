@@ -1,7 +1,7 @@
-﻿using DataLogic.Generic.Contract;
+﻿using Infrastructure.Generic.Contract;
 using Entities;
 
-namespace DataLogic.BankAccountRepository.Contract
+namespace Infrastructure.BankAccountRepository.Contract
 {
     public interface IBankTransactionRepository : IDataRepository<Transaction>
     {

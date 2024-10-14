@@ -2,7 +2,7 @@
 using Autofac;
 using BankServices;
 using BankServices.Models;
-using DataLogic.Context;
+using Infrastructure.Context;
 using DI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

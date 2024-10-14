@@ -1,11 +1,12 @@
 
 using Bank.UseCases.Account.QueryGetAccounts;
-using DataLogic.BankAccountRepository.Contract;
-using DataLogic.BankAccountRepository;
-using DataLogic.Context;
-using DataLogic.Generic.Contract;
-using DataLogic.Generic;
+using Infrastructure.BankAccountRepository.Contract;
+using Infrastructure.BankAccountRepository;
+using Infrastructure.Context;
+using Infrastructure.Generic.Contract;
+using Infrastructure.Generic;
 using Bank.AuditAPI.Profiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank.AuditAPI
 {
@@ -32,6 +33,21 @@ namespace Bank.AuditAPI
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<BankContext>();
+                    context.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions if needed
+                    Console.WriteLine($"An error occurred while migrating the database: {ex.Message}");
+                }
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

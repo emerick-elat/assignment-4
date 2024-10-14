@@ -1,6 +1,6 @@
-﻿using DataLogic.BankAccountRepository.Contract;
-using DataLogic.Context;
-using DataLogic.Generic;
+﻿using Infrastructure.BankAccountRepository.Contract;
+using Infrastructure.Context;
+using Infrastructure.Generic;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.BankAccountRepository
+namespace Infrastructure.BankAccountRepository
 {
     public class BankAccountRepository : DataRepository<Account>, IBankAccountRepository
     {

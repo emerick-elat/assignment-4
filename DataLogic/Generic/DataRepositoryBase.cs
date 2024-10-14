@@ -1,5 +1,5 @@
-﻿using DataLogic.Context;
-using DataLogic.Generic.Contract;
+﻿using Infrastructure.Context;
+using Infrastructure.Generic.Contract;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Generic
+namespace Infrastructure.Generic
 {
     public class DataRepositoryBase<T> : IDataRepositoryBase<T> where T : class
     {

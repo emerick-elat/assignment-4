@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DataLogic.Repository
+namespace Infrastructure.Repository
 {
     public static class Helpers
     {

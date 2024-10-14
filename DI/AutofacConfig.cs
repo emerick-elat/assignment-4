@@ -1,19 +1,11 @@
-﻿using Autofac.Core;
-using Autofac;
-using BankServices;
-using DataLogic.Repository;
+﻿using Autofac;
 using Microsoft.Extensions.Configuration;
-using Entities;
-using DataLogic.Context;
-using DataLogic.Repository.DB;
-using DataLogic.BankAccountRepository;
-using DataLogic.BankAccountRepository.Contract;
 
 namespace DI
 {
     public static class AutofacConfig
     {
-        public static IContainer Configure(IConfiguration configuration)
+        public static IContainer Configure(IConfiguration configure)
         {
             //var config = configuration.GetSection("DBSettings").Get<Config>() ?? throw new ArgumentNullException(nameof(configuration));
             // Create your builder.
@@ -30,11 +22,9 @@ namespace DI
             //builder.RegisterType<DBTransactionRepository>().As<ITransactionRepository>();
             //builder.RegisterType<XMLAccountRepository>().As<IAccountRepository>();
             //builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
-
-            /*builder.RegisterType<BankAccountRepository>().As<IBankAccountRepository>();
-            builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
-            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();*/
-
+            
+            
+            
             return builder.Build();
         }
         

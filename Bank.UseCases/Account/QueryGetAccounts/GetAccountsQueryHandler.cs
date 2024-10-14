@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DataLogic.BankAccountRepository.Contract;
+using Infrastructure.BankAccountRepository.Contract;
 using MediatR;
 
 namespace Bank.UseCases.Account.QueryGetAccounts

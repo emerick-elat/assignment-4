@@ -1,5 +1,5 @@
-﻿using DataLogic.Context;
-using DataLogic.Generic.Contract;
+﻿using Infrastructure.Context;
+using Infrastructure.Generic.Contract;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Generic
+namespace Infrastructure.Generic
 {
     public class DataRepository<T> : DataRepositoryBase<T>, IDataRepository<T> where T : class
     {
@@ -28,7 +28,7 @@ namespace DataLogic.Generic
         {
             return await GetEntityAsync(id);
         }
-
+        
         public async Task<T> CreateEntityAsync(T entity)
         {
             await AddEntityAsync(entity);

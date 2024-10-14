@@ -1,4 +1,4 @@
-﻿using DataLogic.Context;
+﻿using Infrastructure.Context;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Repository.DB
+namespace Infrastructure.Repository.DB
 {
     internal class DBAccountRepository : IAccountRepository
     {

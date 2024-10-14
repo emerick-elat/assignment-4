@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLogic", "DataLogic\DataLogic.csproj", "{B026009C-54CC-407A-BB98-7A66FC81BA27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "DataLogic\Infrastructure.csproj", "{B026009C-54CC-407A-BB98-7A66FC81BA27}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankServices", "BankServices\BankServices.csproj", "{EDA70A71-89DD-4EC5-91D6-F7FC2498B580}"
 EndProject

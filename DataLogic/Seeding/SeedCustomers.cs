@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Seeding
+namespace Infrastructure.Seeding
 {
     internal static class SeedCustomers
     {
         internal static void Seed(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>().HasData(new List<Customer>() {
-                new Customer(1, "System", "Account")
+                new Customer(1, "System", "Account", "admin@smart3bank.com", "+37061224853")
             });
         }
     }

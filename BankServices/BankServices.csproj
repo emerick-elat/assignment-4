@@ -12,7 +12,7 @@
     </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataLogic\DataLogic.csproj" />
+    <ProjectReference Include="..\DataLogic\Infrastructure.csproj" />
     <ProjectReference Include="..\Entities\Entities.csproj" />
   </ItemGroup>
 

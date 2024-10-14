@@ -1,11 +1,11 @@
-﻿using DataLogic.BankAccountRepository.Contract;
-using DataLogic.Context;
-using DataLogic.Generic;
-using DataLogic.Generic.Contract;
+﻿using Infrastructure.BankAccountRepository.Contract;
+using Infrastructure.Context;
+using Infrastructure.Generic;
+using Infrastructure.Generic.Contract;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataLogic.BankAccountRepository
+namespace Infrastructure.BankAccountRepository
 {
     public class CustomerRepository : DataRepository<Customer>, ICustomerRepository
     {

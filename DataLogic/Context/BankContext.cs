@@ -1,5 +1,5 @@
-﻿using DataLogic.Configurations;
-using DataLogic.Seeding;
+﻿using Infrastructure.Configurations;
+using Infrastructure.Seeding;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,13 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Context
+namespace Infrastructure.Context
 {
     public class BankContext : DbContext
     {   
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+
         private readonly IConfiguration _configuration;
         public BankContext(DbContextOptions options, IConfiguration configuration)
             : base(options)
@@ -25,7 +26,7 @@ namespace DataLogic.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_configuration.GetConnectionString("DefaultConnectionString"));
+            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnectionString"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

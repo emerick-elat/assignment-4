@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace DataLogic.Migrations
+namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -17,10 +17,12 @@ namespace DataLogic.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: true)
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,8 +33,8 @@ namespace DataLogic.Migrations
                 name: "Accounts",
                 columns: table => new
                 {
-                    AccountNumber = table.Column<string>(type: "TEXT", maxLength: 16, nullable: false),
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false)
+                    AccountNumber = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,14 +51,14 @@ namespace DataLogic.Migrations
                 name: "Transactions",
                 columns: table => new
                 {
-                    TransactionId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    TransactionDate = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValue: new DateTime(2024, 10, 4, 12, 45, 37, 955, DateTimeKind.Local).AddTicks(8107)),
-                    Amount = table.Column<decimal>(type: "TEXT", nullable: false),
-                    Type = table.Column<int>(type: "INTEGER", nullable: false),
-                    SourceAccountId = table.Column<string>(type: "TEXT", nullable: false),
-                    DestinationAccountId = table.Column<string>(type: "TEXT", nullable: false),
-                    Currency = table.Column<string>(type: "TEXT", nullable: false, defaultValue: "EUR")
+                    TransactionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 10, 14, 11, 40, 16, 806, DateTimeKind.Local).AddTicks(244)),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    SourceAccountId = table.Column<string>(type: "nvarchar(16)", nullable: false),
+                    DestinationAccountId = table.Column<string>(type: "nvarchar(16)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "EUR")
                 },
                 constraints: table =>
                 {
@@ -77,8 +79,8 @@ namespace DataLogic.Migrations
 
             migrationBuilder.InsertData(
                 table: "Customers",
-                columns: new[] { "CustomerId", "FirstName", "LastName" },
-                values: new object[] { 1, "System", "Account" });
+                columns: new[] { "CustomerId", "Email", "FirstName", "LastName", "PhoneNumber" },
+                values: new object[] { 1, "admin@smart3bank.com", "System", "Account", "+37061224853" });
 
             migrationBuilder.InsertData(
                 table: "Accounts",

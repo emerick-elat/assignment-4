@@ -10,7 +10,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogic.Configurations
+namespace Infrastructure.Configurations
 {
     internal class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
@@ -24,6 +24,9 @@ namespace DataLogic.Configurations
             builder.Property(p => p.FirstName)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            builder.Property(p => p.PhoneNumber).HasMaxLength(15);
+            builder.Property(p => p.Email).HasMaxLength(30);
 
             builder.HasMany(c => c.Accounts)
                 .WithOne(a => a.Customer)

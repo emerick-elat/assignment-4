@@ -1,12 +1,18 @@
 
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Bank.ClientAPI.Profiles;
 using Bank.UseCases.Account.QueryGetAccounts;
-using DataLogic.BankAccountRepository;
-using DataLogic.BankAccountRepository.Contract;
-using DataLogic.Context;
-using DataLogic.Generic;
-using DataLogic.Generic.Contract;
-using DataLogic.Repository;
+using Infrastructure.BankAccountRepository;
+using Infrastructure.BankAccountRepository.Contract;
+using Infrastructure.Context;
+using Infrastructure.Generic;
+using Infrastructure.Generic.Contract;
+using Infrastructure.Repository;
+using DI;
+using MediatR.Extensions.Autofac.DependencyInjection;
+using MediatR.Extensions.Autofac.DependencyInjection.Builder;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank.ClientAPI
 {
@@ -31,8 +37,34 @@ namespace Bank.ClientAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            
+            // Use Autofac as the service provider factory.
+            //builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
+            //// Configure Autofac container.
+            //builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+            //{
+            //    containerBuilder.RegisterModule(new BankAutofacModule());
+            //});
+
+            
             var app = builder.Build();
+
+            // Apply migrations at startup
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<BankContext>();
+                    context.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions if needed
+                    Console.WriteLine($"An error occurred while migrating the database: {ex.Message}");
+                }
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -45,7 +77,7 @@ namespace Bank.ClientAPI
 
             app.UseAuthorization();
 
-
+            //app.Database.Migrate();
             app.MapControllers();
 
             app.Run();
