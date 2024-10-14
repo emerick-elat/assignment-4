@@ -4,6 +4,7 @@ using Bank.UseCases.Customer.CommandUpdateCustomer;
 using Bank.UseCases.Customer.QueryGetCustomer;
 using Bank.UseCases.Customer.QueryGetCustomers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,6 +13,7 @@ namespace Bank.ClientAPI.Controllers.V1
 {
     [Route("api/customers")]
     [ApiController]
+    [Authorize]
     public class CustomersController : ControllerBase
     {
         private readonly IMediator _mediator;
