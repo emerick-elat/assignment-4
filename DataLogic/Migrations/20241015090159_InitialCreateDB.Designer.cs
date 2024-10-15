@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BankContext))]
-    [Migration("20241015074754_InitialCreateDB")]
+    [Migration("20241015090159_InitialCreateDB")]
     partial class InitialCreateDB
     {
         /// <inheritdoc />
@@ -120,7 +120,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 10, 15, 10, 47, 54, 571, DateTimeKind.Local).AddTicks(7038));
+                        .HasDefaultValue(new DateTime(2024, 10, 15, 12, 1, 58, 988, DateTimeKind.Local).AddTicks(3952));
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

@@ -17,7 +17,8 @@ namespace DI
         protected override void Load(ContainerBuilder builder)
         {
             // Register your services here
-            builder.RegisterType<BankContext>().InstancePerLifetimeScope();
+            //builder.RegisterType<BankContext>().AsSelf().InstancePerLifetimeScope();
+            
             builder.RegisterGeneric(typeof(DataRepositoryBase<>)).As(typeof(IDataRepositoryBase<>));
             builder.RegisterGeneric(typeof(DataRepository<>)).As(typeof(IDataRepository<>));
             builder.RegisterType<BankAccountRepository>().As<IBankAccountRepository>();
@@ -29,24 +30,24 @@ namespace DI
             //        .WithAllOpenGenericHandlerTypesRegistered()
             //        .Build());
 
-            var configuration = MediatRConfigurationBuilder
-                .Create(typeof(CreateAccountCommand).Assembly)
-                .WithAllOpenGenericHandlerTypesRegistered()
-                .WithRegistrationScope(RegistrationScope.Scoped) // currently only supported values are `Transient` and `Scoped`
-                .Build();
+            //var configuration = MediatRConfigurationBuilder
+            //    .Create(typeof(CreateAccountCommand).Assembly)
+            //    .WithAllOpenGenericHandlerTypesRegistered()
+            //    .WithRegistrationScope(RegistrationScope.Scoped) // currently only supported values are `Transient` and `Scoped`
+            //    .Build();
 
-            builder.RegisterMediatR(configuration);
+            //builder.RegisterMediatR(configuration);
 
-            builder.RegisterType<MapperProfile>().As<Profile>();
-            builder.Register(context =>
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<MapperProfile>();
-                });
+            //builder.RegisterType<MapperProfile>().As<Profile>();
+            //builder.Register(context =>
+            //{
+            //    var config = new MapperConfiguration(cfg =>
+            //    {
+            //        cfg.AddProfile<MapperProfile>();
+            //    });
 
-                return config.CreateMapper();
-            }).As<IMapper>().InstancePerLifetimeScope();
+            //    return config.CreateMapper();
+            //}).As<IMapper>().InstancePerLifetimeScope();
 
 
             // Register AutoMapper profiles

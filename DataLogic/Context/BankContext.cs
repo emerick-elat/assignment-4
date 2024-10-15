@@ -1,13 +1,14 @@
 ﻿using Entities;
 using Infrastructure.Configurations;
 using Infrastructure.Seeding;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Context
 {
-    public class BankContext : IdentityDbContext
+    public class BankContext : IdentityDbContext<IdentityUser>
     {   
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Account> Accounts { get; set; }

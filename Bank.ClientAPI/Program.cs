@@ -17,6 +17,7 @@ using Autofac.Core;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Bank.UseCases;
 
 namespace Bank.ClientAPI
 {
@@ -30,29 +31,28 @@ namespace Bank.ClientAPI
             
             builder.Services.AddControllers();
             builder.Services.AddDbContext<BankContext>();
+            // Use Autofac as the service provider factory.
+            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+            // Configure Autofac container.
+            builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+            {
+                containerBuilder.RegisterModule(new BankAutofacModule());
+            });
+            
             builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddEntityFrameworkStores<BankContext>();
+            
             builder.Services.AddAutoMapper(typeof(AccountProfile));
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCustomerAccountsQueryHandler).Assembly));
 
-            builder.Services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
-            builder.Services.AddScoped(typeof(IDataRepositoryBase<>), typeof(DataRepositoryBase<>));
-            builder.Services.AddScoped<IBankAccountRepository, BankAccountRepository>();
-            builder.Services.AddScoped<IBankTransactionRepository, BankTransactionRepository>();
-            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+            
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            
-            // Use Autofac as the service provider factory.
-            //builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-
-            //// Configure Autofac container.
-            //builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
-            //{
-            //    containerBuilder.RegisterModule(new BankAutofacModule());
-            //});
 
             
+
+
             var app = builder.Build();
             app.MapIdentityApi<IdentityUser>();
             // Apply migrations at startup

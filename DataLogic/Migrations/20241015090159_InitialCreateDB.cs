@@ -198,7 +198,7 @@ namespace Infrastructure.Migrations
                 {
                     TransactionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 10, 15, 10, 47, 54, 571, DateTimeKind.Local).AddTicks(7038)),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 10, 15, 12, 1, 58, 988, DateTimeKind.Local).AddTicks(3952)),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     SourceAccountId = table.Column<string>(type: "nvarchar(16)", nullable: false),
