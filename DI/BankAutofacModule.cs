@@ -13,7 +13,7 @@ namespace DI
         protected override void Load(ContainerBuilder builder)
         {
             // Register your services here
-            builder.RegisterType<BankContext>().AsSelf().InstancePerLifetimeScope();
+            //builder.RegisterType<BankContext>().AsSelf().InstancePerLifetimeScope();
 
             builder.RegisterGeneric(typeof(DataRepositoryBase<>)).As(typeof(IDataRepositoryBase<>));
             builder.RegisterGeneric(typeof(DataRepository<>)).As(typeof(IDataRepository<>));
