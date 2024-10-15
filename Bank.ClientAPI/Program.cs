@@ -19,9 +19,9 @@ namespace Bank.ClientAPI
             
             builder.Services.AddControllers();
             builder.Services.AddDbContext<BankContext>();
+
             // Use Autofac as the service provider factory.
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-
             // Configure Autofac container.
             builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
             {
@@ -38,23 +38,20 @@ namespace Bank.ClientAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            
-
 
             var app = builder.Build();
             app.MapIdentityApi<IdentityUser>();
-            // Apply migrations at startup
+
+            // Migrate DB at startup
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<BankContext>();
-                    context.Database.Migrate();
+                    services.GetRequiredService<BankContext>().Database.Migrate();
                 }
                 catch (Exception ex)
                 {
-                    // Handle exceptions if needed
                     Console.WriteLine($"An error occurred while migrating the database: {ex.Message}");
                 }
             }
@@ -70,7 +67,6 @@ namespace Bank.ClientAPI
 
             app.UseAuthorization();
 
-            //app.Database.Migrate();
             app.MapControllers();
 
             app.Run();
