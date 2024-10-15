@@ -1,23 +1,11 @@
-
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bank.ClientAPI.Profiles;
 using Bank.UseCases.Account.QueryGetAccounts;
-using Infrastructure.BankAccountRepository;
-using Infrastructure.BankAccountRepository.Contract;
-using Infrastructure.Context;
-using Infrastructure.Generic;
-using Infrastructure.Generic.Contract;
-using Infrastructure.Repository;
 using DI;
-using MediatR.Extensions.Autofac.DependencyInjection;
-using MediatR.Extensions.Autofac.DependencyInjection.Builder;
-using Microsoft.EntityFrameworkCore;
-using Autofac.Core;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
-using Bank.UseCases;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank.ClientAPI
 {
@@ -30,7 +18,7 @@ namespace Bank.ClientAPI
             // Add services to the container.
             
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<BankContext>();
+            //builder.Services.AddDbContext<BankContext>();
             // Use Autofac as the service provider factory.
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
