@@ -9,13 +9,13 @@ using System.Text;
 namespace Bank.Identity.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class UsersController : ControllerBase
+    [Route("api/[controller]")]
+    public class AccountController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
 
-        public UsersController(UserManager<IdentityUser> userManager, IConfiguration configuration)
+        public AccountController(UserManager<IdentityUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;

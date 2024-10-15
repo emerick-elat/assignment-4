@@ -14,9 +14,9 @@ using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.EntityFrameworkCore;
 using Autofac.Core;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bank.ClientAPI
 {
@@ -27,23 +27,10 @@ namespace Bank.ClientAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-                };
-            });
-
+            
             builder.Services.AddControllers();
             builder.Services.AddDbContext<BankContext>();
+            builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddEntityFrameworkStores<BankContext>();
             builder.Services.AddAutoMapper(typeof(AccountProfile));
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCustomerAccountsQueryHandler).Assembly));
 
@@ -67,7 +54,7 @@ namespace Bank.ClientAPI
 
             
             var app = builder.Build();
-
+            app.MapIdentityApi<IdentityUser>();
             // Apply migrations at startup
             using (var scope = app.Services.CreateScope())
             {

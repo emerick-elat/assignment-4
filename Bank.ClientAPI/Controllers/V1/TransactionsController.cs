@@ -1,6 +1,7 @@
 ﻿using Bank.UseCases.Transaction;
 using Bank.UseCases.Transaction.CommandCreateTransaction;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Bank.ClientAPI.Controllers.V1
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TransactionsController : ControllerBase
     {
         private readonly IMediator _mediator;

@@ -1,17 +1,13 @@
-﻿using Infrastructure.Configurations;
+﻿using Entities;
+using Infrastructure.Configurations;
 using Infrastructure.Seeding;
-using Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Context
 {
-    public class BankContext : DbContext
+    public class BankContext : IdentityDbContext
     {   
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Account> Accounts { get; set; }
