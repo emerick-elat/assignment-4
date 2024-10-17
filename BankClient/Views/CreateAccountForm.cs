@@ -19,7 +19,12 @@ namespace BankClient.Views
             firstname = Console.ReadLine();
             Console.WriteLine("Lastname");
             lastname = Console.ReadLine();
-            return new Customer(firstname, lastname);
+            return new Customer
+            {
+                FirstName = firstname,
+                LastName = lastname,
+                UserName = firstname
+            };
         }
     }
 }

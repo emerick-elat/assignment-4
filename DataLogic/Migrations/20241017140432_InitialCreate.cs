@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreateDB : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,11 +53,28 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Currencies",
+                columns: table => new
+                {
+                    Code = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Symbol = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    ValueToUSD = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Currencies", x => x.Code);
+                    table.UniqueConstraint("AK_Currencies_Symbol", x => x.Symbol);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
@@ -65,7 +82,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,7 +205,7 @@ namespace Infrastructure.Migrations
                         name: "FK_Accounts_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "CustomerId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -198,7 +215,7 @@ namespace Infrastructure.Migrations
                 {
                     TransactionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 10, 15, 12, 1, 58, 988, DateTimeKind.Local).AddTicks(3952)),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 10, 17, 17, 4, 31, 967, DateTimeKind.Local).AddTicks(7691)),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     SourceAccountId = table.Column<string>(type: "nvarchar(16)", nullable: false),
@@ -223,9 +240,21 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Currencies",
+                columns: new[] { "Code", "Description", "Name", "Symbol", "ValueToUSD" },
+                values: new object[,]
+                {
+                    { "EUR", null, "Euro", "€", 1.08m },
+                    { "GBP", null, "Pound Sterling", "£", 1.30m },
+                    { "RUB", null, "Ruble", "₽", 0.0103118m },
+                    { "USD", null, "US Dollar", "$", 1m },
+                    { "YEN", null, "Yen", "¥", 0.0067m }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Customers",
-                columns: new[] { "CustomerId", "Email", "FirstName", "LastName", "PhoneNumber" },
-                values: new object[] { 1, "admin@smart3bank.com", "System", "Account", "+37061224853" });
+                columns: new[] { "Id", "Email", "FirstName", "LastName", "PhoneNumber", "UserName" },
+                values: new object[] { 1, "admin@smart3bank.com", "System", "Account", "+37061224853", "admin" });
 
             migrationBuilder.InsertData(
                 table: "Accounts",
@@ -313,6 +342,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Currencies");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

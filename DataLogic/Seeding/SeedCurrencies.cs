@@ -5,7 +5,7 @@ namespace Infrastructure.Seeding
 {
     public class SeedCurrencies
     {
-        public static void Run(ModelBuilder modelBuilder)
+        public static void Seed(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Currency>().HasData(new List<Currency>()
             {

@@ -34,10 +34,12 @@ namespace Infrastructure.Context
             new CustomerConfiguration().Configure(modelBuilder.Entity<Customer>());
             new AccountConfiguration().Configure(modelBuilder.Entity<Account>());
             new TransactionConfiguration().Configure(modelBuilder.Entity<Transaction>());
+            new CurrencyConfiguration().Configure(modelBuilder.Entity<Currency>());
 
             SeedCustomers.Seed(modelBuilder);
             SeedAccount.Seed(modelBuilder);
             SeedTransaction.Seed(modelBuilder);
+            SeedCurrencies.Seed(modelBuilder);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Bank.UseCases.Customer.CommandUpdateCustomer
                 throw new ArgumentException(nameof(command));
             }
             var customer = _mapper.Map<Entities.Customer>(command);
-            await _customerRepository.UpdateEntityAsync(customer.CustomerId, customer);
+            await _customerRepository.UpdateEntityAsync(customer.Id, customer);
         }
     }
 }

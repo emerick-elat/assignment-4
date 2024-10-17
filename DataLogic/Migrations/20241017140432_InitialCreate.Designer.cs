@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BankContext))]
-    [Migration("20241015090159_InitialCreateDB")]
-    partial class InitialCreateDB
+    [Migration("20241017140432_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -53,13 +53,78 @@ namespace Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Entities.Currency", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<decimal>("ValueToUSD")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Code");
+
+                    b.HasAlternateKey("Symbol");
+
+                    b.ToTable("Currencies");
+
+                    b.HasData(
+                        new
+                        {
+                            Code = "USD",
+                            Name = "US Dollar",
+                            Symbol = "$",
+                            ValueToUSD = 1m
+                        },
+                        new
+                        {
+                            Code = "EUR",
+                            Name = "Euro",
+                            Symbol = "€",
+                            ValueToUSD = 1.08m
+                        },
+                        new
+                        {
+                            Code = "GBP",
+                            Name = "Pound Sterling",
+                            Symbol = "£",
+                            ValueToUSD = 1.30m
+                        },
+                        new
+                        {
+                            Code = "YEN",
+                            Name = "Yen",
+                            Symbol = "¥",
+                            ValueToUSD = 0.0067m
+                        },
+                        new
+                        {
+                            Code = "RUB",
+                            Name = "Ruble",
+                            Symbol = "₽",
+                            ValueToUSD = 0.0103118m
+                        });
+                });
+
             modelBuilder.Entity("Entities.Customer", b =>
                 {
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .HasMaxLength(30)
@@ -77,18 +142,24 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.HasKey("CustomerId");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Customers");
 
                     b.HasData(
                         new
                         {
-                            CustomerId = 1,
+                            Id = 1,
                             Email = "admin@smart3bank.com",
                             FirstName = "System",
                             LastName = "Account",
-                            PhoneNumber = "+37061224853"
+                            PhoneNumber = "+37061224853",
+                            UserName = "admin"
                         });
                 });
 
@@ -120,7 +191,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 10, 15, 12, 1, 58, 988, DateTimeKind.Local).AddTicks(3952));
+                        .HasDefaultValue(new DateTime(2024, 10, 17, 17, 4, 31, 967, DateTimeKind.Local).AddTicks(7691));
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
