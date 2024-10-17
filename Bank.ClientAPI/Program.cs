@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Bank.ClientAPI.Profiles;
 using Bank.UseCases.Account.QueryGetAccounts;
 using DI;
+using Entities.Identity;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,10 @@ namespace Bank.ClientAPI
             {
                 containerBuilder.RegisterModule(new BankAutofacModule());
             });
+
+            //builder.Services.AddIdentityCore<BankCustomer>().AddApiEndpoints().AddEntityFrameworkStores<BankContext>();
             
-            builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddEntityFrameworkStores<BankContext>();
+            builder.Services.AddIdentityApiEndpoints<BankCustomer>().AddEntityFrameworkStores<BankContext>();
             
             builder.Services.AddAutoMapper(typeof(AccountProfile));
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCustomerAccountsQueryHandler).Assembly));
@@ -48,7 +51,7 @@ namespace Bank.ClientAPI
 
 
             var app = builder.Build();
-            app.MapIdentityApi<IdentityUser>();
+            app.MapIdentityApi<BankCustomer>();
 
             // Migrate DB at startup
             using (var scope = app.Services.CreateScope())

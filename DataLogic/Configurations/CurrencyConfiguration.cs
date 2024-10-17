@@ -12,7 +12,7 @@ namespace Infrastructure.Configurations
             builder.HasAlternateKey(c => c.Symbol);
             builder.Property(c => c.Code).HasMaxLength(3);
             builder.Property(c => c.Name).IsRequired().HasMaxLength(30);
-            builder.Property(c => c.ValueToUSD).IsRequired();
+            builder.Property(c => c.ValueToUSD).IsRequired().HasColumnType("decimal(10,5)");
         }
     }
 }

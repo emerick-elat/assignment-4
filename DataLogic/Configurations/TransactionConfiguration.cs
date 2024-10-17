@@ -15,7 +15,7 @@ namespace Infrastructure.Configurations
         {
             builder.HasKey(t => t.TransactionId);
             builder.Property(t => t.TransactionId).ValueGeneratedOnAdd();
-            builder.Property(t => t.Amount).IsRequired();
+            builder.Property(t => t.Amount).IsRequired().HasColumnType("decimal(10,5)");
             builder.Property(t => t.TransactionDate).IsRequired().HasDefaultValue(DateTime.Now);
             builder.Property(t => t.Type).IsRequired();
             builder.Property(t => t.Currency).IsRequired().HasDefaultValue("EUR");
