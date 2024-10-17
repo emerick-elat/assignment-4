@@ -13,6 +13,7 @@ namespace Infrastructure.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
 
         private readonly IConfiguration _configuration;
         public BankContext(DbContextOptions options, IConfiguration configuration)
