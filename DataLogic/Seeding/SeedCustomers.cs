@@ -16,11 +16,15 @@ namespace Infrastructure.Seeding
                 new Customer
                 {
                     Id = 1,
-                    Email = "admin@smart3bank.com",
+                    Email = "admin@smartbank.com",
                     UserName = "admin",
+                    NormalizedUserName = "ADMIN",
                     FirstName = "System",
                     LastName = "Account",
-                    PhoneNumber = "+37061224853"
+                    PhoneNumber = "+37061224853",
+                    NormalizedEmail = "ADMIN@SMARTBANK.COM",
+                    IsEmailConfirmed = true,
+
                 }
             });
         }

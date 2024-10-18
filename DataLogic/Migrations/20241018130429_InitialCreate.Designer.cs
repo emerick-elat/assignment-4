@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BankContext))]
-    [Migration("20241018112552_InitialCreate")]
+    [Migration("20241018130429_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -51,6 +51,38 @@ namespace Infrastructure.Migrations
                             AccountNumber = "1111111111111110",
                             CustomerId = 1
                         });
+                });
+
+            modelBuilder.Entity("Entities.BankRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique();
+
+                    b.ToTable("BankRoles");
                 });
 
             modelBuilder.Entity("Entities.Currency", b =>
@@ -130,13 +162,28 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("EncryptedPassword")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool>("IsEmailConfirmed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(15)
@@ -155,9 +202,12 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "admin@smart3bank.com",
+                            Email = "admin@smartbank.com",
                             FirstName = "System",
+                            IsEmailConfirmed = true,
                             LastName = "Account",
+                            NormalizedEmail = "ADMIN@SMARTBANK.COM",
+                            NormalizedUserName = "ADMIN",
                             PhoneNumber = "+37061224853",
                             UserName = "admin"
                         });
@@ -191,7 +241,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 10, 18, 14, 25, 51, 864, DateTimeKind.Local).AddTicks(9026));
+                        .HasDefaultValue(new DateTime(2024, 10, 18, 16, 4, 29, 653, DateTimeKind.Local).AddTicks(4006));
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

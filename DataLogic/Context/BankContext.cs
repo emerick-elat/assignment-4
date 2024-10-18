@@ -1,8 +1,6 @@
 ﻿using Entities;
 using Infrastructure.Configurations;
 using Infrastructure.Seeding;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -11,6 +9,7 @@ namespace Infrastructure.Context
     public class BankContext : DbContext
     {   
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<BankRole> BankRoles { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Currency> Currencies { get; set; }
@@ -35,6 +34,7 @@ namespace Infrastructure.Context
             new AccountConfiguration().Configure(modelBuilder.Entity<Account>());
             new TransactionConfiguration().Configure(modelBuilder.Entity<Transaction>());
             new CurrencyConfiguration().Configure(modelBuilder.Entity<Currency>());
+            new BankRoleConfiguration().Configure(modelBuilder.Entity<BankRole>());
 
             //modelBuilder.RunIdentityConfiguration();
             

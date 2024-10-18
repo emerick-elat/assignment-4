@@ -28,6 +28,10 @@ namespace DI
             builder.RegisterType<BankAccountRepository>().As<IBankAccountRepository>();
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            builder.RegisterType<BankRoleRepository>().As<IBankRoleRepository>();
+
+            builder.RegisterType<CustomerStore>().As<IUserStore<Customer>>();
+            builder.RegisterType<BankRoleStore>().As<IRoleStore<BankRole>>();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Infrastructure.Generic
         {
         }
         
-        public new async Task<bool> EntityExists(Expression<Func<T, bool>> predicate) => await EntityExists(predicate);
+        public virtual new async Task<bool> EntityExists(Expression<Func<T, bool>> predicate) => await EntityExists(predicate);
         public new async Task<ICollection<T>> GetQueryAsync(Expression<Func<T, bool>> expression)
             => await GetQueryAsync(expression);
         public async Task<ICollection<T>> GetAllAsync()

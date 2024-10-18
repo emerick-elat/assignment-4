@@ -25,12 +25,21 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.Property(p => p.FirstName)
-                .IsRequired()
+            builder.Property(p => p.NormalizedUserName)
                 .HasMaxLength(50);
 
-            builder.Property(p => p.PhoneNumber).HasMaxLength(15);
-            builder.Property(p => p.Email).HasMaxLength(30);
+            builder.Property(p => p.FirstName)
+                .HasMaxLength(50);
+
+            builder.Property(p => p.PhoneNumber)
+                .HasMaxLength(15);
+            
+            builder.Property(p => p.Email)
+                .HasMaxLength(30);
+            
+            builder.Property(p => p.IsEmailConfirmed)
+                .IsRequired()
+                .HasDefaultValue(false);
 
             builder.HasMany(c => c.Accounts)
                 .WithOne(a => a.Customer)

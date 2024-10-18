@@ -9,6 +9,7 @@ using Infrastructure.Context;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace Bank.ClientAPI
@@ -31,9 +32,11 @@ namespace Bank.ClientAPI
             {
                 containerBuilder.RegisterModule(new BankAutofacModule());
             });
-            builder.Services.AddIdentity<Customer, IdentityRole>()
+
+            builder.Services.AddIdentity<Customer, BankRole>()
                 .AddApiEndpoints()
                 .AddUserStore<CustomerStore>()
+                .AddRoleStore<BankRoleStore>()
                 .AddDefaultTokenProviders();
 
             //builder.Services.AddIdentityCore<BankCustomer>().AddApiEndpoints().AddEntityFrameworkStores<BankContext>();
@@ -57,7 +60,8 @@ namespace Bank.ClientAPI
 
 
             var app = builder.Build();
-            //app.MapIdentityApi<BankCustomer>();
+
+            app.MapIdentityApi<Customer>();
 
             // Migrate DB at startup
             using (var scope = app.Services.CreateScope())
