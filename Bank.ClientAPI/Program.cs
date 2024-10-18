@@ -7,6 +7,7 @@ using DI;
 using Entities;
 using Infrastructure.Context;
 using Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,8 @@ namespace Bank.ClientAPI
             {
                 containerBuilder.RegisterModule(new BankAutofacModule());
             });
+
+            builder.Services.AddAuthentication("Identity.Bearer").AddCookie("Identity.Bearer");
 
             builder.Services.AddIdentity<Customer, BankRole>()
                 .AddApiEndpoints()
@@ -85,7 +88,7 @@ namespace Bank.ClientAPI
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

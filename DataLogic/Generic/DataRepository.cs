@@ -19,30 +19,30 @@ namespace Infrastructure.Generic
         public virtual new async Task<bool> EntityExists(Expression<Func<T, bool>> predicate) => await EntityExists(predicate);
         public new async Task<ICollection<T>> GetQueryAsync(Expression<Func<T, bool>> expression)
             => await GetQueryAsync(expression);
-        public async Task<ICollection<T>> GetAllAsync()
+        public virtual async Task<ICollection<T>> GetAllAsync()
         {
             return await GetEntitiesAsync();
         }
 
-        public async Task<T> GetEntityByIdAsync(object id)
+        public virtual async Task<T> GetEntityByIdAsync(object id)
         {
             return await GetEntityAsync(id);
         }
         
-        public async Task<T> CreateEntityAsync(T entity)
+        public virtual async Task<T> CreateEntityAsync(T entity)
         {
             await AddEntityAsync(entity);
             await SaveChangesAsync();
             return entity;
         }
 
-        public async Task UpdateEntityAsync(object key, T entity)
+        public virtual async Task UpdateEntityAsync(object key, T entity)
         {
             UpdateEntity(entity);
             await SaveChangesAsync();
         }
 
-        public async Task DeleteEntityAsync(object key)
+        public virtual async Task DeleteEntityAsync(object key)
         {
             var entity = await GetEntityByIdAsync(key);
             DeleteEntity(entity);
