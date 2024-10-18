@@ -10,4 +10,12 @@
         public string? Email { get; set; }
         public List<Account>? Accounts { get; set; }
     }
+
+    public class Role
+    {
+        public int Id { get; set; }
+        public required string Name { get; set; }
+        public string? NormalizedName { get; set; }
+        public string? ConcurrencyStamp { get; set; }
+    }
 }

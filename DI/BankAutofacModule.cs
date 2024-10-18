@@ -1,11 +1,13 @@
 ﻿using Autofac;
-using Entities.Identity;
+using Entities;
 using Infrastructure.BankAccountRepository;
 using Infrastructure.BankAccountRepository.Contract;
 using Infrastructure.Context;
 using Infrastructure.Generic;
 using Infrastructure.Generic.Contract;
+using Infrastructure.Identity;
 using Infrastructure.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DI
@@ -17,8 +19,10 @@ namespace DI
             // Register your services here
             //builder.RegisterType<BankContext>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterGeneric(typeof(IdentityDbContext<>)).AsSelf().InstancePerLifetimeScope();
+            //builder.RegisterGeneric(typeof(IdentityDbContext<>)).AsSelf().InstancePerLifetimeScope();
             
 
+            builder.RegisterType<CustomerStore>().As<IUserStore<Customer>>();
             builder.RegisterGeneric(typeof(DataRepositoryBase<>)).As(typeof(IDataRepositoryBase<>));
             builder.RegisterGeneric(typeof(DataRepository<>)).As(typeof(IDataRepository<>));
             builder.RegisterType<BankAccountRepository>().As<IBankAccountRepository>();

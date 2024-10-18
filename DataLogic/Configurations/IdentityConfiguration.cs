@@ -1,4 +1,4 @@
-﻿using Entities.Identity;
+﻿using Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,9 +14,9 @@ namespace Infrastructure.Configurations
     {
         public static void RunIdentityConfiguration(this ModelBuilder builder)
         {
-            builder.Entity<BankCustomer>(entity => {
-                entity.ToTable("BankCustomers");
-            });
+            //builder.Entity<BankCustomer>(entity => {
+            //    entity.ToTable("BankCustomers");
+            //});
 
             builder.Entity<BankRole>(entity => {
                 entity.ToTable("BankRoles");
