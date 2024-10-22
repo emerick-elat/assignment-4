@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Bank.ClientAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -49,7 +49,7 @@ namespace Bank.ClientAPI.Controllers
         public async Task<IActionResult> Login([FromBody] Login login)
         {
             Customer? customer = await _userManager.FindByNameAsync(login.UserName);
-            bool passwordIsValid = await _userManager.CheckPasswordAsync(customer, login.Password);
+            bool passwordIsValid = await _userManager.CheckPasswordAsync(customer!, login.Password);
             if (customer is not null && passwordIsValid) {
                 //var userRoles = await _userManager.GetRolesAsync(customer);
                 var authClaims = new List<Claim>() { 
