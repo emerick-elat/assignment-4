@@ -19,7 +19,9 @@ namespace DI
             // Register your services here
             //builder.RegisterType<BankContext>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterGeneric(typeof(IdentityDbContext<>)).AsSelf().InstancePerLifetimeScope();
-            //builder.RegisterGeneric(typeof(IdentityDbContext<>)).AsSelf().InstancePerLifetimeScope();
+            
+            builder.RegisterType<UserManager<Customer>>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<RoleManager<Customer>>().InstancePerLifetimeScope();
             
 
             builder.RegisterType<CustomerStore>().As<IUserStore<Customer>>();

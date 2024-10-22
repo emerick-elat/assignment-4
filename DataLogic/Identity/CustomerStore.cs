@@ -161,7 +161,7 @@ namespace Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null) throw new ArgumentNullException(nameof(user));
             if (normalizedName == null) throw new ArgumentNullException(nameof(normalizedName));
-            user.LastName = normalizedName;
+            user.NormalizedUserName = normalizedName;
             await _repo.UpdateCustomerAsync(user);
         }
 
@@ -170,7 +170,7 @@ namespace Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null) throw new ArgumentNullException(nameof(user));
             if (passwordHash == null) throw new ArgumentNullException(nameof(passwordHash));
-            user.EncryptedPassword = passwordHash;
+                user.EncryptedPassword = passwordHash;
             await _repo.UpdateCustomerAsync(user);
         }
 

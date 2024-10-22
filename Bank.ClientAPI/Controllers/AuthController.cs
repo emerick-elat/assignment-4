@@ -18,15 +18,15 @@ namespace Bank.ClientAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<Customer> _userManager;
-        private readonly RoleManager<Customer> _roleManager;
+        //private readonly RoleManager<Customer> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public AuthController(UserManager<Customer> userManager, RoleManager<Customer> roleManager, IConfiguration configuration, IMapper mapper, IMediator mediator)
+        public AuthController(UserManager<Customer> userManager, IConfiguration configuration, IMapper mapper, IMediator mediator)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
+            //_roleManager = roleManager;
             _configuration = configuration;
             _mapper = mapper;
             _mediator = mediator;
@@ -39,17 +39,19 @@ namespace Bank.ClientAPI.Controllers
             var response = await _userManager.CreateAsync(customer);
             if (response.Succeeded)
             {
+                await _userManager.AddPasswordAsync(customer, command.Password);
                 return Ok(new { message = "Registration succesfull" });
             }
-            return BadRequest();
+            return BadRequest(response.Errors);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Login login)
         {
             Customer? customer = await _userManager.FindByNameAsync(login.UserName);
-            if (customer != null && await _userManager.CheckPasswordAsync(customer, login.Password)) {
-                var userRoles = await _userManager.GetRolesAsync(customer);
+            bool passwordIsValid = await _userManager.CheckPasswordAsync(customer, login.Password);
+            if (customer is not null && passwordIsValid) {
+                //var userRoles = await _userManager.GetRolesAsync(customer);
                 var authClaims = new List<Claim>() { 
                     new Claim(JwtRegisteredClaimNames.Sub, login.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -70,7 +72,7 @@ namespace Bank.ClientAPI.Controllers
                     RefreshToken = ""
                 });
             }
-            return BadRequest();
+            return Unauthorized();
             
         }
     }

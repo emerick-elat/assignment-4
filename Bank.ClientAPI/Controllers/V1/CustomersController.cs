@@ -13,6 +13,7 @@ namespace Bank.ClientAPI.Controllers.V1
 {
     [Route("api/customers")]
     [ApiController]
+    //[Authorize]
     public class CustomersController : ControllerBase
     {
         private readonly IMediator _mediator;

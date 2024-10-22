@@ -89,7 +89,7 @@ namespace Bank.ClientAPI
 
             var app = builder.Build();
 
-            app.MapIdentityApi<Customer>();
+            // app.MapIdentityApi<Customer>();
 
             // Migrate DB at startup
             using (var scope = app.Services.CreateScope())

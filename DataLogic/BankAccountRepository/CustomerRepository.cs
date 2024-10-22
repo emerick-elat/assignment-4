@@ -1,8 +1,7 @@
-﻿using Infrastructure.BankAccountRepository.Contract;
+﻿using Entities;
+using Infrastructure.BankAccountRepository.Contract;
 using Infrastructure.Context;
 using Infrastructure.Generic;
-using Infrastructure.Generic.Contract;
-using Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -31,6 +30,7 @@ namespace Infrastructure.BankAccountRepository
 
         public async Task<ICollection<Customer>> QueryCustomersAsync(Expression<Func<Customer, bool>> query)
             => await bankContext.Customers.Where(query).ToListAsync();
+
         public async Task<Customer?> CreateCustomerAsync(Customer customer)
         {
             var response = await bankContext.Customers.AddAsync(customer);
@@ -63,6 +63,7 @@ namespace Infrastructure.BankAccountRepository
             if (_customer is not null)
             {
                 bankContext.Update(customer);
+                await bankContext.SaveChangesAsync();
             }
         }
     }
