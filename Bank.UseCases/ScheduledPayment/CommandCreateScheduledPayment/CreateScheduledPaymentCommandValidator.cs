@@ -2,7 +2,7 @@
 
 namespace Bank.UseCases.ScheduledPayment.CommandCreateScheduledPayment
 {
-    internal class CreateScheduledPaymentCommandValidator : AbstractValidator<Entities.ScheduledPayment>
+    public class CreateScheduledPaymentCommandValidator : AbstractValidator<Entities.ScheduledPayment>
     {
         public CreateScheduledPaymentCommandValidator()
         {
