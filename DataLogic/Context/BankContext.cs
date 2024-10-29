@@ -13,6 +13,8 @@ namespace Infrastructure.Context
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Currency> Currencies { get; set; }
+        public DbSet<ScheduledPayment> ScheduledPayments { get; set; }
+        public DbSet<ScheduledPaymentItem> ScheduledPaymentItems { get; set; }
 
         private readonly IConfiguration _configuration;
         public BankContext(DbContextOptions options, IConfiguration configuration)
@@ -35,6 +37,7 @@ namespace Infrastructure.Context
             new TransactionConfiguration().Configure(modelBuilder.Entity<Transaction>());
             new CurrencyConfiguration().Configure(modelBuilder.Entity<Currency>());
             new BankRoleConfiguration().Configure(modelBuilder.Entity<BankRole>());
+            new ScheduledPaymentConfiguration().Configure(modelBuilder.Entity<ScheduledPayment>());
 
             //modelBuilder.RunIdentityConfiguration();
             

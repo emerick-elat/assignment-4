@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Bank.ScheduledTasks-fe9c581a-e531-4a88-9d1b-6ce6feddee6e</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="Autofac" Version="8.1.0" />
+	  <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
+	  <PackageReference Include="MediatR" Version="12.4.1" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bank.UseCases\Bank.UseCases.csproj" />
+  </ItemGroup>
+</Project>

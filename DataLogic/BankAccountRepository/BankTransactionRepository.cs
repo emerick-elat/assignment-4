@@ -7,18 +7,24 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Azure;
 
 namespace Infrastructure.BankAccountRepository
 {
     public class BankTransactionRepository : DataRepository<Transaction>, IBankTransactionRepository
     {
         private readonly IBankAccountRepository _accountRepo;
+        private readonly string SystemAccountNumber;
         //private readonly ILogger _logger;
         public BankTransactionRepository(BankContext bankContext,
-            IBankAccountRepository accountRepository) : base(bankContext)
+            IBankAccountRepository accountRepository,
+            IConfiguration configuration) : base(bankContext)
         {
             _accountRepo = accountRepository 
                 ?? throw new ArgumentNullException(nameof(accountRepository));
+            SystemAccountNumber = configuration["SystemAccountNumber"]
+                ?? throw new ArgumentNullException(nameof(configuration));
             //_logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async Task<ICollection<Transaction>> GetTransactionsHistory(string? accountNumber = null, DateTime? Start = null, DateTime? End = null)
@@ -85,6 +91,30 @@ namespace Infrastructure.BankAccountRepository
             }
             await CreateEntityAsync(t);
             return true;
+        }
+
+        public async Task<bool> SendMoneyAsync(string accountNumber, decimal amount)
+        {
+            var response = await CreateTransaction(new Transaction()
+            {
+                Amount = amount,
+                Type = TransactionType.Deposit,
+                DestinationAccountId = accountNumber,
+                SourceAccountId = SystemAccountNumber
+            });
+            return response;
+        }
+
+        public async Task<bool> WithdrawMoneyAsync(string accountNumber, decimal amount)
+        {
+            var response = await CreateTransaction(new Transaction()
+            {
+                Amount = amount,
+                Type = TransactionType.Deposit,
+                SourceAccountId = accountNumber,
+                DestinationAccountId = SystemAccountNumber
+            });
+            return response;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Bank.UseCases.Transaction;
+﻿using Bank.UseCases.ScheduledPayment.CommandExecuteScheduledPayment;
+using Bank.UseCases.Transaction;
 using Bank.UseCases.Transaction.CommandCreateTransaction;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -34,12 +35,10 @@ namespace Bank.ClientAPI.Controllers.V1
         [HttpPost("deposit")]
         public async Task<IActionResult> Deposit([FromBody]CashModelDto data)
         {
-            var response = await _mediator.Send(new CreateTransactionCommand()
+            var response = await _mediator.Send(new ExecuteScheduledPaymentCommand()
             {
                 Amount = data.Amount,
-                Type = Entities.TransactionType.Deposit,
-                DestinationAccountId = data.AccountNumber,
-                SourceAccountId = SystemAccountNumber
+                AccountNumber = data.AccountNumber,
             });
             return Ok(response);
         }
