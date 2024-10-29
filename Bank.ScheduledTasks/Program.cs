@@ -18,6 +18,7 @@ namespace Bank.ScheduledTasks
                 ws.ServiceName = "SmallBank Scheduled Payments";
             });
             builder.Services.AddScoped<IBankTransactionRepository, BankTransactionRepository>();
+            builder.Services.AddScoped<IScheduledPaymentRepository, ScheduledPaymentRepository>();
             builder.Services.AddHostedService<AutomaticPaymentWorker>();
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CreateScheduledPaymentCommand).Assembly));
             var host = builder.Build();

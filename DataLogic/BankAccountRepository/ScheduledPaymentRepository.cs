@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.BankAccountRepository
 {
-    internal class ScheduledPaymentRepository : DataRepository<ScheduledPayment>, IScheduledPaymentRepository
+    public class ScheduledPaymentRepository : DataRepository<ScheduledPayment>, IScheduledPaymentRepository
     {
         public ScheduledPaymentRepository(BankContext bankContext) : base(bankContext)
         {

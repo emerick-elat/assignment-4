@@ -31,6 +31,7 @@ namespace DI
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<BankRoleRepository>().As<IBankRoleRepository>();
+            builder.RegisterType<ScheduledPaymentRepository>().As<IScheduledPaymentRepository>();
 
             builder.RegisterType<CustomerStore>().As<IUserStore<Customer>>();
             builder.RegisterType<BankRoleStore>().As<IRoleStore<BankRole>>();
