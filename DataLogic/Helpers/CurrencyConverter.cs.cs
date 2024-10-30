@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Infrastructure.Helpers
 {
@@ -49,20 +50,46 @@ namespace Infrastructure.Helpers
             };
         }
 
-        public Task<ExchangeRate> ConvertCurrency(decimal Amount, string Currency, string TargetCurrency)
+        public async Task<ExchangeRate> ConvertCurrency(decimal Amount, string Currency, string TargetCurrency)
         {
-            var exchangeRate = ExchangeRates.FirstOrDefault(er => er.Currency == TargetCurrency);
+            var exchangeRates = await GetExchangeRates();
+            var exchangeRate = exchangeRates.FirstOrDefault(er => er.Currency == TargetCurrency);
             decimal convertedAmount = 0m;
             if (exchangeRate is not null)
             {
                 convertedAmount = Amount * exchangeRate.Value;
             }
 
-            return Task.FromResult(new ExchangeRate
+            return new ExchangeRate
             {
                 Currency = TargetCurrency,
                 Value = convertedAmount
-            });
+            };
+        }
+
+        private async Task<ICollection<ExchangeRate>> GetExchangeRates()
+        {
+            string url = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
+            ICollection<ExchangeRate> exchangeRates = new List<ExchangeRate>();
+            using (HttpClient client = new HttpClient())
+            {
+                var response = await client.GetStringAsync(url);
+                XDocument doc = XDocument.Parse(response);
+
+                foreach (var cube in doc.Descendants("{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube"))
+                {
+                    var currency = cube.Attribute("currency")?.Value;
+                    var rateStr = cube.Attribute("rate")?.Value;
+                    decimal rate;
+                    decimal.TryParse(rateStr, out rate);
+
+                    if (currency != null && rateStr != null)
+                    {
+                        exchangeRates.Add(new ExchangeRate { Currency = currency, Value = rate });
+                    }
+                }
+            }
+            return exchangeRates;
         }
     }
 }
