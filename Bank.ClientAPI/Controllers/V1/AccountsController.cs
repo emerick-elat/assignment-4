@@ -29,12 +29,20 @@ namespace Bank.ClientAPI.Controllers.V1
 
         // GET api/<AccountsController>/5
         [HttpGet("{accountNumber}/{currency}")]
-        public async Task<IActionResult> Get(string accountNumber, string? currency = "USD")
+        public async Task<IActionResult> Get(string accountNumber, string currency)
         {
-            var response = await _mediator.Send(new GetAccountQuery() { 
+            var request = new GetAccountQuery()
+            {
                 AccountNumber = accountNumber,
-                Currency = currency!
-            });
+                Currency = currency ?? "USD"
+            };
+            GetAccountQueryValidators v = new GetAccountQueryValidators();
+            var result = v.Validate(request);
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
+            var response = await _mediator.Send(request);
             if (response == null) { 
                 return NotFound();
             }

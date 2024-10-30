@@ -2,7 +2,7 @@
 
 namespace Bank.UseCases.Account.QueryGetAccount
 {
-    internal class GetAccountQueryValidators : AbstractValidator<GetAccountQuery>
+    public class GetAccountQueryValidators : AbstractValidator<GetAccountQuery>
     {
         public GetAccountQueryValidators()
         {
