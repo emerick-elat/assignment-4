@@ -7,7 +7,11 @@
         public string? Description { get; set; }
         public required char Symbol { get; set; }
         public required decimal ValueToUSD { get; set; }
-        
+    }
 
+    public class ExchangeRate
+    {
+        public string Currency { get; set; }
+        public decimal Rate { get; set; }
     }
 }

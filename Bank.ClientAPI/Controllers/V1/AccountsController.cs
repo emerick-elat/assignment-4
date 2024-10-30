@@ -11,7 +11,6 @@ namespace Bank.ClientAPI.Controllers.V1
 {
     [Route("api/customers/{customerId}/accounts")]
     [ApiController]
-    [Authorize]
     public class AccountsController : ControllerBase
     {
         private readonly IMediator _mediator;

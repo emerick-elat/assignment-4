@@ -5,6 +5,7 @@ using Infrastructure.BankAccountRepository.Contract;
 using Infrastructure.Context;
 using Infrastructure.Generic;
 using Infrastructure.Generic.Contract;
+using Infrastructure.Helpers;
 using Infrastructure.Identity;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +33,7 @@ namespace DI
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<BankRoleRepository>().As<IBankRoleRepository>();
             builder.RegisterType<ScheduledPaymentRepository>().As<IScheduledPaymentRepository>();
+            builder.RegisterType<CurrencyConverter>().As<ICurrencyConverter>();
 
             builder.RegisterType<CustomerStore>().As<IUserStore<Customer>>();
             builder.RegisterType<BankRoleStore>().As<IRoleStore<BankRole>>();
