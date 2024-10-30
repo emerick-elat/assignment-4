@@ -27,7 +27,7 @@ namespace Bank.ClientAPI
             
             builder.Services.AddControllers();
             builder.Services.AddDbContext<BankContext>();
-
+            builder.Services.AddDistributedMemoryCache();
             // Use Autofac as the service provider factory.
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             // Configure Autofac container.
