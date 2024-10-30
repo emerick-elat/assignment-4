@@ -35,18 +35,21 @@ namespace Infrastructure.Identity
             }
         }
 
-        public Task<IdentityResult> DeleteAsync(BankRole role, CancellationToken cancellationToken)
+        public async Task<IdentityResult> DeleteAsync(BankRole role, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            await _repo.DeleteEntityAsync(role.Id);
+            return IdentityResult.Success;
         }
 
         public void Dispose()
         {   
         }
 
-        public Task<BankRole?> FindByIdAsync(string roleId, CancellationToken cancellationToken)
+        public async Task<BankRole?> FindByIdAsync(string roleId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            return await _repo.GetEntityByIdAsync(roleId);
         }
 
         public Task<BankRole?> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
@@ -56,27 +59,69 @@ namespace Infrastructure.Identity
 
         public Task<string?> GetNormalizedRoleNameAsync(BankRole role, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            if (role is null)
+            {
+                throw new ArgumentNullException(nameof (role));
+            }
+
+            return Task.FromResult(role.NormalizedName);
         }
 
         public Task<string> GetRoleIdAsync(BankRole role, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            if (role == null)
+            {
+                throw new ArgumentNullException(nameof (role));
+            }
+            return Task.FromResult(role.Id.ToString());
         }
 
         public Task<string?> GetRoleNameAsync(BankRole role, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            if (role == null)
+            {
+                throw new ArgumentNullException(nameof(role));
+            }
+            return Task.FromResult(role.Name);
         }
 
         public Task SetNormalizedRoleNameAsync(BankRole role, string? normalizedName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            if (role == null)
+            {
+                throw new ArgumentNullException(nameof (role));
+            }
+
+            if (normalizedName == null)
+            {
+                throw new ArgumentNullException (nameof (normalizedName));
+            }
+
+            role.NormalizedName = normalizedName;
+
+            return Task.FromResult<object>(normalizedName);
         }
 
         public Task SetRoleNameAsync(BankRole role, string? roleName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            if (role == null)
+            {
+                throw new ArgumentNullException(nameof(role));
+            }
+
+            if (roleName == null)
+            {
+                throw new ArgumentNullException(nameof(roleName));
+            }
+
+            role.Name = roleName;
+
+            return Task.FromResult<object>(roleName);
         }
 
         public Task<IdentityResult> UpdateAsync(BankRole role, CancellationToken cancellationToken)

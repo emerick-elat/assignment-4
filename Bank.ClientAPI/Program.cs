@@ -1,4 +1,5 @@
 using Autofac;
+using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using Bank.ClientAPI.Profiles;
 using Bank.UseCases.Account.QueryGetAccounts;
@@ -6,6 +7,7 @@ using DI;
 using Entities;
 using Infrastructure.Context;
 using Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -34,40 +36,63 @@ namespace Bank.ClientAPI
                 containerBuilder.RegisterModule(new BankAutofacModule());
             });
 
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-                    };
-                });
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.TokenValidationParameters = new TokenValidationParameters()
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidateAudience = false,
+            //            ValidateLifetime = true,
+            //            ValidateIssuerSigningKey = true,
+            //            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+            //        };
+            //    });
 
-            builder.Services.AddAuthorization(options =>
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+            //});
+
+
+
+            //builder.Services.AddAuthentication(o =>
+            //{
+            //    o.DefaultSignInScheme = IdentityConstants.BearerScheme;
+            //}).AddCookie("Identity.Bearer");
+            //.AddIdentityCookies(o => { });
+
+            /*builder.Services.AddIdentityCore<Customer>(o =>
             {
-                options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-            });
+                o.Stores.MaxLengthForKeys = 128;
+                o.SignIn.RequireConfirmedAccount = true;
+            });*/
 
             builder.Services.AddIdentity<Customer, BankRole>()
                 .AddApiEndpoints()
                 .AddUserStore<CustomerStore>()
                 .AddRoleStore<BankRoleStore>()
+                .AddSignInManager<SignInManager<Customer>>()
+                .AddUserManager<UserManager<Customer>>()
                 .AddDefaultTokenProviders();
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+                options => builder.Configuration.Bind("JwtSettings", options))
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+                options => builder.Configuration.Bind("CookieSettings", options)).AddCookie("Identity.Bearer"); ;
 
             //builder.Services.AddIdentityCore<BankCustomer>().AddApiEndpoints().AddEntityFrameworkStores<BankContext>();
 
             //builder.Services.AddIdentityApiEndpoints<BankCustomer>().AddEntityFrameworkStores<BankContext>();
-            
+            //builder.Services.AddIdentityApiEndpoints<Customer>().AddApiEndpoints();
+
             builder.Services.AddAutoMapper(typeof(AccountProfile));
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCustomerAccountsQueryHandler).Assembly));
 
@@ -86,7 +111,7 @@ namespace Bank.ClientAPI
 
             var app = builder.Build();
 
-            // app.MapIdentityApi<Customer>();
+            app.MapIdentityApi<Customer>();
 
             // Migrate DB at startup
             using (var scope = app.Services.CreateScope())
