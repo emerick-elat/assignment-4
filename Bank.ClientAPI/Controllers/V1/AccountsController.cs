@@ -28,10 +28,13 @@ namespace Bank.ClientAPI.Controllers.V1
         }
 
         // GET api/<AccountsController>/5
-        [HttpGet("{accountNumber}")]
-        public async Task<IActionResult> Get(string accountNumber)
+        [HttpGet("{accountNumber}/{currency}")]
+        public async Task<IActionResult> Get(string accountNumber, string? currency = "USD")
         {
-            var response = await _mediator.Send(new GetAccountQuery() { AccountNumber = accountNumber });
+            var response = await _mediator.Send(new GetAccountQuery() { 
+                AccountNumber = accountNumber,
+                Currency = currency!
+            });
             if (response == null) { 
                 return NotFound();
             }

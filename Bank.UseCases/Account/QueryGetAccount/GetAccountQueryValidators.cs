@@ -1,9 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bank.UseCases.Account.QueryGetAccount
 {
@@ -13,7 +8,13 @@ namespace Bank.UseCases.Account.QueryGetAccount
         {
             RuleFor(a => a.AccountNumber)
                 .NotEmpty().WithMessage("Account cannot be empty")
-                .NotNull().WithMessage("Please provide an account number");
+                .NotNull().WithMessage("Please provide an account number")
+                .Length(16);
+
+            RuleFor(a => a.Currency)
+                .NotEmpty().WithMessage("Account cannot be empty")
+                .NotNull().WithMessage("Please provide an account number")
+                .Length(3);
         }
     }
 }

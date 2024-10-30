@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Infrastructure.Helpers
 {
     public interface ICurrencyConverter
     {
-        Task<decimal> ConvertCurrency(decimal Amount, string Currency, string TargetCurrency);
+        Task<ExchangeRate> ConvertCurrency(decimal Amount, string Currency, string TargetCurrency);
     }
 }

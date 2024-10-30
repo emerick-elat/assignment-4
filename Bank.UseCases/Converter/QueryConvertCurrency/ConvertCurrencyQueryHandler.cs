@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 namespace Bank.UseCases.Converter.QueryConvertCurrency
 {
     internal class ConvertCurrencyQueryHandler (ICurrencyConverter currencyConverter)
-        : IRequestHandler<ConvertCurrencyQuery, decimal>
+        : IRequestHandler<ConvertCurrencyQuery, ExchangeRate>
     {   
 
-        public async Task<decimal> Handle(ConvertCurrencyQuery request, CancellationToken cancellationToken)
+        public async Task<ExchangeRate> Handle(ConvertCurrencyQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ConvertCurrencyQueryValidator validator = new ConvertCurrencyQueryValidator();

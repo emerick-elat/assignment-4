@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bank.UseCases.Account.QueryGetAccounts;
+using Entities;
 using Infrastructure.BankAccountRepository.Contract;
 using Infrastructure.Helpers;
 using MediatR;
@@ -23,8 +24,8 @@ namespace Bank.UseCases.Account.QueryGetAccount
             if (account is not null)
             {
                 accountDto = _mapper.Map<AccountDto>(account);
-                decimal BalanceUSD = await _converter.ConvertCurrency(account.GetBalance(), "EUR", "USD");
-                accountDto.BalanceUSD = $"${BalanceUSD}";
+                ExchangeRate balance = await _converter.ConvertCurrency(account.GetBalance(), "EUR", request.Currency);
+                accountDto.BalanceConverted = balance.ToString();
             }
             return accountDto;
         }
