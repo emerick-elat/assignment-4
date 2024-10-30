@@ -10,6 +10,6 @@ namespace Bank.UseCases.Account.QueryGetAccount
     public class GetAccountQuery : IRequest<AccountDto>
     {
         public string AccountNumber { get; set; }
-        public string Currency {  get; set; }
+        public string? Currency {  get; set; }
     }
 }

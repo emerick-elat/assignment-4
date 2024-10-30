@@ -12,8 +12,6 @@ namespace Bank.UseCases.Account.QueryGetAccount
                 .Length(16);
 
             RuleFor(a => a.Currency)
-                .NotEmpty().WithMessage("Account cannot be empty")
-                .NotNull().WithMessage("Please provide an account number")
                 .Length(3);
         }
     }
