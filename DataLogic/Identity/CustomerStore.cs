@@ -4,17 +4,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity
 {
-    public partial class CustomerStore : IUserStore<Customer>,
-        IUserPasswordStore<Customer>,
-        IUserEmailStore<Customer>
+    public partial class CustomerStore(IBankRoleRepository _roleRepository,
+        ICustomerRepository _customerRepository,
+        ICustomerBankRoleRepository _customerRoleRepository) 
+        :   IUserStore<Customer>,
+            IUserPasswordStore<Customer>
     {
-        //private readonly ICustomerRepository _customerRepository;
-        //public CustomerStore(ICustomerRepository repository)
-        //{
-        //    this._customerRepository = repository
-        //        ?? throw new ArgumentNullException(nameof(repository));
-        //}
-
         public async Task<IdentityResult> CreateAsync(Customer user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -48,14 +43,7 @@ namespace Infrastructure.Identity
         }
 
         public void Dispose()
-        {   
-        }
-
-        public async Task<Customer?> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            var result = await _customerRepository.QueryCustomersAsync(c => c.NormalizedEmail == normalizedEmail);
-            return result.FirstOrDefault();
         }
 
         public async Task<Customer?> FindByIdAsync(string userId, CancellationToken cancellationToken)
@@ -70,30 +58,6 @@ namespace Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
             var result = await _customerRepository.QueryCustomersAsync(c => c.UserName == normalizedUserName);
             return result.FirstOrDefault();
-        }
-
-        public async Task<string?> GetEmailAsync(Customer user, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            return user.Email;
-        }
-
-        public async Task<bool> GetEmailConfirmedAsync(Customer user, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            return user.IsEmailConfirmed;
-        }
-
-        public async Task<string?> GetNormalizedEmailAsync(Customer user, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            return user.NormalizedEmail;
-        }
-
-        public async Task<string?> GetNormalizedUserNameAsync(Customer user, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            return user.NormalizedUserName;
         }
 
         public async Task<string?> GetPasswordHashAsync(Customer user, CancellationToken cancellationToken)
@@ -123,32 +87,6 @@ namespace Infrastructure.Identity
                 return false;
             }
             return user.EncryptedPassword is not null;
-        }
-
-        public async Task SetEmailAsync(Customer user, string? email, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            if (user == null) throw new ArgumentNullException(nameof(user));
-            if (email == null) throw new ArgumentNullException(nameof(email));
-            user.Email = email;
-            await _customerRepository.UpdateCustomerAsync(user);
-        }
-
-        public async Task SetEmailConfirmedAsync(Customer user, bool confirmed, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            if (user == null) throw new ArgumentNullException(nameof(user));
-            user.IsEmailConfirmed = confirmed;
-            await _customerRepository.UpdateCustomerAsync(user);
-        }
-
-        public async Task SetNormalizedEmailAsync(Customer user, string? normalizedEmail, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            if (user == null) throw new ArgumentNullException(nameof(user));
-            if (normalizedEmail == null) throw new ArgumentNullException(nameof(normalizedEmail));
-            user.NormalizedEmail = normalizedEmail;
-            await _customerRepository.UpdateCustomerAsync(user);
         }
 
         public async Task SetNormalizedUserNameAsync(Customer user, string? normalizedName, CancellationToken cancellationToken)
@@ -187,9 +125,67 @@ namespace Infrastructure.Identity
         }
     }
 
-    public partial class CustomerStore (IBankRoleRepository _roleRepository,
-        ICustomerRepository _customerRepository,
-        ICustomerBankRoleRepository _customerRoleRepository) : IUserRoleStore<Customer>
+    public partial class CustomerStore : IUserEmailStore<Customer>
+    {
+
+        public async Task<Customer?> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var result = await _customerRepository.QueryCustomersAsync(c => c.NormalizedEmail == normalizedEmail);
+            return result.FirstOrDefault();
+        }
+
+        public async Task<string?> GetEmailAsync(Customer user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.Email;
+        }
+
+        public async Task<bool> GetEmailConfirmedAsync(Customer user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.IsEmailConfirmed;
+        }
+
+        public async Task<string?> GetNormalizedEmailAsync(Customer user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.NormalizedEmail;
+        }
+
+        public async Task<string?> GetNormalizedUserNameAsync(Customer user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.NormalizedUserName;
+        }
+        public async Task SetEmailAsync(Customer user, string? email, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (email == null) throw new ArgumentNullException(nameof(email));
+            user.Email = email;
+            await _customerRepository.UpdateCustomerAsync(user);
+        }
+
+        public async Task SetEmailConfirmedAsync(Customer user, bool confirmed, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            user.IsEmailConfirmed = confirmed;
+            await _customerRepository.UpdateCustomerAsync(user);
+        }
+
+        public async Task SetNormalizedEmailAsync(Customer user, string? normalizedEmail, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (normalizedEmail == null) throw new ArgumentNullException(nameof(normalizedEmail));
+            user.NormalizedEmail = normalizedEmail;
+            await _customerRepository.UpdateCustomerAsync(user);
+        }
+    }
+
+    public partial class CustomerStore : IUserRoleStore<Customer>
     {
         public async Task AddToRoleAsync(Customer user, string roleName, CancellationToken cancellationToken)
         {

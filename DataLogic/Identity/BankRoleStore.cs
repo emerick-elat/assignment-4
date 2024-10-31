@@ -129,4 +129,97 @@ namespace Infrastructure.Identity
             throw new NotImplementedException();
         }
     }
+
+    public class BankCustomerStore : IUserStore<Customer>, IUserEmailStore<Customer>
+    {
+        public Task<IdentityResult> CreateAsync(Customer user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IdentityResult> DeleteAsync(Customer user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Customer?> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Customer?> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Customer?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string?> GetEmailAsync(Customer user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> GetEmailConfirmedAsync(Customer user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string?> GetNormalizedEmailAsync(Customer user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string?> GetNormalizedUserNameAsync(Customer user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetUserIdAsync(Customer user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string?> GetUserNameAsync(Customer user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetEmailAsync(Customer user, string? email, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetEmailConfirmedAsync(Customer user, bool confirmed, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetNormalizedEmailAsync(Customer user, string? normalizedEmail, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetNormalizedUserNameAsync(Customer user, string? normalizedName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetUserNameAsync(Customer user, string? userName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IdentityResult> UpdateAsync(Customer user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
