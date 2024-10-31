@@ -13,12 +13,19 @@ using System.Xml.Linq;
 
 namespace Infrastructure.Helpers
 {
-    public class CurrencyConverter(IDistributedCache _cache) : ICurrencyConverter
-    {   
+    public class CurrencyConverter : ICurrencyConverter
+    {
+        private readonly IDistributedCache _cache;
+        private static int CacheTimeOutHours = 1;
+        private static string CACHE_EXCHANGERATES_KEY = "ExchangeRates";
+        public CurrencyConverter(IDistributedCache cache)
+        {
+            _cache = cache;
+        }
         public async Task<ExchangeRate> ConvertCurrency(decimal Amount, string Currency, string TargetCurrency)
         {
             ICollection<ExchangeRate> exchangeRates;
-            var cachedResults = await _cache.GetAsync("ExchangeRates");
+            var cachedResults = await _cache.GetAsync(CACHE_EXCHANGERATES_KEY);
             if (cachedResults is null)
             {
                 exchangeRates = await GetExchangeRates();
@@ -96,9 +103,9 @@ namespace Infrastructure.Helpers
                     }
                 }
             }
-            var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(1));
+            var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(CacheTimeOutHours));
             byte[] encodedexchangeRates = ConvertListToByte(exchangeRates);
-            await _cache.SetAsync("ExchangeRates", encodedexchangeRates, options);
+            await _cache.SetAsync(CACHE_EXCHANGERATES_KEY, encodedexchangeRates, options);
             Task.Delay(TimeSpan.FromSeconds(20)).Wait();
             return exchangeRates;
         }
@@ -117,7 +124,14 @@ namespace Infrastructure.Helpers
         {
             var jsonString = Encoding.UTF8.GetString(bytes);
             var exchangeRates = JsonSerializer.Deserialize<ExchangeRate[]>(jsonString);
-            return exchangeRates.ToList();
+            if (exchangeRates != null)
+            {
+                return exchangeRates.ToList();
+            }
+            else
+            {
+                return new List<ExchangeRate>();
+            }
         }
     }
 }
