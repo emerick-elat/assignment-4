@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialCreateDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,7 +51,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
@@ -63,6 +63,23 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScheduledPayments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountNumber = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(10,5)", nullable: false),
+                    StartOfValidityDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndOfValidityDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Periodicity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduledPayments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,12 +101,80 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BankRoleCustomer",
+                columns: table => new
+                {
+                    BankRolesId = table.Column<int>(type: "int", nullable: false),
+                    CustomersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BankRoleCustomer", x => new { x.BankRolesId, x.CustomersId });
+                    table.ForeignKey(
+                        name: "FK_BankRoleCustomer_BankRoles_BankRolesId",
+                        column: x => x.BankRolesId,
+                        principalTable: "BankRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BankRoleCustomer_Customers_CustomersId",
+                        column: x => x.CustomersId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerBankRoles",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    BankRoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerBankRoles", x => new { x.CustomerId, x.BankRoleId });
+                    table.ForeignKey(
+                        name: "FK_CustomerBankRoles_BankRoles_BankRoleId",
+                        column: x => x.BankRoleId,
+                        principalTable: "BankRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CustomerBankRoles_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScheduledPaymentItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ScheduledPaymentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduledPaymentItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ScheduledPaymentItems_ScheduledPayments_ScheduledPaymentId",
+                        column: x => x.ScheduledPaymentId,
+                        principalTable: "ScheduledPayments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Transactions",
                 columns: table => new
                 {
                     TransactionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 10, 18, 16, 4, 29, 653, DateTimeKind.Local).AddTicks(4006)),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 10, 31, 15, 52, 19, 51, DateTimeKind.Local).AddTicks(9074)),
                     Amount = table.Column<decimal>(type: "decimal(10,5)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     SourceAccountId = table.Column<string>(type: "nvarchar(16)", nullable: false),
@@ -114,6 +199,16 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "BankRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, "", "Super Admin", "SUPER ADMIN" },
+                    { 2, "", "Customer", "CUSTOMER" },
+                    { 3, "", "Agent", "AGENT" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Currencies",
                 columns: new[] { "Code", "Description", "Name", "Symbol", "ValueToUSD" },
                 values: new object[,]
@@ -128,7 +223,7 @@ namespace Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "Id", "Email", "EncryptedPassword", "FirstName", "IsEmailConfirmed", "LastName", "NormalizedEmail", "NormalizedUserName", "PhoneNumber", "UserName" },
-                values: new object[] { 1, "admin@smartbank.com", null, "System", true, "Account", "ADMIN@SMARTBANK.COM", "ADMIN", "+37061224853", "admin" });
+                values: new object[] { 1, "admin@smartbank.com", "AQAAAAIAAYagAAAAEJSOsPcN9rfn6MOai4xyilTlmaX2Pasz8Gv6VOP1VCIfljAblWVvZvfQD17HNPdk3A==", "System", true, "Account", "ADMIN@SMARTBANK.COM", "ADMIN", "+37061224853", "admin@smartbank.com" });
 
             migrationBuilder.InsertData(
                 table: "Accounts",
@@ -138,6 +233,11 @@ namespace Infrastructure.Migrations
                     { "1111111111111110", 1 },
                     { "1111111111111111", 1 }
                 });
+
+            migrationBuilder.InsertData(
+                table: "CustomerBankRoles",
+                columns: new[] { "BankRoleId", "CustomerId" },
+                values: new object[] { 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Transactions",
@@ -150,6 +250,11 @@ namespace Infrastructure.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BankRoleCustomer_CustomersId",
+                table: "BankRoleCustomer",
+                column: "CustomersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BankRoles_Name",
                 table: "BankRoles",
                 column: "Name",
@@ -160,6 +265,16 @@ namespace Infrastructure.Migrations
                 table: "BankRoles",
                 column: "NormalizedName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerBankRoles_BankRoleId",
+                table: "CustomerBankRoles",
+                column: "BankRoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduledPaymentItems_ScheduledPaymentId",
+                table: "ScheduledPaymentItems",
+                column: "ScheduledPaymentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_DestinationAccountId",
@@ -176,13 +291,25 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BankRoles");
+                name: "BankRoleCustomer");
 
             migrationBuilder.DropTable(
                 name: "Currencies");
 
             migrationBuilder.DropTable(
+                name: "CustomerBankRoles");
+
+            migrationBuilder.DropTable(
+                name: "ScheduledPaymentItems");
+
+            migrationBuilder.DropTable(
                 name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "BankRoles");
+
+            migrationBuilder.DropTable(
+                name: "ScheduledPayments");
 
             migrationBuilder.DropTable(
                 name: "Accounts");

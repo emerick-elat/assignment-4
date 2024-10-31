@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.BankAccountRepository.Contract
 {
-    internal interface ICustomerBankRoleRepository
+    public interface ICustomerBankRoleRepository
     {
         Task<CustomerBankRole> CreateCustomerBankRole(CustomerBankRole customerBankRole);
         Task DeleteCustomerBankRole(int CustomerId, int BankRoleId);
+        Task<bool> ExistsCustomerBankRole(int CustomerId, int BankRoleId);
     }
 }

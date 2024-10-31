@@ -1,6 +1,7 @@
 ﻿using Entities;
 using Infrastructure.BankAccountRepository.Contract;
 using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.BankAccountRepository
 {
@@ -23,6 +24,12 @@ namespace Infrastructure.BankAccountRepository
                 bankContext.Remove(customerBankRole);
                 await bankContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> ExistsCustomerBankRole(int CustomerId, int BankRoleId)
+        {
+            return await bankContext.CustomerBankRoles
+                .AnyAsync(cbr => cbr.CustomerId == CustomerId && cbr.BankRoleId==BankRoleId);
         }
     }
 }

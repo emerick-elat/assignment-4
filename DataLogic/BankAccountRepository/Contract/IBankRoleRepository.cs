@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 namespace Infrastructure.BankAccountRepository.Contract
 {
     public interface IBankRoleRepository : IDataRepository<BankRole>
-    {   
+    {
+        Task<BankRole?> GetRoleByNameAsync(string roleName);
+        Task<ICollection<Customer>> GetCustomersInRoleAsync(string roleName);
     }
 }

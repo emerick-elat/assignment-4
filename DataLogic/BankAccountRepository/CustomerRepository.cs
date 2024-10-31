@@ -66,5 +66,13 @@ namespace Infrastructure.BankAccountRepository
                 await bankContext.SaveChangesAsync();
             }
         }
+
+        public async Task<ICollection<string>> GetCustomerRolesAsync(int customerId)
+        {
+            ICollection<CustomerBankRole> customerRoles = await bankContext.CustomerBankRoles
+                .Include(c => c.BankRole)
+                .Where(c => c.CustomerId == customerId).ToListAsync();
+            return customerRoles.Select(cr => cr.BankRole!.Name).ToList();
+        }
     }
 }

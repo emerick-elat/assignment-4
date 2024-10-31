@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BankContext))]
-    [Migration("20241018130429_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241031135219_InitialCreateDB")]
+    partial class InitialCreateDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BankRoleCustomer", b =>
+                {
+                    b.Property<int>("BankRolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CustomersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BankRolesId", "CustomersId");
+
+                    b.HasIndex("CustomersId");
+
+                    b.ToTable("BankRoleCustomer");
+                });
 
             modelBuilder.Entity("Entities.Account", b =>
                 {
@@ -83,6 +98,29 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("BankRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "",
+                            Name = "Super Admin",
+                            NormalizedName = "SUPER ADMIN"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ConcurrencyStamp = "",
+                            Name = "Agent",
+                            NormalizedName = "AGENT"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Currency", b =>
@@ -181,7 +219,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedUserName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -203,14 +240,88 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             Email = "admin@smartbank.com",
+                            EncryptedPassword = "AQAAAAIAAYagAAAAEJSOsPcN9rfn6MOai4xyilTlmaX2Pasz8Gv6VOP1VCIfljAblWVvZvfQD17HNPdk3A==",
                             FirstName = "System",
                             IsEmailConfirmed = true,
                             LastName = "Account",
                             NormalizedEmail = "ADMIN@SMARTBANK.COM",
                             NormalizedUserName = "ADMIN",
                             PhoneNumber = "+37061224853",
-                            UserName = "admin"
+                            UserName = "admin@smartbank.com"
                         });
+                });
+
+            modelBuilder.Entity("Entities.CustomerBankRole", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BankRoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CustomerId", "BankRoleId");
+
+                    b.HasIndex("BankRoleId");
+
+                    b.ToTable("CustomerBankRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            BankRoleId = 1
+                        });
+                });
+
+            modelBuilder.Entity("Entities.ScheduledPayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(10,5)");
+
+                    b.Property<DateTime>("EndOfValidityDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Periodicity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartOfValidityDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ScheduledPayments");
+                });
+
+            modelBuilder.Entity("Entities.ScheduledPaymentItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ScheduledPaymentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduledPaymentId");
+
+                    b.ToTable("ScheduledPaymentItems");
                 });
 
             modelBuilder.Entity("Entities.Transaction", b =>
@@ -241,7 +352,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 10, 18, 16, 4, 29, 653, DateTimeKind.Local).AddTicks(4006));
+                        .HasDefaultValue(new DateTime(2024, 10, 31, 15, 52, 19, 51, DateTimeKind.Local).AddTicks(9074));
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -267,6 +378,21 @@ namespace Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BankRoleCustomer", b =>
+                {
+                    b.HasOne("Entities.BankRole", null)
+                        .WithMany()
+                        .HasForeignKey("BankRolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Customer", null)
+                        .WithMany()
+                        .HasForeignKey("CustomersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entities.Account", b =>
                 {
                     b.HasOne("Entities.Customer", "Customer")
@@ -276,6 +402,36 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Entities.CustomerBankRole", b =>
+                {
+                    b.HasOne("Entities.BankRole", "BankRole")
+                        .WithMany("CustomerBankRoles")
+                        .HasForeignKey("BankRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Customer", "Customer")
+                        .WithMany("CustomerBankRoles")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BankRole");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Entities.ScheduledPaymentItem", b =>
+                {
+                    b.HasOne("Entities.ScheduledPayment", "ScheduledPayment")
+                        .WithMany("ScheduledPaymentItems")
+                        .HasForeignKey("ScheduledPaymentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ScheduledPayment");
                 });
 
             modelBuilder.Entity("Entities.Transaction", b =>
@@ -304,9 +460,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("TransactionsTo");
                 });
 
+            modelBuilder.Entity("Entities.BankRole", b =>
+                {
+                    b.Navigation("CustomerBankRoles");
+                });
+
             modelBuilder.Entity("Entities.Customer", b =>
                 {
                     b.Navigation("Accounts");
+
+                    b.Navigation("CustomerBankRoles");
+                });
+
+            modelBuilder.Entity("Entities.ScheduledPayment", b =>
+                {
+                    b.Navigation("ScheduledPaymentItems");
                 });
 #pragma warning restore 612, 618
         }

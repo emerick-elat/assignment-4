@@ -1,11 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Configurations
 {
@@ -14,6 +9,14 @@ namespace Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<CustomerBankRole> builder)
         {
             builder.HasKey(cbr => new { cbr.CustomerId, cbr.BankRoleId });
+
+            builder.HasOne<Customer>(sc => sc.Customer)
+            .WithMany(s => s.CustomerBankRoles)
+            .HasForeignKey(sc => sc.CustomerId);
+
+            builder.HasOne<BankRole>(sc => sc.BankRole)
+                .WithMany(s => s.CustomerBankRoles)
+                .HasForeignKey(sc => sc.BankRoleId);
         }
     }
 }

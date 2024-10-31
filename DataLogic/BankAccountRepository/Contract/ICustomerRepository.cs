@@ -19,5 +19,6 @@ namespace Infrastructure.BankAccountRepository.Contract
         Task<Customer?> CreateCustomerAsync(Customer customer);
         Task UpdateCustomerAsync(Customer customer);
         Task DeleteCustomerAsync(int id);
+        Task<ICollection<string>> GetCustomerRolesAsync(int customerId);
     }
 }

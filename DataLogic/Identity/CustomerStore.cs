@@ -1,24 +1,19 @@
 ﻿using Entities;
 using Infrastructure.BankAccountRepository.Contract;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Identity
 {
-    public class CustomerStore : IUserStore<Customer>,
+    public partial class CustomerStore : IUserStore<Customer>,
         IUserPasswordStore<Customer>,
         IUserEmailStore<Customer>
     {
-        private readonly ICustomerRepository _repo;
-        public CustomerStore(ICustomerRepository repository)
-        {
-            _repo = repository
-                ?? throw new ArgumentNullException(nameof(repository));
-        }
+        //private readonly ICustomerRepository _customerRepository;
+        //public CustomerStore(ICustomerRepository repository)
+        //{
+        //    this._customerRepository = repository
+        //        ?? throw new ArgumentNullException(nameof(repository));
+        //}
 
         public async Task<IdentityResult> CreateAsync(Customer user, CancellationToken cancellationToken)
         {
@@ -30,7 +25,7 @@ namespace Infrastructure.Identity
 
             try
             {
-                var response = await _repo.CreateEntityAsync(user);
+                var response = await _customerRepository.CreateEntityAsync(user);
                 if (response is not null)
                 {
                     return IdentityResult.Success;
@@ -48,7 +43,7 @@ namespace Infrastructure.Identity
 
         public async Task<IdentityResult> DeleteAsync(Customer user, CancellationToken cancellationToken)
         {
-            await _repo.DeleteEntityAsync(user.Id);
+            await _customerRepository.DeleteEntityAsync(user.Id);
             return IdentityResult.Success;
         }
 
@@ -59,21 +54,21 @@ namespace Infrastructure.Identity
         public async Task<Customer?> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var result = await _repo.QueryCustomersAsync(c => c.NormalizedEmail == normalizedEmail);
+            var result = await _customerRepository.QueryCustomersAsync(c => c.NormalizedEmail == normalizedEmail);
             return result.FirstOrDefault();
         }
 
         public async Task<Customer?> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var result = await _repo.QueryCustomersAsync(c => c.Id.ToString() == userId);
+            var result = await _customerRepository.QueryCustomersAsync(c => c.Id.ToString() == userId);
             return result.FirstOrDefault();
         }
 
         public async Task<Customer?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var result = await _repo.QueryCustomersAsync(c => c.UserName == normalizedUserName);
+            var result = await _customerRepository.QueryCustomersAsync(c => c.UserName == normalizedUserName);
             return result.FirstOrDefault();
         }
 
@@ -122,7 +117,7 @@ namespace Infrastructure.Identity
         public async Task<bool> HasPasswordAsync(Customer user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            Customer? customer = await _repo.GetEntityByIdAsync(user.Id);
+            Customer? customer = await _customerRepository.GetEntityByIdAsync(user.Id);
             if (customer == null)
             {
                 return false;
@@ -136,7 +131,7 @@ namespace Infrastructure.Identity
             if (user == null) throw new ArgumentNullException(nameof(user));
             if (email == null) throw new ArgumentNullException(nameof(email));
             user.Email = email;
-            await _repo.UpdateCustomerAsync(user);
+            await _customerRepository.UpdateCustomerAsync(user);
         }
 
         public async Task SetEmailConfirmedAsync(Customer user, bool confirmed, CancellationToken cancellationToken)
@@ -144,7 +139,7 @@ namespace Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null) throw new ArgumentNullException(nameof(user));
             user.IsEmailConfirmed = confirmed;
-            await _repo.UpdateCustomerAsync(user);
+            await _customerRepository.UpdateCustomerAsync(user);
         }
 
         public async Task SetNormalizedEmailAsync(Customer user, string? normalizedEmail, CancellationToken cancellationToken)
@@ -153,7 +148,7 @@ namespace Infrastructure.Identity
             if (user == null) throw new ArgumentNullException(nameof(user));
             if (normalizedEmail == null) throw new ArgumentNullException(nameof(normalizedEmail));
             user.NormalizedEmail = normalizedEmail;
-            await _repo.UpdateCustomerAsync(user);
+            await _customerRepository.UpdateCustomerAsync(user);
         }
 
         public async Task SetNormalizedUserNameAsync(Customer user, string? normalizedName, CancellationToken cancellationToken)
@@ -162,7 +157,7 @@ namespace Infrastructure.Identity
             if (user == null) throw new ArgumentNullException(nameof(user));
             if (normalizedName == null) throw new ArgumentNullException(nameof(normalizedName));
             user.NormalizedUserName = normalizedName;
-            await _repo.UpdateCustomerAsync(user);
+            await _customerRepository.UpdateCustomerAsync(user);
         }
 
         public async Task SetPasswordHashAsync(Customer user, string? passwordHash, CancellationToken cancellationToken)
@@ -171,7 +166,7 @@ namespace Infrastructure.Identity
             if (user == null) throw new ArgumentNullException(nameof(user));
             if (passwordHash == null) throw new ArgumentNullException(nameof(passwordHash));
             user.EncryptedPassword = passwordHash;
-            await _repo.UpdateCustomerAsync(user);
+            await _customerRepository.UpdateCustomerAsync(user);
         }
 
         public async Task SetUserNameAsync(Customer user, string? userName, CancellationToken cancellationToken)
@@ -180,15 +175,108 @@ namespace Infrastructure.Identity
             if (user == null) throw new ArgumentNullException(nameof(user));
             if (userName == null) throw new ArgumentNullException(nameof(userName));
             user.UserName = userName;
-            await _repo.UpdateCustomerAsync(user);
+            await _customerRepository.UpdateCustomerAsync(user);
         }
 
         public async Task<IdentityResult> UpdateAsync(Customer user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null) throw new ArgumentNullException(nameof(user));
-            await _repo.UpdateCustomerAsync(user);
+            await _customerRepository.UpdateCustomerAsync(user);
             return IdentityResult.Success;
+        }
+    }
+
+    public partial class CustomerStore (IBankRoleRepository _roleRepository,
+        ICustomerRepository _customerRepository,
+        ICustomerBankRoleRepository _customerRoleRepository) : IUserRoleStore<Customer>
+    {
+        public async Task AddToRoleAsync(Customer user, string roleName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null) throw new ArgumentNullException(nameof(user));
+            if (roleName is null) throw new ArgumentNullException(nameof(roleName));
+            BankRole? bankRole = await _roleRepository.GetRoleByNameAsync(roleName);
+            if (bankRole is not null)
+            {
+                var response = await _customerRoleRepository.CreateCustomerBankRole(new CustomerBankRole
+                {
+                    CustomerId = user.Id,
+                    BankRoleId = bankRole.Id,
+                });
+            }
+        }
+
+        public async Task<IList<string>> GetRolesAsync(Customer user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var roles = await _customerRepository.GetCustomerRolesAsync(user.Id);
+            return roles.ToList();
+        }
+
+        public async Task<IList<Customer>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            
+            if (roleName is null)
+            {
+                throw new ArgumentNullException(nameof(roleName));
+            }
+
+            BankRole? role = await _roleRepository.GetRoleByNameAsync(roleName);
+            if (role is not null)
+            {
+                ICollection<Customer> customers = await _roleRepository.GetCustomersInRoleAsync(roleName);
+                return customers.ToList();
+            }
+            return new List<Customer>();
+        }
+
+        public async Task<bool> IsInRoleAsync(Customer user, string roleName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            if (roleName is null)
+            {
+                throw new ArgumentNullException(nameof(roleName));
+            }
+
+            BankRole? role = await _roleRepository.GetRoleByNameAsync(roleName);
+
+            if (role is not null)
+            {
+                return await _customerRoleRepository.ExistsCustomerBankRole(user.Id, role.Id);
+            }
+            return false;
+        }
+
+        public async Task RemoveFromRoleAsync(Customer user, string roleName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            if (roleName is null)
+            {
+                throw new ArgumentNullException(nameof (roleName));
+            }
+
+            BankRole? role = await _roleRepository.GetRoleByNameAsync (roleName);
+            if (role is not null)
+            {
+                await _customerRoleRepository.DeleteCustomerBankRole(user.Id, role.Id);
+            }
         }
     }
 }
