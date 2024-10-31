@@ -10,6 +10,7 @@ namespace Infrastructure.Context
     {   
         public DbSet<Customer> Customers { get; set; }
         public DbSet<BankRole> BankRoles { get; set; }
+        public DbSet<CustomerBankRole> CustomerBankRoles { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Currency> Currencies { get; set; }
@@ -37,6 +38,7 @@ namespace Infrastructure.Context
             new TransactionConfiguration().Configure(modelBuilder.Entity<Transaction>());
             new CurrencyConfiguration().Configure(modelBuilder.Entity<Currency>());
             new BankRoleConfiguration().Configure(modelBuilder.Entity<BankRole>());
+            new CustomerBankRoleConfiguration().Configure(modelBuilder.Entity<CustomerBankRole>());
             new ScheduledPaymentConfiguration().Configure(modelBuilder.Entity<ScheduledPayment>());
 
             //modelBuilder.RunIdentityConfiguration();

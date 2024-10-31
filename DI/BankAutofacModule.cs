@@ -32,6 +32,7 @@ namespace DI
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<BankRoleRepository>().As<IBankRoleRepository>();
+            builder.RegisterType<CustomerBankRoleRepository>().As<ICustomerBankRoleRepository>();
             builder.RegisterType<ScheduledPaymentRepository>().As<IScheduledPaymentRepository>();
             builder.RegisterType<CurrencyConverter>().As<ICurrencyConverter>();
 

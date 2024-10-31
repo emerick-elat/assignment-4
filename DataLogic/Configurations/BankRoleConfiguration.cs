@@ -24,6 +24,8 @@ namespace Infrastructure.Configurations
             builder.Property(r => r.NormalizedName)
                 .IsRequired().HasMaxLength(50);
 
+            builder.HasMany(r => r.CustomerBankRoles).WithOne().HasForeignKey(cbr => cbr.BankRoleId).IsRequired();
+
             
         }
     }

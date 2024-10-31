@@ -14,5 +14,7 @@
 
         public string? EncryptedPassword { get; set; }
         public List<Account>? Accounts { get; set; }
+        public List<CustomerBankRole> CustomerBankRoles { get; set; } = [];
+        public List<BankRole> BankRoles { get; set; } = [];
     }
 }

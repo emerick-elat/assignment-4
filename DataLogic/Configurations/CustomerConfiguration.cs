@@ -45,6 +45,8 @@ namespace Infrastructure.Configurations
                 .WithOne(a => a.Customer)
                 .HasForeignKey(a => a.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(r => r.CustomerBankRoles).WithOne().HasForeignKey(cbr => cbr.CustomerId).IsRequired();
         }
     }
 }
