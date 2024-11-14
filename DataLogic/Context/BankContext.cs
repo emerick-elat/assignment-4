@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Infrastructure.Configurations;
+using Infrastructure.Multitenancy;
 using Infrastructure.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,15 +19,20 @@ namespace Infrastructure.Context
         public DbSet<ScheduledPaymentItem> ScheduledPaymentItems { get; set; }
 
         private readonly IConfiguration _configuration;
-        public BankContext(DbContextOptions options, IConfiguration configuration)
+        private readonly ITenantService _tenantService;
+        public BankContext(DbContextOptions options, IConfiguration configuration, ITenantService service)
             : base(options)
         {
             _configuration = configuration;
+            _tenantService = service;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnectionString"));
+            var tenant = _tenantService.Tenant;
+            var connectionStr = _configuration.GetConnectionString(tenant);
+            optionsBuilder.UseSqlServer(connectionStr);
+            //optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnectionString"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

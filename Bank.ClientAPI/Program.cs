@@ -7,6 +7,7 @@ using DI;
 using Entities;
 using Infrastructure.Context;
 using Infrastructure.Identity;
+using Infrastructure.Multitenancy;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +27,8 @@ namespace Bank.ClientAPI
             // Add services to the container.
             
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<BankContext>();
+            //builder.Services.AddDbContext<BankContext>();
+            builder.Services.AddDbContextFactory<BankContext>(opt => { }, ServiceLifetime.Scoped);
             builder.Services.AddDistributedMemoryCache();
             // Use Autofac as the service provider factory.
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -119,7 +121,15 @@ namespace Bank.ClientAPI
                 var services = scope.ServiceProvider;
                 try
                 {
-                    services.GetRequiredService<BankContext>().Database.Migrate();
+                    var tenantService = services.GetService<ITenantService>();
+                    var factory = services.GetService<IDbContextFactory<BankContext>>();
+                    foreach (var tenant in tenantService!.GetTenants())
+                    {
+                        tenantService.SetTenant(tenant);
+                        using var ctx = factory!.CreateDbContext();
+                        services.GetRequiredService<BankContext>().Database.Migrate();
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
