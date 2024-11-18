@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,10 @@ namespace Infrastructure.Multitenancy
 {
     public interface ITenantService
     {
-        string Tenant { get; }
-
-        void SetTenant(string tenant);
-
-        string[] GetTenants();
+        Tenant Tenant { get; }
+        void SetTenant(Tenant tenant);
+        Tenant[] GetTenants();
+        Tenant GetTenant(string name);
 
         event TenantChangedEventHandler OnTenantChanged;
     }

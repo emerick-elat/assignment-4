@@ -4,19 +4,16 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Migrations.Bank
 {
     [DbContext(typeof(BankContext))]
-    [Migration("20241031135219_InitialCreateDB")]
-    partial class InitialCreateDB
+    partial class BankContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,7 +349,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 10, 31, 15, 52, 19, 51, DateTimeKind.Local).AddTicks(9074));
+                        .HasDefaultValue(new DateTime(2024, 11, 18, 15, 56, 17, 704, DateTimeKind.Local).AddTicks(8651));
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

@@ -27,9 +27,12 @@ namespace Bank.ClientAPI
             // Add services to the container.
             
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<TenantsDBContext>();
             //builder.Services.AddDbContext<BankContext>();
             builder.Services.AddDbContextFactory<BankContext>(opt => { }, ServiceLifetime.Scoped);
+
             builder.Services.AddDistributedMemoryCache();
+            
             // Use Autofac as the service provider factory.
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             // Configure Autofac container.
@@ -37,44 +40,6 @@ namespace Bank.ClientAPI
             {
                 containerBuilder.RegisterModule(new BankAutofacModule());
             });
-
-            //builder.Services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters()
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = false,
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-            //        };
-            //    });
-
-            //builder.Services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-            //});
-
-
-
-            //builder.Services.AddAuthentication(o =>
-            //{
-            //    o.DefaultSignInScheme = IdentityConstants.BearerScheme;
-            //}).AddCookie("Identity.Bearer");
-            //.AddIdentityCookies(o => { });
-
-            /*builder.Services.AddIdentityCore<Customer>(o =>
-            {
-                o.Stores.MaxLengthForKeys = 128;
-                o.SignIn.RequireConfirmedAccount = true;
-            });*/
 
             builder.Services.AddIdentity<Customer, BankRole>()
                 .AddApiEndpoints()
@@ -121,9 +86,11 @@ namespace Bank.ClientAPI
                 var services = scope.ServiceProvider;
                 try
                 {
+                    services.GetRequiredService<TenantsDBContext>().Database.Migrate();
                     var tenantService = services.GetService<ITenantService>();
                     var factory = services.GetService<IDbContextFactory<BankContext>>();
-                    foreach (var tenant in tenantService!.GetTenants())
+                    var tenants = tenantService!.GetTenants();
+                    foreach (var tenant in tenants)
                     {
                         tenantService.SetTenant(tenant);
                         using var ctx = factory!.CreateDbContext();

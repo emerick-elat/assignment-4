@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,13 @@ namespace Infrastructure.Multitenancy
 {
     public class TenantChangedEventArgs : EventArgs
     {
-        public TenantChangedEventArgs(string? oldTenant, string newTenant)
+        public TenantChangedEventArgs(Tenant oldTenant, Tenant newTenant)
         {
             OldTenant = oldTenant;
             NewTenant = newTenant;
         }
 
-        public string? OldTenant { get; private set; }
-        public string NewTenant { get; private set; }
+        public Tenant? OldTenant { get; private set; }
+        public Tenant NewTenant { get; private set; }
     }
 }

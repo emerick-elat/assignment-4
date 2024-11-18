@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Entities;
+using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +13,28 @@ namespace Infrastructure.Multitenancy
     public delegate void TenantChangedEventHandler(object source, TenantChangedEventArgs args);
     public class TenantService : ITenantService
     {
-        public TenantService() => _tenant = GetTenants()[0];
+        private readonly TenantsDBContext _dbContext;
+        public TenantService(TenantsDBContext dBContext)
+        {
+            _dbContext = dBContext;
+            _tenant = GetTenant("DefaultConnectionString");
+        }
 
-        public TenantService(string tenant) => _tenant = tenant;
+        public TenantService(TenantsDBContext dBContext, string tenant)
+        {
+            _dbContext = dBContext;
+            _tenant = GetTenant(tenant);
+        }
 
-        private string _tenant;
+        private Tenant _tenant;
 
         public event TenantChangedEventHandler OnTenantChanged = null!;
 
-        public string Tenant => _tenant;
-
-        public void SetTenant(string tenant)
+        public Tenant Tenant => _tenant;
+        
+        public void SetTenant(Tenant tenant)
         {
-            if (tenant != _tenant)
+            if (tenant.Name != _tenant.Name)
             {
                 var old = _tenant;
                 _tenant = tenant;
@@ -30,12 +42,10 @@ namespace Infrastructure.Multitenancy
             }
         }
 
-        public string[] GetTenants() => new[]
-        {
-            "DefaultConnectionString", 
-            "Customer1",
-            "Customer2",
-            "Customer3",
-        };
+        public async Task<Tenant[]> GetTenantsAsync() => await _dbContext.Tenants.ToArrayAsync();
+        
+        public Tenant[] GetTenants() => _dbContext.Tenants.ToArray();
+        public Tenant GetTenant(string name) => _dbContext.Tenants.FirstOrDefault(t => t.Name == name)!;
+        
     }
 }

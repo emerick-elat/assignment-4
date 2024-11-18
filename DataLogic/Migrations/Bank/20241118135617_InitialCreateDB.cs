@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Migrations.Bank
 {
     /// <inheritdoc />
     public partial class InitialCreateDB : Migration
@@ -174,7 +174,7 @@ namespace Infrastructure.Migrations
                 {
                     TransactionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 10, 31, 15, 52, 19, 51, DateTimeKind.Local).AddTicks(9074)),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 11, 18, 15, 56, 17, 704, DateTimeKind.Local).AddTicks(8651)),
                     Amount = table.Column<decimal>(type: "decimal(10,5)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     SourceAccountId = table.Column<string>(type: "nvarchar(16)", nullable: false),

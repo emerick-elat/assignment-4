@@ -20,7 +20,7 @@ namespace Infrastructure.Context
 
         private readonly IConfiguration _configuration;
         private readonly ITenantService _tenantService;
-        public BankContext(DbContextOptions options, IConfiguration configuration, ITenantService service)
+        public BankContext(DbContextOptions<BankContext> options, IConfiguration configuration, ITenantService service)
             : base(options)
         {
             _configuration = configuration;
@@ -29,10 +29,7 @@ namespace Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var tenant = _tenantService.Tenant;
-            var connectionStr = _configuration.GetConnectionString(tenant);
-            optionsBuilder.UseSqlServer(connectionStr);
-            //optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnectionString"));
+            optionsBuilder.UseSqlServer(_tenantService.Tenant.DBConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
