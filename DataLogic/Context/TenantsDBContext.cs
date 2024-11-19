@@ -26,15 +26,18 @@ namespace Infrastructure.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Tenant>().HasAlternateKey(t => t.Name);
-            modelBuilder.Entity<Tenant>().Property(t => t.Name).HasMaxLength(20);
-            modelBuilder.Entity<Tenant>().HasIndex(t => t.Name).IsUnique();
-            modelBuilder.Entity<Tenant>().Property(t => t.Name).HasMaxLength(150);
+            modelBuilder.Entity<Tenant>().Property(t => t.Name).HasMaxLength(50);
 
-            modelBuilder.Entity<Tenant>().HasData(new List<Tenant>() { 
-                new Tenant { Id = 1, Name = "DefaultConnectionString", DBConnectionString = "Server=.;Database=BankDB;Trusted_Connection=True;TrustServerCertificate=True;" },
-                new Tenant { Id = 2, Name = "Customer1", DBConnectionString = "Server=.;Database=BankDB1;Trusted_Connection=True;TrustServerCertificate=True;" },
-                new Tenant { Id = 3, Name = "Customer2", DBConnectionString = "Server=.;Database=BankDB2;Trusted_Connection=True;TrustServerCertificate=True;" },
-                new Tenant { Id = 4, Name = "Customer3", DBConnectionString = "Server=.;Database=BankDB3;Trusted_Connection=True;TrustServerCertificate=True;" },
+            modelBuilder.Entity<Tenant>().Property(t => t.Server).IsRequired();
+            modelBuilder.Entity<Tenant>().Property(t => t.DatabaseName).IsRequired();
+            modelBuilder.Entity<Tenant>().Property(t => t.TrusServerCertificate).HasDefaultValue(true);
+            modelBuilder.Entity<Tenant>().Property(t => t.IsTrustedConnection).HasDefaultValue(true);
+
+            modelBuilder.Entity<Tenant>().HasData(new List<Tenant>() {
+                new Tenant { Id = 1, Name = "DefaultConnectionString", Server = ".", DatabaseName = "VentionBankDB" },
+                new Tenant { Id = 2, Name = "Customer1", Server = "local", DatabaseName = "BankDB1", DBUser = "sa", DBPassword = "#Include <stdio.h>" },
+                new Tenant { Id = 3, Name = "Customer2", Server = ".", DatabaseName = "BkDB2", DBUser = "sa", DBPassword = "#Lithu@nia&Baltic$>", TrusServerCertificate = true },
+                new Tenant { Id = 4, Name = "Customer3", Server = ".", DatabaseName = "BankDB3", DBUser = "sa", DBPassword = "P@$$w0rd!", TrusServerCertificate = true }
             });
         }
     }

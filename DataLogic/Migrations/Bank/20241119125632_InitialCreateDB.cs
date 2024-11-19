@@ -174,7 +174,7 @@ namespace Infrastructure.Migrations.Bank
                 {
                     TransactionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 11, 18, 15, 56, 17, 704, DateTimeKind.Local).AddTicks(8651)),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 11, 19, 14, 56, 32, 667, DateTimeKind.Local).AddTicks(3193)),
                     Amount = table.Column<decimal>(type: "decimal(10,5)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     SourceAccountId = table.Column<string>(type: "nvarchar(16)", nullable: false),

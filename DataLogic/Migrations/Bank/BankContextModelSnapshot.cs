@@ -349,7 +349,7 @@ namespace Infrastructure.Migrations.Bank
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 11, 18, 15, 56, 17, 704, DateTimeKind.Local).AddTicks(8651));
+                        .HasDefaultValue(new DateTime(2024, 11, 19, 14, 56, 32, 667, DateTimeKind.Local).AddTicks(3193));
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
