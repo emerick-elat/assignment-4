@@ -24,6 +24,17 @@ namespace CreditReview.API
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+            var baseUrl = "/creditreviews";
+            app.MapGet(baseUrl, async (ICreditRequestRepository repo) => await repo.GetAll());
+
+            app.MapPost(baseUrl, async (ICreditRequestRepository repo, CreditRequest model) =>
+            {
+                var response = await repo.CreateCreditRequest(model);
+                return Results.Created($"{baseUrl}/{response.Id}", response);
+            });
+
+            app.MapPut(baseUrl + "/{id}/approve", async (ICreditRequestRepository repo, int id) => repo.SetCreditRequestStatus(id, CreditRequestStatus.Approved));
+            app.MapPut(baseUrl + "/{id}/decline", async (ICreditRequestRepository repo, int id) => repo.SetCreditRequestStatus(id, CreditRequestStatus.Declined));
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
