@@ -1,11 +1,14 @@
 ﻿using CreditReview.API.Models;
+using EventBus.Event;
+using EventBus.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace CreditReview.API.Repository
 {
     public class CreditRequestRepository(
         CreditRequestDbContext context,
-        ILogger<CreditRequestRepository> logger
+        ILogger<CreditRequestRepository> logger,
+        IEventBus eventBus
         ) : ICreditRequestRepository
     {
         public async Task<CreditRequest> CreateCreditRequest(CreditRequest creditRequest)
@@ -49,6 +52,15 @@ namespace CreditReview.API.Repository
             request.Status = status;
             context.CreditRequests.Update(request);
             await context.SaveChangesAsync();
+            string decision = status == CreditRequestStatus.Approved ? "approved" : "declined";
+            string message = $"Dear Customer, your credit request has been {decision}";
+            
+            await eventBus.PublishAsync(new MailEvent()
+            {
+                Email = request.CustomerEmail,
+                Subject = "Decision on Credit Review",
+                Body = message
+            });
         }
     }
 }

@@ -1,6 +1,8 @@
 
 using CreditReview.API.Models;
 using CreditReview.API.Repository;
+using EventBus.Interface;
+using EventBus.RabbitMQ;
 using Microsoft.EntityFrameworkCore;
 
 namespace CreditReview.API
@@ -19,6 +21,7 @@ namespace CreditReview.API
                 options.UseInMemoryDatabase(databaseName: "CreditReviewDB");
             });
             builder.Services.AddScoped<ICreditRequestRepository, CreditRequestRepository>();
+            builder.Services.AddScoped<IEventBus, EventBusRabbitMQ>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -33,8 +36,8 @@ namespace CreditReview.API
                 return Results.Created($"{baseUrl}/{response.Id}", response);
             });
 
-            app.MapPut(baseUrl + "/{id}/approve", async (ICreditRequestRepository repo, int id) => repo.SetCreditRequestStatus(id, CreditRequestStatus.Approved));
-            app.MapPut(baseUrl + "/{id}/decline", async (ICreditRequestRepository repo, int id) => repo.SetCreditRequestStatus(id, CreditRequestStatus.Declined));
+            app.MapPut(baseUrl + "/{id}/approve", async (ICreditRequestRepository repo, int id) => await repo.SetCreditRequestStatus(id, CreditRequestStatus.Approved));
+            app.MapPut(baseUrl + "/{id}/decline", async (ICreditRequestRepository repo, int id) => await repo.SetCreditRequestStatus(id, CreditRequestStatus.Declined));
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

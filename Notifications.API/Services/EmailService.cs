@@ -7,25 +7,33 @@ namespace Notifications.API.Services
     public class EmailService : IEmailService
     {
         public readonly SmtpSettings settings;
-        private readonly ILogger<EmailService> logger;
+        //private readonly ILogger<EmailService> logger;
 
-        public EmailService(ILogger<EmailService> logger, IConfiguration configuration)
+        public EmailService(IConfiguration configuration)
         {
-            configuration.GetSection("Smtp").Bind(settings);
-            logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            //configuration.GetSection("Smtp").Bind(settings);
+            settings = new SmtpSettings()
+            {
+                FromAddress = "elat.aymerick@gmail.com",
+                Password = "Emerick@101290",
+                Port = 465,
+                Server = "smtp.gmail.com",
+                UserName = "elat.aymerick@gmail.com"
+            };
+            //logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<bool> SendEmail(string email, string subject, string message)
+        public async Task<bool> SendEmail(NotificationMail mail)
         {
             // Create a new MailMessage object
             MailMessage mailMessage = new MailMessage();
             mailMessage.From = new MailAddress(settings.FromAddress);
-            mailMessage.To.Add(email);
-            mailMessage.Subject = subject;
-            mailMessage.Body = message;
+            mailMessage.To.Add(mail.Email);
+            mailMessage.Subject = mail.Subject;
+            mailMessage.Body = mail.Body;
 
             // Configure the SMTP client
-            SmtpClient smtpClient = new SmtpClient(settings.Server);
+            SmtpClient smtpClient = new SmtpClient(settings.Server, settings.Port);
             smtpClient.Port = settings.Port;
             smtpClient.Credentials = new NetworkCredential(settings.FromAddress, settings.Password);
             smtpClient.EnableSsl = true;
@@ -37,7 +45,8 @@ namespace Notifications.API.Services
             }
             catch (Exception ex)
             {
-                logger.LogWarning("Error: " + ex.Message);
+                //logger.LogWarning("Error: " + ex.Message);
+                
                 return false;
             }
         }

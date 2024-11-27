@@ -13,13 +13,15 @@ namespace Notifications.API
             // Add services to the container.
 
             builder.Services.AddControllers();
-
-            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddSingleton<IEmailService, EmailService>();
+            builder.Services.AddHostedService<RabbitMqListener>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.MapPost("sendmail", async (IEmailService service, NotificationMail mail) => await service.SendEmail(mail));
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

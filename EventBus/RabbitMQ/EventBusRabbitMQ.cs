@@ -19,61 +19,28 @@ namespace EventBus.RabbitMQ
         IOptions<EventBusOption> options,
         IConfiguration configuration) : IEventBus, IDisposable
     {
-        private readonly string _rabbitmqHost = configuration.GetSection("RabbitMQHost").Value
-                ?? "localhost";
-        private readonly string _queueName = options.Value.SubscriptionClientName;
+        private readonly string _rabbitmqHost = "localhost";
+        //private readonly string _queueName = options.Value.SubscriptionClientName;
+        private readonly string _queueName = "EmailQueue";
         
-        public async Task PublishAsync(IntegrationEvent @event)
-        {
-            var eventName = @event.GetType().Name;
+        public async Task PublishAsync(MailEvent mailEvent)
+        {   
             var factory = new ConnectionFactory { HostName = _rabbitmqHost };
             using var connection = await factory.CreateConnectionAsync();
             using var channel = await connection.CreateChannelAsync();
 
-            await channel.QueueDeclareAsync(queue: _queueName, durable: false, exclusive: false, autoDelete: false,
+            await channel.QueueDeclareAsync(queue: _queueName, durable: true, exclusive: false, autoDelete: false,
                 arguments: null);
 
-            const string message = "Hello World!";
+            string message = JsonConvert.SerializeObject(mailEvent);
             var body = Encoding.UTF8.GetBytes(message);
 
             await channel.BasicPublishAsync(exchange: string.Empty, routingKey: _queueName, body: body);
         }
 
-        public async Task SubscribeAsync<T, TH>()
-            where T : IntegrationEvent
-            where TH : IIntegrationEventHandler<T>
-        {
-            var factory = new ConnectionFactory { HostName = _rabbitmqHost };
-            using var connection = await factory.CreateConnectionAsync();
-            using var channel = await connection.CreateChannelAsync();
-
-            await channel.QueueDeclareAsync(queue: _queueName, durable: false, exclusive: false, autoDelete: false,
-                arguments: null);
-
-            _logger.LogInformation(" [*] Waiting for messages.");
-
-            var consumer = new AsyncEventingBasicConsumer(channel);
-            consumer.ReceivedAsync += (model, ea) =>
-            {
-                var body = ea.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine($" [x] Received {message}");
-                return Task.CompletedTask;
-            };
-
-            await channel.BasicConsumeAsync(_queueName, autoAck: true, consumer: consumer);
-        }
-
-        public void Unsubscribe<T, TH>()
-            where T : IntegrationEvent
-            where TH : IIntegrationEventHandler<T>
-        {
-            throw new NotImplementedException();
-        }
-
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
