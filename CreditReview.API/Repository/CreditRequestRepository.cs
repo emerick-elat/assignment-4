@@ -8,7 +8,7 @@ namespace CreditReview.API.Repository
     public class CreditRequestRepository(
         CreditRequestDbContext context,
         ILogger<CreditRequestRepository> logger,
-        IEventBus eventBus
+        IEventBus<MailEvent> eventBus
         ) : ICreditRequestRepository
     {
         public async Task<CreditRequest> CreateCreditRequest(CreditRequest creditRequest)
@@ -53,7 +53,7 @@ namespace CreditReview.API.Repository
             context.CreditRequests.Update(request);
             await context.SaveChangesAsync();
             string decision = status == CreditRequestStatus.Approved ? "approved" : "declined";
-            string message = $"Dear Customer, your credit request has been {decision}";
+            string message = $"Dear Customer {request.CustomerEmail}, your credit request has been {decision}";
             
             await eventBus.PublishAsync(new MailEvent()
             {

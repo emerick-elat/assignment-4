@@ -25,6 +25,9 @@ namespace Notifications.API.Services
 
         public async Task<bool> SendEmail(NotificationMail mail)
         {
+            if (mail.Email is null) {
+                return false;
+            }
             // Create a new MailMessage object
             MailMessage mailMessage = new MailMessage();
             mailMessage.From = new MailAddress(settings.FromAddress);

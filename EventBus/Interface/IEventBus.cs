@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace EventBus.Interface
 {
-    public interface IEventBus
+    public interface IEventBus<TModel>
+        where TModel : class
     {
-        Task PublishAsync(MailEvent mailEvent);
+        Task PublishAsync(TModel mailEvent);
     }
 }

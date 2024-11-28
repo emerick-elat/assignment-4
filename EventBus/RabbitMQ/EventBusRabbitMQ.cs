@@ -14,16 +14,17 @@ using System.Threading.Tasks;
 
 namespace EventBus.RabbitMQ
 {
-    public class EventBusRabbitMQ(
-        ILogger<EventBusRabbitMQ> _logger,
+    public class EventBusRabbitMQ<TModel>(
+        ILogger<EventBusRabbitMQ<TModel>> _logger,
         IOptions<EventBusOption> options,
-        IConfiguration configuration) : IEventBus, IDisposable
+        IConfiguration configuration) : IEventBus<TModel>, IDisposable
+        where TModel : class
     {
         private readonly string _rabbitmqHost = "localhost";
         //private readonly string _queueName = options.Value.SubscriptionClientName;
         private readonly string _queueName = "EmailQueue";
         
-        public async Task PublishAsync(MailEvent mailEvent)
+        public async Task PublishAsync(TModel mailEvent)
         {   
             var factory = new ConnectionFactory { HostName = _rabbitmqHost };
             using var connection = await factory.CreateConnectionAsync();

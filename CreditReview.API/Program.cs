@@ -21,7 +21,7 @@ namespace CreditReview.API
                 options.UseInMemoryDatabase(databaseName: "CreditReviewDB");
             });
             builder.Services.AddScoped<ICreditRequestRepository, CreditRequestRepository>();
-            builder.Services.AddScoped<IEventBus, EventBusRabbitMQ>();
+            builder.Services.AddSingleton(typeof(IEventBus<>), typeof(EventBusRabbitMQ<>));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
